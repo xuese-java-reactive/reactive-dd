@@ -1,0 +1,57 @@
+#debug: true
+
+logging:
+  file:
+    path: /logs
+  level:
+    mofa.wangzhe.reactive: DEBUG
+
+spring:
+  application:
+    admin:
+      #      是否启用应用程序的管理功能。
+      enabled: true
+    #      应用名称
+    name: reactive
+  #是否在关机时等待运行的工作完成
+  quartz:
+    wait-for-jobs-to-complete-on-shutdown: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    #  格式化日期时使用的时区
+    time-zone: GMT+8
+
+
+  r2dbc:
+    #    数据库名称
+    name: management
+    #    数据库的登录密码
+    password: root
+    url:
+    #    数据库的登录用户名
+    username: root
+
+  thymeleaf:
+    encoding: UTF-8
+    mode: LEGACYHTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template: true
+    cache: false
+
+  devtools:
+    restart:
+      enabled: true
+
+server:
+  #  服务器应该绑定的网络地址
+  #  address: 0.0.0.0
+  #  是否启用响应压缩。
+  #  compression:
+  #    enabled: true
+  #    执行压缩所需的最小 "内容-长度 "值
+  #    min-response-size: 2KB
+
+  port: 9000
+

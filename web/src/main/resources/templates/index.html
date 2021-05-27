@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" style="height: auto; min-height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.1.0/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.1.0/dist/css/adminlte.min.css}">
+</head>
+<body class="login-page" style="min-height: 466px;">
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="#" class="h1"><b>登&nbsp;&nbsp;&nbsp;录</b></a>
+        </div>
+        <div class="card-body">
+
+            <form action="#" method="post" id="login-form">
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" required
+                           name="account"
+                           value="123@qq.com">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Password" required
+                           name="password"
+                           value="123456">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/dist/js/adminlte.min.js}"></script>
+<script th:src="@{/js/serialize/serialize.js}"></script>
+<script th:src="@{/js/index/index.js}"></script>
+</body>
+</html>
