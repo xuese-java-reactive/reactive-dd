@@ -5,11 +5,15 @@ import mofa.wangzhe.reactive.model.MenuModel;
 import mofa.wangzhe.reactive.service.MenuService;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,8 +39,21 @@ public class MenuHandle {
                 .switchIfEmpty(ResultUtil2.err("不能为空"));
     }
 
+    /**
+     * menu list
+     *
+     * @param request ServerRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> list(ServerRequest request) {
         String pid = request.pathVariable("pid");
-        return ResultUtil2.ok(null);
+
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(Sort.Order.asc("account"));
+        return ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(this.service.findAll(pid)
+                        , MenuModel.class);
     }
 }

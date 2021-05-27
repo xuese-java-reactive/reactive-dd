@@ -12,7 +12,10 @@ $(document).ajaxSuccess(function(event,xhr,options){
 });
 
 $(document).ajaxError(function(event,xhr,options,exc){
+    console.log(event)
     console.log(xhr)
+    console.log(options)
+    console.log(exc)
     if(xhr.responseText.indexOf("logout") != -1){
         localStorage.clear();
         location.replace("/");

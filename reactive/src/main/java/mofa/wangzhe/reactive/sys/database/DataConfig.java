@@ -1,10 +1,12 @@
 package mofa.wangzhe.reactive.sys.database;
 
+import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -19,13 +21,14 @@ public class DataConfig {
 
     @Bean
     ConnectionFactory connectionFactory() {
+
         ConnectionFactoryOptions options = ConnectionFactoryOptions.builder()
                 .option(ConnectionFactoryOptions.DRIVER, "mysql")
                 .option(ConnectionFactoryOptions.HOST, "127.0.0.1")
                 .option(ConnectionFactoryOptions.USER, "root")
                 .option(ConnectionFactoryOptions.PASSWORD, "root")
                 .option(ConnectionFactoryOptions.PORT, 3306)
-                .option(ConnectionFactoryOptions.DATABASE, "r2dbc")
+                .option(ConnectionFactoryOptions.DATABASE, "management")
                 .option(ConnectionFactoryOptions.CONNECT_TIMEOUT, Duration.ofSeconds(3))
 //                .option(ConnectionFactoryOptions.SSL, true)
 //                .option(Option.valueOf("sslMode"), "verify_identity")
@@ -43,6 +46,30 @@ public class DataConfig {
 //                .option(Option.valueOf("autodetectExtensions"), false)
                 .build();
         return ConnectionFactories.get(options);
-
     }
+
+//    @Bean
+//    public CommandLineRunner initDatabase(ConnectionFactory cf) {
+//
+//        return (args) ->
+//                Flux.from(cf.create())
+//                        .flatMap(c ->
+//                                Flux.from(c.createBatch()
+//                                        .add("drop table if exists Users")
+//                                        .add("create table Users(" +
+//                                                "id IDENTITY(1,1)," +
+//                                                "firstname varchar(80) not null," +
+//                                                "lastname varchar(80) not null)")
+//                                        .add("insert into Users(firstname,lastname)" +
+//                                                "values('flydean','ma')")
+//                                        .add("insert into Users(firstname,lastname)" +
+//                                                "values('jacken','yu')")
+//                                        .execute())
+//                                        .doFinally((st) -> c.close())
+//                        )
+//                        .log()
+//                        .blockLast();
+//    }
+
+
 }

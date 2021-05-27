@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,12 +20,11 @@ import java.util.List;
 @Table("menu_table")
 public class MenuModel {
 
-    @Id
     private String uuid;
 
     private String pId;
 
     private String name;
 
-    private List<MenuModel> list;
+    private List<MenuModel> children = new ArrayList<>();
 }

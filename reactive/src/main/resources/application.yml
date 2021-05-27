@@ -4,7 +4,9 @@ logging:
   file:
     path: /logs
   level:
-    mofa.wangzhe.reactive: DEBUG
+    org:
+      springframework:
+        r2dbc: DEBUG
 
 spring:
   application:
@@ -23,14 +25,13 @@ spring:
     time-zone: GMT+8
 
 
-  r2dbc:
-    #    数据库名称
-    name: management
-    #    数据库的登录密码
-    password: root
-    url:
-    #    数据库的登录用户名
-    username: root
+#  r2dbc:
+#    #    数据库名称
+#    name: management
+#    #    数据库的登录密码
+#    password: root
+#    #    数据库的登录用户名
+#    username: root
 
   thymeleaf:
     encoding: UTF-8
