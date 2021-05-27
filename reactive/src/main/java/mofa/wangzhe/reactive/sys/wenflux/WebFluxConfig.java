@@ -29,26 +29,26 @@ public class WebFluxConfig implements WebFluxConfigurer {
         registrar.registerFormatters(registry);
     }
 
-    /**
-     * 加入thymeleaf试图解析器，不然找不到view name
-     *
-     * @param registry ViewResolverRegistry
-     */
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(thymeleafReactiveViewResolver);
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations(
-                        "classpath:/META-INF/resources/webjars/",
-                        "/public",
-                        "classpath:/static/"
-                )
-                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
-    }
+//    /**
+//     * 加入thymeleaf试图解析器，不然找不到view name
+//     *
+//     * @param registry ViewResolverRegistry
+//     */
+//    @Override
+//    public void configureViewResolvers(ViewResolverRegistry registry) {
+//        registry.viewResolver(thymeleafReactiveViewResolver);
+//    }
+//
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations(
+//                        "classpath:/META-INF/resources/webjars/",
+//                        "/public",
+//                        "classpath:/static/"
+//                )
+//                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+//    }
 
 //    /**
 //     * 映射静态资源文件映射
