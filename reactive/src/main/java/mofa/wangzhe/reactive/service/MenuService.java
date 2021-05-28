@@ -21,7 +21,7 @@ public interface MenuService {
     /**
      * gen ju pid huo qu
      *
-     * @param pId
+     * @param pId String
      * @return Flux<MenuModel>
      */
     Flux<MenuModel> findAll(String pId);

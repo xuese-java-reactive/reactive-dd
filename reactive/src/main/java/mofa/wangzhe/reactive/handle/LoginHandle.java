@@ -5,7 +5,6 @@ import mofa.wangzhe.reactive.model.LoginModel;
 import mofa.wangzhe.reactive.util.jwt.JwtUtil;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -45,10 +44,7 @@ public class LoginHandle {
 //                        return ResultUtil2.err("账号或密码错误");
 //                    }
                     String jwt = jwtUtil.createJwt(String.valueOf(1), f.getAccount());
-                    return ServerResponse
-                            .ok()
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .bodyValue(new ResultUtil2(true, "成功", jwt));
+                    return ResultUtil2.ok(jwt);
                 })
                 .switchIfEmpty(ResultUtil2.err("账号或密码不能为空"));
     }

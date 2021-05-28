@@ -4,13 +4,17 @@ import io.r2dbc.spi.ConnectionFactory;
 import mofa.wangzhe.reactive.model.MenuModel;
 import mofa.wangzhe.reactive.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
+ * 参考https://zhuanlan.zhihu.com/p/366456122
+ *
  * @author LD
  */
 
@@ -30,6 +34,7 @@ public class MenuServiceImpl implements MenuService {
     public Flux<MenuModel> findAll(String pId) {
         R2dbcEntityTemplate template = new R2dbcEntityTemplate(connectionFactory);
         return template.select(MenuModel.class)
+                .matching(Query.empty().sort(Sort.by(Sort.Order.asc("p_id"))))
                 .all();
     }
 }
