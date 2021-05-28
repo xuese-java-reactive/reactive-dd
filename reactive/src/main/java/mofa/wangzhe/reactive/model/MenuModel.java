@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class MenuModel {
 
     private String uuid;
 
+    @Column("p_id")
     private String pId;
 
     private String name;

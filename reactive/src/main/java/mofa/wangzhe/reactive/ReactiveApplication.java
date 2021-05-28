@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author admin
  */
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"mofa.wangzhe"})
 public class ReactiveApplication {
 
     public static void main(String[] args) {
