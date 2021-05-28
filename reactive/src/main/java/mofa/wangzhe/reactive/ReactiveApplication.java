@@ -1,4 +1,4 @@
-package mofa.wangzhe.web;
+package mofa.wangzhe.reactive;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author admin
  */
-@SpringBootApplication(scanBasePackages = {"mofa.wangzhe"})
+
+@SpringBootApplication
 public class ReactiveApplication {
 
     public static void main(String[] args) {

@@ -4,7 +4,6 @@ import io.r2dbc.spi.ConnectionFactory;
 import mofa.wangzhe.reactive.model.MenuModel;
 import mofa.wangzhe.reactive.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,6 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Mono<MenuModel> save(MenuModel model) {
-//        return mapper.save(model);
         return Mono.empty();
     }
 

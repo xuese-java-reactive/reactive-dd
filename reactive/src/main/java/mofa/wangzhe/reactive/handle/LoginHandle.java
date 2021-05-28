@@ -2,8 +2,8 @@ package mofa.wangzhe.reactive.handle;
 
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.model.LoginModel;
-import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import mofa.wangzhe.reactive.util.jwt.JwtUtil;
+import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
