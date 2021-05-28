@@ -14,7 +14,6 @@ $(document).ready(function(){
         beforeSend:function(){
         },
         success:function(req){
-            console.log(req)
             if(req.state){
                 initTree(req.data)
             }
