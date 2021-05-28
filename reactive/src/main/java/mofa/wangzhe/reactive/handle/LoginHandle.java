@@ -43,8 +43,7 @@ public class LoginHandle {
 //                    } else {
 //                        return ResultUtil2.err("账号或密码错误");
 //                    }
-                    String jwt = jwtUtil.createJwt(String.valueOf(1), f.getAccount());
-                    return ResultUtil2.ok(jwt);
+                    return ResultUtil2.ok(jwtUtil.createJwt(String.valueOf(1), f.getAccount()));
                 })
                 .switchIfEmpty(ResultUtil2.err("账号或密码不能为空"));
     }

@@ -1,5 +1,5 @@
 var setting = {
-    view: {
+    view:{
         selectedMulti: false
     },
 };
