@@ -20,5 +20,5 @@ function toHtml(obj){
 //注销
 function logout(){
     localStorage.clear();
-    location.replace(root+"/");
+    location.replace("/");
 }

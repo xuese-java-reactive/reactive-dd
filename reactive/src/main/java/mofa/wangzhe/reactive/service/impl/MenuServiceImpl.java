@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
  * 参考https://zhuanlan.zhihu.com/p/366456122
  *
@@ -27,11 +29,16 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Mono<MenuModel> save(MenuModel model) {
-        return Mono.empty();
+        model.setUuid(UUID.randomUUID().toString());
+        R2dbcEntityTemplate template = new R2dbcEntityTemplate(connectionFactory);
+        return template.insert(MenuModel.class)
+                .into("menu_table")
+                .using(model)
+                .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
 
     @Override
-    public Flux<MenuModel> findAll(String pId) {
+    public Flux<MenuModel> findAll(String pid) {
         R2dbcEntityTemplate template = new R2dbcEntityTemplate(connectionFactory);
         return template.select(MenuModel.class)
                 .matching(Query.empty().sort(Sort.by(Sort.Order.asc("p_id"))))

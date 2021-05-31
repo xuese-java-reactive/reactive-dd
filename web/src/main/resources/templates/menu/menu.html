@@ -17,11 +17,17 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-header">
                             <div class="card-tools">
+                                <button type="button"
+                                        class="btn btn-block btn-primary btn-xs"
+                                        data-toggle="modal"
+                                        data-target="#modal-add"
+                                >新增一级菜单
+                                </button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -29,7 +35,21 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            Footer
+                        </div>
+                        <!-- /.card-footer-->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            当前选择的菜单：<b><span id="menu-name"></span></b>
+                        </div>
+                        <div class="card-body">
+                            123
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
                         </div>
                         <!-- /.card-footer-->
                     </div>
@@ -40,4 +60,57 @@
     </section>
     <!-- /.content -->
 </div>
+
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增</h4>
+                <button type="button" id="modal-add-close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="name-add"><span style="color:red;">*</span>菜单名称</label>
+                            <input type="text" class="form-control" id="name-add"
+                                   placeholder="菜单名称" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ico-add"><span style="color:red;">*</span>菜单图标代码(fa-)</label>
+                            <input type="text" class="form-control" id="ico-add"
+                                   placeholder="菜单图标代码" name="ico" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-add">菜单跳转路径</label>
+                            <input type="text" class="form-control" id="p-add"
+                                   placeholder="菜单跳转路径" name="p">
+                        </div>
+                        <div class="form-group">
+                            <label for="jur-add">菜单权限标识</label>
+                            <input type="text" class="form-control" id="jur-add"
+                                   placeholder="菜单权限标识" name="jur">
+                        </div>
+                        <div class="form-group">
+                            <label for="jur-add">上级</label>
+                            <input type="text" class="form-control" id="pid-add"
+                                   placeholder="上级" name="pid" value="0" readonly="readonly">
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-block btn-primary">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <script src="/js/menu/menu.js"></script>

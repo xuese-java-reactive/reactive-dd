@@ -31,9 +31,9 @@ public class MenuHandle {
 
     public Mono<ServerResponse> save(ServerRequest request) {
         return request.bodyToMono(MenuModel.class)
-                .filter(f -> Objects.nonNull(f.getUuid()) && Objects.nonNull(f.getName()) && Objects.nonNull(f.getPId()))
                 .flatMap(f -> this.service.save(f)
-                        .flatMap(f2 -> ResultUtil2.ok(null)));
+                        .flatMap(f2 -> ResultUtil2.ok(null)))
+                .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
     /**
@@ -53,11 +53,11 @@ public class MenuHandle {
     private static List<MenuModel> getTreeList(List<MenuModel> entityList) {
         List<MenuModel> resultList = new ArrayList<>();
         //获取顶层元素集合
-        String pId;
+        String pid;
         for (MenuModel entity : entityList) {
-            pId = entity.getPId();
-            //顶层元素的pId==null或者为0
-            if (Objects.equals("0", pId)) {
+            pid = entity.getPid();
+            //顶层元素的pid==null或者为0
+            if (Objects.equals("0", pid)) {
                 resultList.add(entity);
             }
         }
@@ -70,11 +70,11 @@ public class MenuHandle {
 
     private static List<MenuModel> getSubList(String id, List<MenuModel> entityList) {
         List<MenuModel> childList = new ArrayList<>();
-        String pId;
+        String pid;
         //子集的直接子对象
         for (MenuModel entity : entityList) {
-            pId = entity.getPId();
-            if (id.equals(pId)) {
+            pid = entity.getPid();
+            if (id.equals(pid)) {
                 childList.add(entity);
             }
         }

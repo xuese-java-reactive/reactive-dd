@@ -27,7 +27,7 @@ public class MenuModel {
     private String uuid;
 
     @Column("p_id")
-    private String pId;
+    private String pid;
 
     private String name;
 
@@ -45,6 +45,10 @@ public class MenuModel {
      * 权限标识
      */
     private String jur;
+
+    private boolean noRemoveBtn = true;
+
+    private boolean noEditBtn = true;
 
     @Transient
     private List<MenuModel> children = new ArrayList<>();
