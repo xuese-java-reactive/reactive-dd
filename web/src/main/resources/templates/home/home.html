@@ -129,30 +129,9 @@
         </a>
 
         <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img th:src="@{/img/ico.jpg}" class="img-circle elevation-2" alt="User Image" src="/img/ico.jpg">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">管理员</a>
-                </div>
-            </div>
+        <div class="sidebar" style="overflow:hidden;">
 
             <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="toHtml('menu/menu')">
-                            <i class="fas fa-circle nav-icon"></i>
-                            <p>菜单管理</p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column"
                     data-widget="treeview"
@@ -160,74 +139,38 @@
                     data-accordion="false"
                     id="menus"
                 >
-
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-circle nav-icon"></i>
-                            <p>Level 1</p>
+                        <a href="#" class="nav-link" onclick="toHtml('menu/menu')">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>菜单管理</p>
                         </a>
                     </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-circle"></i>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Level 1
+                                Starter Pages
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
+                        <ul class="nav nav-treeview" style="display: none;">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="#" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Level 2</p>
+                                    <p> Page</p>
                                 </a>
-                            </li>
-                            <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>
-                                        Level 2
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-dot-circle nav-icon"></i>
-                                            <p>Level 3</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-dot-circle nav-icon"></i>
-                                            <p>Level 3</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-dot-circle nav-icon"></i>
-                                            <p>Level 3</p>
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Level 2</p>
+                                    <p>In Page</p>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-circle nav-icon"></i>
-                            <p>Level 1</p>
-                        </a>
-                    </li>
                 </ul>
             </nav>
-            <!-- /.sidebar-menu -->
+
         </div>
         <!-- /.sidebar -->
     </aside>
@@ -247,5 +190,6 @@
 <script th:src="@{/js/serialize/serialize.js}"></script>
 <script th:src="@{/js/ajax/ajax.js}"></script>
 <script th:src="@{/js/home/home.js}"></script>
+<script th:src="@{/js/home/menu.js}"></script>
 </body>
 </html>

@@ -31,6 +31,21 @@ public class MenuModel {
 
     private String name;
 
+    /**
+     * 跳转路径  例如：menu/menu
+     */
+    private String p;
+
+    /**
+     * 图标
+     */
+    private String ico;
+
+    /**
+     * 权限标识
+     */
+    private String jur;
+
     @Transient
     private List<MenuModel> children = new ArrayList<>();
 }
