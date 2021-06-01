@@ -40,6 +40,12 @@ public class Routers implements WebFluxConfigurer {
                                 RequestPredicates.POST("/menu"),
                                 menuHandle::save
                         ).andRoute(
+                                RequestPredicates.DELETE("/menu/{uuid}"),
+                                menuHandle::remove
+                        ).andRoute(
+                                RequestPredicates.PUT("/menu/{uuid}"),
+                                menuHandle::update
+                        ).andRoute(
                                 RequestPredicates.GET("/menu/{pid}"),
                                 menuHandle::list
                         )

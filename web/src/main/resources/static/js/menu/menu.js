@@ -3,7 +3,12 @@ var setting = {
         selectedMulti: false
     },
     callback:{
-        onClick: getItem
+        onClick: getItem,
+        onRename: renameItem,
+        beforeRemove: removeItem
+    },
+    edit:{
+        enable:true
     }
 };
 
@@ -28,18 +33,17 @@ $(document).ready(function(){
             success:function(req){
                 if(req.state){
                     $('#form-add')[0].reset()
-                    $("#modal-add-close").click();
                     findMenus()
                 }else{
                     alert(req.msg)
                 }
-            },
-            complete:function(){
-            },
-            error:function(e){
-                console.log("error",e.responseText);
             }
         });
+    })
+
+    $('#set-pid').on('click',function(){
+        $('#pid-add').val(0)
+        $('#pid-name-add').val('顶级')
     })
 });
 
@@ -70,5 +74,44 @@ function initTree(data) {
 }
 
 function getItem(event, treeId, treeNode, clickFlag) {
-    $("#menu-name").text(treeNode.name)
+    $('#pid-add').val(treeNode.uuid)
+    $('#pid-name-add').val(treeNode.name)
+    zTreeObj.selectNode(treeNode);
+}
+
+function renameItem(event, treeId, treeNode, clickFlag) {
+    $.ajax({
+        url:"/api/menu/menu/"+treeNode.uuid,
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        data:JSON.stringify({
+            "name":treeNode.name
+        }),
+        type:"PUT",
+        beforeSend:function(){
+        },
+        success:function(req){
+            if(!req.state){
+                alert(req.msg)
+                findMenus()
+            }
+        }
+    });
+}
+
+function removeItem(treeId, treeNode) {
+   $.ajax({
+       url:"/api/menu/menu/"+treeNode.uuid,
+       contentType : "application/json;charset=UTF-8",
+       dataType:"json",
+       type:"DELETE",
+       beforeSend:function(){
+       },
+       success:function(req){
+           if(!req.state){
+               alert(req.msg)
+               findMenus()
+           }
+       }
+   });
 }

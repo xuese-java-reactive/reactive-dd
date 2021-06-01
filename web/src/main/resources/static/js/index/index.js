@@ -17,11 +17,6 @@ $(function(){
                 }else{
                     alert(req.msg)
                 }
-            },
-            complete:function(){
-            },
-            error:function(e){
-                console.log("error",e.responseText);
             }
         });
     })

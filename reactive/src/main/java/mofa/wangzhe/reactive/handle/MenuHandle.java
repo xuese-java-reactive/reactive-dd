@@ -36,6 +36,25 @@ public class MenuHandle {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
+    public Mono<ServerResponse> remove(ServerRequest request) {
+        String uuid = request.pathVariable("uuid");
+        MenuModel model = new MenuModel();
+        model.setUuid(uuid);
+        return this.service.remove(model)
+                .flatMap(f2 -> ResultUtil2.ok(null));
+    }
+
+    public Mono<ServerResponse> update(ServerRequest request) {
+        String uuid = request.pathVariable("uuid");
+        return request.bodyToMono(MenuModel.class)
+                .flatMap(f -> {
+                    f.setUuid(uuid);
+                    return this.service.update(f)
+                            .flatMap(f2 -> ResultUtil2.ok(null));
+                })
+                .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
+    }
+
     /**
      * menu list
      *

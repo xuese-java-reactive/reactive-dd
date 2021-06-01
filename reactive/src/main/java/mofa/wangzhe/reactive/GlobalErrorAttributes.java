@@ -31,11 +31,10 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         Map<String, Object> map = super.getErrorAttributes(request, options);
         Throwable error = getError(request);
         log.info("当前被拦截的请求路径：{},token未验证通过,err:{}", path, error.getMessage());
-        if (error instanceof FileNotFoundException) {
+        if (error instanceof FileNotFoundException
+                || error instanceof ResponseStatusException
+        ) {
             map.put("status", HttpStatus.NOT_FOUND);
-            map.put("message", "资源未找到");
-        } else if (error instanceof ResponseStatusException) {
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             map.put("message", error.getMessage());
         } else if (error instanceof IllegalStateException) {
             map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,7 +48,7 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
             map.put("message", "logout");
         } else {
             map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put("message", "资源错误");
+            map.put("message", error.getMessage());
         }
         return map;
     }

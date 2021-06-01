@@ -11,8 +11,6 @@ function toHtml(obj){
         type:"GET",
         success:function(req){
             $('#content-wrapper').html(req)
-        },
-        complete:function(){
         }
     });
 }

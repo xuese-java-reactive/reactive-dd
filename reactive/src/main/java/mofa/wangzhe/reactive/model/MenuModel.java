@@ -46,10 +46,6 @@ public class MenuModel {
      */
     private String jur;
 
-    private boolean noRemoveBtn = true;
-
-    private boolean noEditBtn = true;
-
     @Transient
     private List<MenuModel> children = new ArrayList<>();
 }

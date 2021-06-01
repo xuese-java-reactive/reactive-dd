@@ -69,10 +69,10 @@ function getLis(data){
         $(data.children).each(function(i2,e2){
             $(h_ul).append(getLis(e2))
         })
-    }
-
-    if(data.p){
-        $(h_a).attr("onclick","toHtml('"+data.p+"')")
+    }else{
+        if(data.p){
+            $(h_a).attr("onclick","toHtml('"+data.p+"')")
+        }
     }
 
     return $(h_li);

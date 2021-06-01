@@ -12,12 +12,16 @@ $(document).ajaxSuccess(function(event,xhr,options){
 });
 
 $(document).ajaxError(function(event,xhr,options,exc){
-    console.log(event)
-    console.log(xhr)
-    console.log(options)
-    console.log(exc)
-    if(xhr.responseText.indexOf("logout") != -1){
-        localStorage.clear();
-        location.replace("/");
+    if(xhr.responseText){
+        var result = xhr.responseText;
+        var json=eval("("+result+")");
+        if(json.message.indexOf("logout") != -1){
+            localStorage.clear();
+            location.replace("/");
+        }else if(json.message.indexOf("NOT_FOUND") != -1){
+            alert("资源不存在")
+        }else{
+            alert(json.message)
+        }
     }
 });
