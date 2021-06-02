@@ -25,3 +25,8 @@ $(document).ajaxError(function(event,xhr,options,exc){
         }
     }
 });
+
+$.fn.dataTable.ext.errMode = function(settings,tn,msg){
+//打印msg，和tn来判断，进了这个方法都是ajax走了error才会到这里来
+    console.log(msg)
+}

@@ -1,6 +1,7 @@
 package mofa.wangzhe.reactive.router;
 
 import lombok.extern.slf4j.Slf4j;
+import mofa.wangzhe.reactive.handle.AccountHandle;
 import mofa.wangzhe.reactive.handle.LoginHandle;
 import mofa.wangzhe.reactive.handle.MenuHandle;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +24,8 @@ public class Routers implements WebFluxConfigurer {
     @Bean
     public RouterFunction<ServerResponse> initRouterFunction(
             LoginHandle loginHandle,
-            MenuHandle menuHandle
+            MenuHandle menuHandle,
+            AccountHandle accountHandle
 
     ) {
         return RouterFunctions.nest(
@@ -48,6 +50,21 @@ public class Routers implements WebFluxConfigurer {
                         ).andRoute(
                                 RequestPredicates.GET("/menu/{pid}"),
                                 menuHandle::list
+                        )
+                ).andNest(
+                        RequestPredicates.path("/account"),
+                        RouterFunctions.route(
+                                RequestPredicates.POST("/account"),
+                                accountHandle::save
+                        ).andRoute(
+                                RequestPredicates.DELETE("/account/{uuid}"),
+                                accountHandle::remove
+                        ).andRoute(
+                                RequestPredicates.PUT("/account/{uuid}"),
+                                accountHandle::update
+                        ).andRoute(
+                                RequestPredicates.GET("/account"),
+                                accountHandle::page
                         )
                 )
         );

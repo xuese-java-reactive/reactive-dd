@@ -5,6 +5,14 @@
     <title>主页面</title>
     <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.1.0/plugins/fontawesome-free/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/webjars/ztree/3.5.0/css/zTreeStyle/zTreeStyle.css}" type="text/css">
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          th:href="@{/webjars/AdminLTE/3.1.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet"
+          th:href="@{/webjars/AdminLTE/3.1.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+    <link rel="stylesheet"
+          th:href="@{/webjars/AdminLTE/3.1.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
+
     <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.1.0/dist/css/adminlte.min.css}">
 </head>
 <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed text-sm"
@@ -184,7 +192,22 @@
 </div>
 
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- DataTables  & Plugins -->
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/jszip/jszip.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/pdfmake/pdfmake.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/pdfmake/vfs_fonts.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{/webjars/AdminLTE/3.1.0/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+
 <script th:src="@{/webjars/AdminLTE/3.1.0/dist/js/adminlte.min.js}"></script>
 <script th:src="@{/webjars/ztree/3.5.0/js/jquery.ztree.all-3.5.min.js}"></script>
 <script th:src="@{/js/serialize/serialize.js}"></script>
