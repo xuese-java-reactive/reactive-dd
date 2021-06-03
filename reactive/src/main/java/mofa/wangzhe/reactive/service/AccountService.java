@@ -39,8 +39,16 @@ public interface AccountService {
      *
      * @param pageSize int
      * @param pageNum  int
+     * @param search   String
      * @return Flux<AccountModel>
      */
-    Flux<AccountModel> page(int pageSize, int pageNum);
+    Flux<AccountModel> page(int pageSize, int pageNum, String search);
+
+    /**
+     * 统计数量
+     *
+     * @return Flux<Long>
+     */
+    Mono<Long> count(String search);
 
 }

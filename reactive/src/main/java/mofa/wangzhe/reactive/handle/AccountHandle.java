@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
  * @author LD
  */
@@ -52,17 +54,21 @@ public class AccountHandle {
     }
 
     /**
-     * menu list
-     *
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
     public Mono<ServerResponse> page(ServerRequest request) {
-        int pageSize = Integer.parseInt(request.queryParam("pageSize").orElse("10"));
-        int pageNum = Integer.parseInt(request.queryParam("pageNum").orElse("0"));
-        return this.service.page(pageSize, pageNum)
-                .collectList()
+        int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
+        int pageNum = Integer.parseInt(request.pathVariable("pageNum"));
+        String search = request.queryParam("search").orElse("");
+        Mono<Long> mono = this.service.count(search);
+        Mono<List<AccountModel>> listMono = this.service.page(pageSize, pageNum, search)
+                .collectList();
+        return Mono.zip(mono, listMono)
                 .flatMap(ResultUtil2::ok);
+//        return this.service.page(pageSize, pageNum, search)
+//                .collectList()
+//                .flatMap(ResultUtil2::ok);
     }
 
 }

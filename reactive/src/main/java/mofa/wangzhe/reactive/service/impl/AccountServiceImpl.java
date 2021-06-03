@@ -4,13 +4,14 @@ import mofa.wangzhe.reactive.model.AccountModel;
 import mofa.wangzhe.reactive.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.CriteriaDefinition;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,14 +49,34 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Flux<AccountModel> page(int pageSize, int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "acc"));
-        Query empty = Query.query(Criteria.empty())
-                .sort(Sort.by(Sort.Direction.ASC, "acc"))
-                .with(pageable);
-        return template.select(AccountModel.class)
-                .matching(empty)
-                .all();
+    public Flux<AccountModel> page(int pageSize, int pageNum, String search) {
+
+//        return template.getDatabaseClient().sql("select uuid,acc as account,pwd as password from login_table limit ?,?")
+//                .bind(0, pageNum)
+//                .bind(1, pageSize)
+//                .fetch()
+//                .all();
+
+        Query query;
+        if (StringUtils.hasText(search)) {
+            query = Query.query(Criteria.where("acc").like("%"+search+"%"));
+        } else {
+            query = Query.query(CriteriaDefinition.empty());
+        }
+        query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "acc")));
+
+        return template.select(query, AccountModel.class);
     }
 
+    @Override
+    public Mono<Long> count(String search) {
+        Query query;
+        if (StringUtils.hasText(search)) {
+            query = Query.query(Criteria.where("acc").like("%"+search+"%"));
+        } else {
+            query = Query.query(CriteriaDefinition.empty());
+        }
+        return template.select(query, AccountModel.class)
+                .count();
+    }
 }
