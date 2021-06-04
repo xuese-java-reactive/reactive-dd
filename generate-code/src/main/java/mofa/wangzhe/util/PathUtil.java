@@ -5,9 +5,16 @@ package mofa.wangzhe.util;
  */
 public class PathUtil {
 
-    public static String getPath() {
+    private static String getPath() {
         String property = System.getProperty("user.dir");
-        property = property + "/reactive/src/main/java/";
-        return property;
+        return property + "/web/src/main/";
+    }
+
+    public static String getPathJava() {
+        return getPath() + "java/";
+    }
+
+    public static String getPathStatic() {
+        return getPath() + "resources/";
     }
 }

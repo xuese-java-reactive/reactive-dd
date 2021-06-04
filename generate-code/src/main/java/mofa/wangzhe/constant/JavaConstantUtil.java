@@ -3,14 +3,13 @@ package mofa.wangzhe.constant;
 /**
  * @author LD
  */
-public class ConstantUtil {
+public class JavaConstantUtil {
 
     public static String AUTHOR = "LD";
     public static String TABLE_NAME = "test_table";
     public static String MODULAR_PREFIX = "Test";
 
     public static String PATH = "";
-    public static boolean JAVA = true;
 
     public static String PACKAGE_PARENT_PATH = "mofa.wangzhe.reactive.";
     public static String PACKAGE_MODEL = "model";

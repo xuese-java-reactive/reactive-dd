@@ -12,14 +12,14 @@ import org.springframework.util.StringUtils;
 import java.io.*;
 import java.util.Objects;
 
-import static mofa.wangzhe.constant.JavaConstantUtil.*;
+import static mofa.wangzhe.constant.StaticConstantUtil.*;
 
 /**
  * @author LD
  */
 
 @Slf4j
-public class JavaCode {
+public class StaticCode {
 
     private static final VelocityContext CTX = new VelocityContext();
     private static final VelocityEngine VE = new VelocityEngine();
@@ -30,68 +30,41 @@ public class JavaCode {
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         VE.init();
 
-        log.info("开始生成java文件");
+        log.info("开始生成静态文件");
         CTX.put("author", AUTHOR);
-        CTX.put("tableName", TABLE_NAME);
-        CTX.put("modeName", MODEL_NAME);
-        CTX.put("handName", HANDLE_NAME);
-        CTX.put("serviceName", SERVICE_NAME);
-        CTX.put("serviceImplName", SERVICE_IMPL_NAME);
+        CTX.put("fileName", FILE_NAME);
+        CTX.put("modularName", MODULAR_NAME);
+        CTX.put("modularNameText", MODULAR_NAME_TEXT);
 
-        CTX.put("modelPackage", PACKAGE_MODEL_PATH);
-        CTX.put("handlePackage", PACKAGE_HANDLE_PATH);
-        CTX.put("servicePackage", PACKAGE_SERVICE_PATH);
-        CTX.put("serviceImplPackage", PACKAGE_SERVICE_IMPL_PATH);
-
-        model();
-        handle();
-        service();
-        serviceImpl();
+        html();
+        js();
     }
 
     /**
-     * model
+     * html
      */
-    private static void model() {
+    private static void html() {
         // 获取模板文件
-        Template t = VE.getTemplate("/java/model.vm");
+        Template t = VE.getTemplate("/static/html.vm");
 //        List<Object> list = new ArrayList<>();
 //        list.add("1");
 //        list.add("2");
 //        ctx.put("list", list);
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile(PACKAGE_MODEL_PATH, MODEL_NAME, sw);
+        createFile("templates/" + MODULAR_NAME, FILE_NAME + ".html", sw);
     }
 
     /**
-     * handle
+     * js
      */
-    private static void handle() {
+    private static void js() {
         // 获取模板文件
-        Template t = VE.getTemplate("/java/handle.vm");
+        Template t = VE.getTemplate("/static/js.vm");
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile(PACKAGE_HANDLE_PATH, HANDLE_NAME, sw);
-    }
-
-    private static void service() {
-        // 获取模板文件
-        Template t = VE.getTemplate("/java/service.vm");
-        // 输出
-        StringWriter sw = new StringWriter();
-        t.merge(CTX, sw);
-        createFile(PACKAGE_SERVICE_PATH, SERVICE_NAME, sw);
-    }
-
-    private static void serviceImpl() {
-        // 获取模板文件
-        Template t = VE.getTemplate("/java/serviceImpl.vm");
-        // 输出
-        StringWriter sw = new StringWriter();
-        t.merge(CTX, sw);
-        createFile(PACKAGE_SERVICE_IMPL_PATH, SERVICE_IMPL_NAME, sw);
+        createFile("static/js/" + MODULAR_NAME, FILE_NAME + ".js", sw);
     }
 
     /**
@@ -103,7 +76,7 @@ public class JavaCode {
     private static void createFile(String p, String fileName, StringWriter sw) {
         p = p.replaceAll("\\.", "/");
 //        业务包根目录
-        String path = StringUtils.hasText(PATH) ? PATH : PathUtil.getPathJava();
+        String path = StringUtils.hasText(PATH) ? PATH : PathUtil.getPathStatic();
         path = path + p + "/";
         File file = new File(path);
         if (!file.exists()) {
@@ -111,7 +84,7 @@ public class JavaCode {
             log.info("文件创建" + (mkdir ? "成功" : "失败"));
         }
 
-        path = path + fileName + ".java";
+        path = path + fileName;
         File file2 = new File(path);
         if (file2.exists()) {
             boolean delete = file2.delete();
@@ -136,7 +109,6 @@ public class JavaCode {
         try {
             bw = new BufferedWriter(new FileWriter(file2, false));
             bw.write(sw.toString());
-            log.info("已生成:" + path);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
