@@ -81,7 +81,7 @@ public class StaticCode {
     private void createFile(String p, String fileName, StringWriter sw) {
         p = p.replaceAll("\\.", "/");
 //        业务包根目录
-        String path = StringUtils.hasText(staticCodeModel.getPath()) ? staticCodeModel.getPath() : PathUtil.getPathJava();
+        String path = StringUtils.hasText(staticCodeModel.getPath()) ? staticCodeModel.getPath() : PathUtil.getPathStatic();
         path = path + p + "/";
         File file = new File(path);
         if (!file.exists()) {
@@ -114,6 +114,7 @@ public class StaticCode {
         try {
             bw = new BufferedWriter(new FileWriter(file2, false));
             bw.write(sw.toString());
+            log.info("已生成:" + path);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

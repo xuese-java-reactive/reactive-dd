@@ -53,6 +53,8 @@ public class MainCode {
         Map<String, List<ColumnModel>> map = dataConfig.dataTables();
         map.forEach((f, v) -> {
             StaticCodeModel staticCodeModel = new StaticCodeModel();
+            staticCodeModel.setModularName(f);
+            staticCodeModel.setFileName(f);
             StaticCode staticCode = new StaticCode(staticCodeModel);
             staticCode.code(v);
         });

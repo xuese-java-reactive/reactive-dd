@@ -10,27 +10,31 @@ $(function(){
         },
         {
             "title": "",
-            "data": "uuid"
+            "data": "id"
         },
         {
             "title": "",
-            "data": "pId"
+            "data": "createdAt"
         },
         {
             "title": "",
-            "data": "name"
+            "data": "updatedAt"
         },
         {
-            "title": "跳转路径 例如：menu/menu",
-            "data": "p"
+            "title": "",
+            "data": "deletedAt"
         },
         {
-            "title": "图标",
-            "data": "ico"
+            "title": "",
+            "data": "acc"
         },
         {
-            "title": "权限标识",
-            "data": "jur"
+            "title": "",
+            "data": "pwd"
+        },
+        {
+            "title": "",
+            "data": "ta"
         },
         {
             "title": "操作",

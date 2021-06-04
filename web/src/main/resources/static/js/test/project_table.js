@@ -14,23 +14,67 @@ $(function(){
         },
         {
             "title": "",
-            "data": "pId"
-        },
-        {
-            "title": "",
             "data": "name"
         },
         {
-            "title": "跳转路径 例如：menu/menu",
-            "data": "p"
+            "title": "",
+            "data": "lxrq"
         },
         {
-            "title": "图标",
-            "data": "ico"
+            "title": "",
+            "data": "xmed"
         },
         {
-            "title": "权限标识",
-            "data": "jur"
+            "title": "",
+            "data": "fbdw"
+        },
+        {
+            "title": "",
+            "data": "djdw"
+        },
+        {
+            "title": "",
+            "data": "dwszd"
+        },
+        {
+            "title": "",
+            "data": "djr"
+        },
+        {
+            "title": "",
+            "data": "lxfs"
+        },
+        {
+            "title": "",
+            "data": "lcqk"
+        },
+        {
+            "title": "",
+            "data": "wsfzr"
+        },
+        {
+            "title": "",
+            "data": "wslxfs"
+        },
+        {
+            "title": "",
+            "data": "jfrq"
+        },
+        {
+            "title": "",
+            "data": "bz"
+        },
+        {
+            "title": "",
+            "data": "jd"
+        },
+        {
+            "title": "",
+            "data": "version"
+        },
+        {
+            "title": "",
+            "data": "userId"
         },
         {
             "title": "操作",

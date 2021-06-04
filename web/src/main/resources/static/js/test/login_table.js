@@ -14,23 +14,11 @@ $(function(){
         },
         {
             "title": "",
-            "data": "pId"
+            "data": "pwd"
         },
         {
             "title": "",
-            "data": "name"
-        },
-        {
-            "title": "跳转路径 例如：menu/menu",
-            "data": "p"
-        },
-        {
-            "title": "图标",
-            "data": "ico"
-        },
-        {
-            "title": "权限标识",
-            "data": "jur"
+            "data": "acc"
         },
         {
             "title": "操作",

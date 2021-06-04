@@ -14,23 +14,27 @@ $(function(){
         },
         {
             "title": "",
-            "data": "pId"
+            "data": "projectId"
         },
         {
             "title": "",
-            "data": "name"
+            "data": "stage"
         },
         {
-            "title": "跳转路径 例如：menu/menu",
-            "data": "p"
+            "title": "",
+            "data": "bz"
         },
         {
-            "title": "图标",
-            "data": "ico"
+            "title": "",
+            "data": "bs"
         },
         {
-            "title": "权限标识",
-            "data": "jur"
+            "title": "",
+            "data": "creationDate"
+        },
+        {
+            "title": "",
+            "data": "nextPlan"
         },
         {
             "title": "操作",

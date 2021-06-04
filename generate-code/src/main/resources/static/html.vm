@@ -41,4 +41,6 @@
     <!-- /.content -->
 </div>
 
-<script src="/js/$modularName/$modularName.js"></script>
+#set($c=".js")
+#set($mn="$modularName$c")
+<script src="/js/$modularName/$mn"></script>
