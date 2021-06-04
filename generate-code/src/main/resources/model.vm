@@ -9,21 +9,16 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * @author LD
+ * @author $author
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table("login_table")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AccountModel {
+@Table("$tableName")
+public class $modularPrefixModel {
 
     private String uuid;
 
-    @Column("acc")
-    private String account;
-
-    @Column("pwd")
-    private String password;
 }

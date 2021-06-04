@@ -1,5 +1,6 @@
 package mofa.wangzhe.reactive.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Table("menu_table")
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MenuModel {
 
     @Id

@@ -1,0 +1,54 @@
+package mofa.wangzhe.reactive.service;
+
+
+import mofa.wangzhe.reactive.model.$modularPrefixModel;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * @author LD
+ */
+public interface $modularPrefixService {
+
+    /**
+     * 保存
+     *
+     * @param model $modularPrefixModel
+     * @return Mono<$modularPrefixModel>
+     */
+    Mono<$modularPrefixModel> save($modularPrefixModel model);
+
+    /**
+     * 删除
+     *
+     * @param model $modularPrefixModel
+     * @return Mono<$modularPrefixModel>
+     */
+    Mono<$modularPrefixModel> remove($modularPrefixModel model);
+
+    /**
+     * 修改
+     *
+     * @param model $modularPrefixModel
+     * @return Mono<$modularPrefixModel>
+     */
+    Mono<$modularPrefixModel> update($modularPrefixModel model);
+
+    /**
+     * list
+     *
+     * @param pageSize int
+     * @param pageNum  int
+     * @param search   String
+     * @return Flux<$modularPrefixModel>
+     */
+    Flux<$modularPrefixModel> page(int pageSize, int pageNum, String search);
+
+    /**
+     * 统计数量
+     *
+     * @return Flux<Long>
+     */
+    Mono<Long> count(String search);
+
+}
