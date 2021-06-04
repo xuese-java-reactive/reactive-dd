@@ -6,6 +6,6 @@ package mofa.wangzhe;
 public class Main {
 
     public static void main(String[] args) {
-        Code.code();
+        JavaCode.code();
     }
 }

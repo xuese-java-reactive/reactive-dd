@@ -16,7 +16,7 @@ import static mofa.wangzhe.constant.ConstantUtil.*;
 /**
  * @author LD
  */
-public class Code {
+public class JavaCode {
 
     private static final VelocityContext CTX = new VelocityContext();
     private static final VelocityEngine VE = new VelocityEngine();
