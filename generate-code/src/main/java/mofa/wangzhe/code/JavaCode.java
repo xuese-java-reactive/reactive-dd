@@ -134,21 +134,23 @@ public class JavaCode {
         path = path + fileName + ".java";
         File file2 = new File(path);
         if (file2.exists()) {
-            boolean delete = file2.delete();
-            if (delete) {
-                boolean newFile = false;
-                try {
-                    newFile = file2.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (!newFile) {
-                    log.info("创建文件失败");
+            if (javaCodeModel.isReplace()) {
+                boolean delete = file2.delete();
+                if (delete) {
+                    boolean newFile = false;
+                    try {
+                        newFile = file2.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (!newFile) {
+                        log.info("创建文件失败");
+                        System.exit(-1);
+                    }
+                } else {
+                    log.info("删除文件失败");
                     System.exit(-1);
                 }
-            } else {
-                log.info("删除文件失败");
-                System.exit(-1);
             }
         }
 

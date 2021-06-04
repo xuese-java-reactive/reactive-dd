@@ -14,6 +14,10 @@ public class JavaCodeModel implements Serializable {
      * 表名中需要剔除的内容
      */
     private String tableNo = "";
+    /**
+     * 是否替换已经存在的文件
+     */
+    private boolean isReplace = false;
 
     private String packageParentPath = "mofa.wangzhe.reactive.";
     private String packageModel = "model";
@@ -28,6 +32,14 @@ public class JavaCodeModel implements Serializable {
     private String handleFileSuffix = "Handle";
     private String serviceFileSuffix = "Service";
     private String serviceImplFileSuffix = "ServiceImpl";
+
+    public boolean isReplace() {
+        return isReplace;
+    }
+
+    public void setReplace(boolean replace) {
+        isReplace = replace;
+    }
 
     public String getAuthor() {
         return author;

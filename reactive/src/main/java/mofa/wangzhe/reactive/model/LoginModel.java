@@ -17,11 +17,10 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Table("login_table")
 public class LoginModel {
 
-    private String uuid;
-    private String pwd;
-    private String acc;
+    private String account;
+
+    private String password;
 
 }

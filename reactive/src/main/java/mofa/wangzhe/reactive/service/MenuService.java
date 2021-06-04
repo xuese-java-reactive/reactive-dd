@@ -1,4 +1,3 @@
-
 package mofa.wangzhe.reactive.service;
 
 
@@ -36,21 +35,10 @@ public interface MenuService {
     Mono<MenuModel> update(MenuModel model);
 
     /**
-     * list
+     * gen ju pid huo qu
      *
-     * @param pageSize int
-     * @param pageNum  int
-     * @param search   String
+     * @param pid String
      * @return Flux<MenuModel>
      */
-    Flux<MenuModel> page(int pageSize, int pageNum, String search);
-
-    /**
-     * 总数
-     *
-     * @param search String
-     * @return Mono<Long>
-     */
-    Mono<Long> count(String search);
-
+    Flux<MenuModel> findAll(String pid);
 }

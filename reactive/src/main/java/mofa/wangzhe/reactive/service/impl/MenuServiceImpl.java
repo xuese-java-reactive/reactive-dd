@@ -1,25 +1,21 @@
-
 package mofa.wangzhe.reactive.service.impl;
 
 import mofa.wangzhe.reactive.model.MenuModel;
 import mofa.wangzhe.reactive.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.CriteriaDefinition;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
 /**
- *
+ * 参考https://zhuanlan.zhihu.com/p/366456122
  *
  * @author LD
  */
@@ -40,7 +36,17 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Mono<MenuModel> remove(MenuModel model) {
-        return template.delete(model);
+        return template.select(MenuModel.class)
+                .matching(Query.query(Criteria.where("p_id").is(model.getUuid())))
+                .count()
+                .flatMap(f -> {
+                    long i = 0;
+                    if (f > i) {
+                        return Mono.error(new Exception("请先删除下级"));
+                    } else {
+                        return template.delete(model);
+                    }
+                });
     }
 
     @Override
@@ -50,28 +56,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Flux<MenuModel> page(int pageSize, int pageNum, String search) {
-
-        Query query;
-        if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("uuid").like("%"+search+"%"));
-        } else {
-            query = Query.query(CriteriaDefinition.empty());
-        }
-        query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "uuid")));
-
-        return template.select(query, MenuModel.class);
-    }
-
-    @Override
-    public Mono<Long> count(String search) {
-        Query query;
-        if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("uuid").like("%"+search+"%"));
-        } else {
-            query = Query.query(CriteriaDefinition.empty());
-        }
-        return template.select(query, MenuModel.class)
-                .count();
+    public Flux<MenuModel> findAll(String pid) {
+        return template.select(MenuModel.class)
+                .matching(Query.empty().sort(Sort.by(Sort.Order.asc("p_id"))))
+                .all();
     }
 }
