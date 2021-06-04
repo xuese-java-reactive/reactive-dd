@@ -7,7 +7,14 @@ $(function(){
             "render":function(data,type,row,meta) {
                 return meta.row + 1;
             }
-        },{
+        },
+        #foreach ($i in $columns)
+        {
+            "title": "$!{i.columnComment}",
+            "data": "$!{i.columnName}"
+        },
+        #end
+        {
             "title": "操作",
             "data": null,
             "render":function(data,type,row,meta) {

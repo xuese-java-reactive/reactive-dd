@@ -1,6 +1,8 @@
 package mofa.wangzhe.code;
 
 import lombok.extern.slf4j.Slf4j;
+import mofa.wangzhe.model.ColumnModel;
+import mofa.wangzhe.model.StaticCodeModel;
 import mofa.wangzhe.util.PathUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -10,9 +12,8 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.util.List;
 import java.util.Objects;
-
-import static mofa.wangzhe.constant.StaticConstantUtil.*;
 
 /**
  * @author LD
@@ -21,50 +22,54 @@ import static mofa.wangzhe.constant.StaticConstantUtil.*;
 @Slf4j
 public class StaticCode {
 
+    private final StaticCodeModel staticCodeModel;
+
+    public StaticCode(StaticCodeModel staticCodeModel) {
+        this.staticCodeModel = staticCodeModel;
+    }
+
     private static final VelocityContext CTX = new VelocityContext();
     private static final VelocityEngine VE = new VelocityEngine();
 
-    public static void code() {
+    public void code(List<ColumnModel> columns) {
 
         VE.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         VE.init();
 
         log.info("开始生成静态文件");
-        CTX.put("author", AUTHOR);
-        CTX.put("fileName", FILE_NAME);
-        CTX.put("modularName", MODULAR_NAME);
-        CTX.put("modularNameText", MODULAR_NAME_TEXT);
+        CTX.put("author", staticCodeModel.getAuthor());
+        CTX.put("fileName", staticCodeModel.getFileName());
+        CTX.put("modularName", staticCodeModel.getModularName());
+        CTX.put("modularNameText", staticCodeModel.getModularNameText());
 
         html();
-        js();
+        js(columns);
     }
 
     /**
      * html
      */
-    private static void html() {
+    private void html() {
         // 获取模板文件
         Template t = VE.getTemplate("/static/html.vm");
-//        List<Object> list = new ArrayList<>();
-//        list.add("1");
-//        list.add("2");
-//        ctx.put("list", list);
+        // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile("templates/" + MODULAR_NAME, FILE_NAME + ".html", sw);
+        createFile("templates/" + staticCodeModel.getModularName(), staticCodeModel.getFileName() + ".html", sw);
     }
 
     /**
      * js
      */
-    private static void js() {
+    private void js(List<ColumnModel> columns) {
         // 获取模板文件
         Template t = VE.getTemplate("/static/js.vm");
+        CTX.put("columns", columns);
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile("static/js/" + MODULAR_NAME, FILE_NAME + ".js", sw);
+        createFile("static/js/" + staticCodeModel.getModularName(), staticCodeModel.getFileName() + ".js", sw);
     }
 
     /**
@@ -73,10 +78,10 @@ public class StaticCode {
      * @param p  String
      * @param sw StringWriter
      */
-    private static void createFile(String p, String fileName, StringWriter sw) {
+    private void createFile(String p, String fileName, StringWriter sw) {
         p = p.replaceAll("\\.", "/");
 //        业务包根目录
-        String path = StringUtils.hasText(PATH) ? PATH : PathUtil.getPathStatic();
+        String path = StringUtils.hasText(staticCodeModel.getPath()) ? staticCodeModel.getPath() : PathUtil.getPathJava();
         path = path + p + "/";
         File file = new File(path);
         if (!file.exists()) {
