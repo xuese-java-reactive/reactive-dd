@@ -7,6 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.relational.core.mapping.Table;
 
+#foreach ($i in $columns)
+    #if ($!{i.dataType} == "Date")
+import java.util.Date;
+    #break
+    #end
+#end
+
+
 /**
  * @author $author
  */

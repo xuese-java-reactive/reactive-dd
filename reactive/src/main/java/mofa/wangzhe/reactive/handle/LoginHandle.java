@@ -1,8 +1,9 @@
+
 package mofa.wangzhe.reactive.handle;
 
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.model.LoginModel;
-import mofa.wangzhe.reactive.util.jwt.JwtUtil;
+import mofa.wangzhe.reactive.service.LoginService;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
+import java.util.List;
 
 /**
  * @author LD
@@ -20,32 +21,52 @@ import java.util.Objects;
 @Component
 public class LoginHandle {
 
-    private final JwtUtil jwtUtil;
+    private final LoginService service;
 
     @Autowired
-    public LoginHandle(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    public LoginHandle(LoginService service) {
+        this.service = service;
+    }
+
+    public Mono<ServerResponse> save(ServerRequest request) {
+        return request.bodyToMono(LoginModel.class)
+                .flatMap(f -> this.service.save(f)
+                        .flatMap(f2 -> ResultUtil2.ok(null)))
+                .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
+    }
+
+    public Mono<ServerResponse> remove(ServerRequest request) {
+        String uuid = request.pathVariable("uuid");
+        LoginModel model = new LoginModel();
+        model.setUuid(uuid);
+        return this.service.remove(model)
+                .flatMap(f2 -> ResultUtil2.ok(null));
+    }
+
+    public Mono<ServerResponse> update(ServerRequest request) {
+        String uuid = request.pathVariable("uuid");
+        return request.bodyToMono(LoginModel.class)
+                .flatMap(f -> {
+                    f.setUuid(uuid);
+                    return this.service.update(f)
+                            .flatMap(f2 -> ResultUtil2.ok(null));
+                })
+                .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
     /**
-     * 登录
-     *
-     * @param request 请求
-     * @return 结果
+     * @param request ServerRequest
+     * @return Mono<ServerResponse>
      */
-    public Mono<ServerResponse> login(ServerRequest request) {
-        Mono<LoginModel> people = request.bodyToMono(LoginModel.class);
-        return people
-                .filter(f -> Objects.nonNull(f.getAccount()) && Objects.nonNull(f.getPassword()))
-                .flatMap(f -> {
-//                    if ("123".equals(f.getAccount()) && "123".equals(f.getPassword())) {
-//                        return ResultUtil2.ok("token");
-//                    } else {
-//                        return ResultUtil2.err("账号或密码错误");
-//                    }
-                    return ResultUtil2.ok(jwtUtil.createJwt(String.valueOf(1), f.getAccount()));
-                })
-                .switchIfEmpty(ResultUtil2.err("账号或密码不能为空"));
+    public Mono<ServerResponse> page(ServerRequest request) {
+        int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
+        int pageNum = Integer.parseInt(request.pathVariable("pageNum"));
+        String search = request.queryParam("search").orElse("");
+        Mono<Long> mono = this.service.count(search);
+        Mono<List<LoginModel>> listMono = this.service.page(pageSize, pageNum, search)
+                .collectList();
+        return Mono.zip(mono, listMono)
+                .flatMap(ResultUtil2::ok);
     }
 
 }

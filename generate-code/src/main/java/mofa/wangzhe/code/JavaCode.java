@@ -33,15 +33,20 @@ public class JavaCode {
 
     public void code(String table, List<ColumnModel> columns) {
 
-
         VE.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         VE.init();
 
 //        java文件首字母大写
-        String t = table.toLowerCase();
+        String s = javaCodeModel.getTableNo();
+        String tt;
+        if (s != null && !"".equals(s)) {
+            tt = table.replaceAll(s, "");
+        } else {
+            tt = table;
+        }
+        String t = tt.toLowerCase();
         t = t.substring(0, 1).toUpperCase().concat(t.substring(1).toLowerCase());
-
         javaCodeModel.setModularPrefix(t);
 
         log.info("开始生成java文件");

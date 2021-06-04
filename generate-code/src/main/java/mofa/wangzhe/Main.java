@@ -27,6 +27,7 @@ public class Main {
         Map<String, List<ColumnModel>> map = dataConfig.dataTables();
         map.forEach((f, v) -> {
             JavaCodeModel javaCodeModel = new JavaCodeModel();
+            javaCodeModel.setTableNo("_table");
             JavaCode javaCode = new JavaCode(javaCodeModel);
             javaCode.code(f, v);
         });

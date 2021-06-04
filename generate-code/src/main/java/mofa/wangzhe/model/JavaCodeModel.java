@@ -10,6 +10,11 @@ public class JavaCodeModel implements Serializable {
     private String author = "LD";
     private String modularPrefix = "Test";
     private String path = "";
+    /**
+     * 表名中需要剔除的内容
+     */
+    private String tableNo = "";
+
     private String packageParentPath = "mofa.wangzhe.reactive.";
     private String packageModel = "model";
     private String packageModelPath = packageParentPath + packageModel;
@@ -152,4 +157,11 @@ public class JavaCodeModel implements Serializable {
         this.serviceImplFileSuffix = serviceImplFileSuffix;
     }
 
+    public String getTableNo() {
+        return tableNo;
+    }
+
+    public void setTableNo(String tableNo) {
+        this.tableNo = tableNo;
+    }
 }

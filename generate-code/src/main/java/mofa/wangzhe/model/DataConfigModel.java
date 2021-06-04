@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 public class DataConfigModel implements Serializable {
 
-    public  String host = "127.0.0.1";
-    public  String user = "root";
-    public  String password = "root";
-    public  int port = 3306;
-    public  String database = "management";
+    public String host = "127.0.0.1";
+    public String user = "root";
+    public String password = "root";
+    public int port = 3306;
+    public String database = "management";
 
     public String getHost() {
         return host;
