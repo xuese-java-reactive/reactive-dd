@@ -1,5 +1,7 @@
 package mofa.wangzhe;
 
+import mofa.wangzhe.code.JavaCode;
+
 /**
  * @author LD
  */

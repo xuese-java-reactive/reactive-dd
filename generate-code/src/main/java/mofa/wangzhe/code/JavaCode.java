@@ -1,4 +1,4 @@
-package mofa.wangzhe;
+package mofa.wangzhe.code;
 
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.util.PathUtil;
