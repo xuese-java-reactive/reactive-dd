@@ -1,4 +1,4 @@
-package $modelPackage;
+package mofa.wangzhe.reactive.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -8,15 +8,15 @@ import lombok.ToString;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * @author $author
+ * @author LD
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Table("$tableName")
-public class $modeName {
+@Table("test_table")
+public class TestModel {
 
     private String uuid;
 

@@ -1,38 +1,40 @@
-package mofa.wangzhe.reactive.service;
+#set($md="$modelPackage.$modeName")
+
+package $servicePackage;
 
 
-import mofa.wangzhe.reactive.model.$modularPrefixModel;
+import $md;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * @author LD
+ * @author $author
  */
-public interface $modularPrefixService {
+public interface $serviceName {
 
     /**
      * 保存
      *
-     * @param model $modularPrefixModel
-     * @return Mono<$modularPrefixModel>
+     * @param model $modeName
+     * @return Mono<$modeName>
      */
-    Mono<$modularPrefixModel> save($modularPrefixModel model);
+    Mono<$modeName> save($modeName model);
 
     /**
      * 删除
      *
-     * @param model $modularPrefixModel
-     * @return Mono<$modularPrefixModel>
+     * @param model $modeName
+     * @return Mono<$modeName>
      */
-    Mono<$modularPrefixModel> remove($modularPrefixModel model);
+    Mono<$modeName> remove($modeName model);
 
     /**
      * 修改
      *
-     * @param model $modularPrefixModel
-     * @return Mono<$modularPrefixModel>
+     * @param model $modeName
+     * @return Mono<$modeName>
      */
-    Mono<$modularPrefixModel> update($modularPrefixModel model);
+    Mono<$modeName> update($modeName model);
 
     /**
      * list
@@ -40,14 +42,15 @@ public interface $modularPrefixService {
      * @param pageSize int
      * @param pageNum  int
      * @param search   String
-     * @return Flux<$modularPrefixModel>
+     * @return Flux<$modeName>
      */
-    Flux<$modularPrefixModel> page(int pageSize, int pageNum, String search);
+    Flux<$modeName> page(int pageSize, int pageNum, String search);
 
     /**
-     * 统计数量
+     * 总数
      *
-     * @return Flux<Long>
+     * @param search String
+     * @return Mono<Long>
      */
     Mono<Long> count(String search);
 

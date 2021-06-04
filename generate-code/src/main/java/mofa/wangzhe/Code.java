@@ -1,15 +1,17 @@
 package mofa.wangzhe;
 
-import mofa.wangzhe.constant.ConstantUtil;
 import mofa.wangzhe.util.PathUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.Objects;
+
+import static mofa.wangzhe.constant.ConstantUtil.*;
 
 /**
  * @author LD
@@ -19,86 +21,75 @@ public class Code {
     private static final VelocityContext CTX = new VelocityContext();
     private static final VelocityEngine VE = new VelocityEngine();
 
-    static {
-        // 设置变量
-        CTX.put(ConstantUtil.AUTHOR_KEY, ConstantUtil.AUTHOR);
-        CTX.put(ConstantUtil.TABLE_NAME_KEY, ConstantUtil.TABLE_NAME);
-        CTX.put(ConstantUtil.MODULAR_PREFIX_KEY, ConstantUtil.MODULAR_PREFIX);
-    }
-
-    public static void main(String[] args) {
-        code();
-    }
-
     public static void code() {
 
         VE.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         VE.init();
 
-        model();
-        handle();
-        service();
-        serviceImpl();
+        if (JAVA) {
+            CTX.put("author", AUTHOR);
+            CTX.put("tableName", TABLE_NAME);
+            CTX.put("modeName", MODEL_NAME);
+            CTX.put("handName", HANDLE_NAME);
+            CTX.put("serviceName", SERVICE_NAME);
+            CTX.put("serviceImplName", SERVICE_IMPL_NAME);
+
+            CTX.put("modelPackage", PACKAGE_MODEL_PATH);
+            CTX.put("handlePackage", PACKAGE_HANDLE_PATH);
+            CTX.put("servicePackage", PACKAGE_SERVICE_PATH);
+            CTX.put("serviceImplPackage", PACKAGE_SERVICE_IMPL_PATH);
+
+            model();
+            handle();
+            service();
+            serviceImpl();
+        }
     }
 
     /**
      * model
      */
     private static void model() {
-
         // 获取模板文件
         Template t = VE.getTemplate("model.vm");
-
 //        List<Object> list = new ArrayList<>();
 //        list.add("1");
 //        list.add("2");
 //        ctx.put("list", list);
-
-        // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-
-        createFile("model", "Model", sw);
+        createFile(PACKAGE_MODEL_PATH, MODEL_NAME, sw);
     }
 
     /**
      * handle
      */
     private static void handle() {
-
         // 获取模板文件
         Template t = VE.getTemplate("handle.vm");
-
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-
-        createFile("handle", "Handle", sw);
+        createFile(PACKAGE_HANDLE_PATH, HANDLE_NAME, sw);
     }
 
     private static void service() {
-
         // 获取模板文件
         Template t = VE.getTemplate("service.vm");
-
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-
-        createFile("service", "Service", sw);
+        createFile(PACKAGE_SERVICE_PATH, SERVICE_NAME, sw);
     }
 
     private static void serviceImpl() {
-
         // 获取模板文件
         Template t = VE.getTemplate("serviceImpl.vm");
-
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-
-        createFile("service/impl", "ServiceImpl", sw);
+        createFile(PACKAGE_SERVICE_IMPL_PATH, SERVICE_IMPL_NAME, sw);
     }
 
     /**
@@ -107,9 +98,10 @@ public class Code {
      * @param p  String
      * @param sw StringWriter
      */
-    private static void createFile(String p, String fileSuffix, StringWriter sw) {
+    private static void createFile(String p, String fileName, StringWriter sw) {
+        p = p.replaceAll("\\.", "/");
 //        业务包根目录
-        String path = PathUtil.getPath();
+        String path = StringUtils.hasText(PATH) ? PATH : PathUtil.getPath();
         path = path + p + "/";
         File file = new File(path);
         if (!file.exists()) {
@@ -117,7 +109,7 @@ public class Code {
             System.out.println("文件创建" + (mkdir ? "成功" : "失败"));
         }
 
-        path = path + ConstantUtil.MODULAR_PREFIX + fileSuffix + ".java";
+        path = path + fileName + ".java";
         File file2 = new File(path);
         if (file2.exists()) {
             boolean delete = file2.delete();
@@ -140,7 +132,7 @@ public class Code {
 
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(file, false));
+            bw = new BufferedWriter(new FileWriter(file2, false));
             bw.write(sw.toString());
         } catch (IOException e) {
             e.printStackTrace();

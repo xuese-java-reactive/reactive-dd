@@ -1,12 +1,8 @@
-#set($c=".class")
-#set($mn="$modeName$c")
-#set($md="$modelPackage.$modeName")
-#set($ss="$servicePackage.$serviceName")
 
-package $serviceImplPackage;
+package mofa.wangzhe.reactive.service.impl;
 
-import $md;
-import $ss;
+import mofa.wangzhe.reactive.model.TestModel;
+import mofa.wangzhe.reactive.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,36 +21,36 @@ import java.util.UUID;
 /**
  *
  *
- * @author $author
+ * @author LD
  */
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class $serviceImplName implements $serviceName {
+public class TestServiceImpl implements TestService {
 
     @Autowired
     private R2dbcEntityTemplate template;
 
     @Override
-    public Mono<$modeName> save($modeName model) {
+    public Mono<TestModel> save(TestModel model) {
         model.setUuid(UUID.randomUUID().toString());
         return template.insert(model)
                 .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
 
     @Override
-    public Mono<$modeName> remove($modeName model) {
+    public Mono<TestModel> remove(TestModel model) {
         return template.delete(model);
     }
 
     @Override
-    public Mono<$modeName> update($modeName model) {
+    public Mono<TestModel> update(TestModel model) {
         return template.update(model)
                 .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
 
     @Override
-    public Flux<$modeName> page(int pageSize, int pageNum, String search) {
+    public Flux<TestModel> page(int pageSize, int pageNum, String search) {
 
         Query query;
         if (StringUtils.hasText(search)) {
@@ -64,7 +60,7 @@ public class $serviceImplName implements $serviceName {
         }
         query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "uuid")));
 
-        return template.select(query, $mn);
+        return template.select(query, TestModel.class);
     }
 
     @Override
@@ -75,7 +71,7 @@ public class $serviceImplName implements $serviceName {
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
-        return template.select(query, $mn)
+        return template.select(query, TestModel.class)
                 .count();
     }
 }
