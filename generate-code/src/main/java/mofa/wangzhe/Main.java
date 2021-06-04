@@ -6,7 +6,7 @@ package mofa.wangzhe;
 public class Main {
 
     public static void main(String[] args) {
-//        JavaCode.code();
-        StaticCode.code();
+        JavaCode.code();
+//        StaticCode.code();
     }
 }

@@ -31,4 +31,12 @@ public class JavaConstantUtil {
     public static final String SERVICE_NAME = MODULAR_PREFIX + SERVICE_FILE_SUFFIX;
     public static final String SERVICE_IMPL_NAME = MODULAR_PREFIX + SERVICE_IMPL_FILE_SUFFIX;
 
+    //    database
+    public static String DRIVER = "mysql";
+    public static String HOST = "127.0.0.1";
+    public static String USER = "root";
+    public static String PASSWORD = "root";
+    public static int PORT = 3306;
+    public static String DATABASE = "management";
+
 }
