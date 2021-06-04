@@ -1,6 +1,8 @@
 package mofa.wangzhe.code;
 
 import lombok.extern.slf4j.Slf4j;
+import mofa.wangzhe.model.ColumnModel;
+import mofa.wangzhe.model.JavaCodeModel;
 import mofa.wangzhe.util.PathUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -10,9 +12,8 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.util.List;
 import java.util.Objects;
-
-import static mofa.wangzhe.constant.JavaConstantUtil.*;
 
 /**
  * @author LD
@@ -21,29 +22,42 @@ import static mofa.wangzhe.constant.JavaConstantUtil.*;
 @Slf4j
 public class JavaCode {
 
+    private final JavaCodeModel javaCodeModel;
+
+    public JavaCode(JavaCodeModel javaCodeModel) {
+        this.javaCodeModel = javaCodeModel;
+    }
+
     private static final VelocityContext CTX = new VelocityContext();
     private static final VelocityEngine VE = new VelocityEngine();
 
-    public static void code() {
+    public void code(String table, List<ColumnModel> columns) {
+
 
         VE.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         VE.init();
 
+//        java文件首字母大写
+        String t = table.toLowerCase();
+        t = t.substring(0, 1).toUpperCase().concat(t.substring(1).toLowerCase());
+
+        javaCodeModel.setModularPrefix(t);
+
         log.info("开始生成java文件");
-        CTX.put("author", AUTHOR);
-        CTX.put("tableName", TABLE_NAME);
-        CTX.put("modeName", MODEL_NAME);
-        CTX.put("handName", HANDLE_NAME);
-        CTX.put("serviceName", SERVICE_NAME);
-        CTX.put("serviceImplName", SERVICE_IMPL_NAME);
+        CTX.put("author", javaCodeModel.getAuthor());
+        CTX.put("tableName", table);
+        CTX.put("modeName", javaCodeModel.getModularPrefix() + javaCodeModel.getModelFileSuffix());
+        CTX.put("handName", javaCodeModel.getModularPrefix() + javaCodeModel.getHandleFileSuffix());
+        CTX.put("serviceName", javaCodeModel.getModularPrefix() + javaCodeModel.getServiceFileSuffix());
+        CTX.put("serviceImplName", javaCodeModel.getModularPrefix() + javaCodeModel.getServiceImplFileSuffix());
 
-        CTX.put("modelPackage", PACKAGE_MODEL_PATH);
-        CTX.put("handlePackage", PACKAGE_HANDLE_PATH);
-        CTX.put("servicePackage", PACKAGE_SERVICE_PATH);
-        CTX.put("serviceImplPackage", PACKAGE_SERVICE_IMPL_PATH);
+        CTX.put("modelPackage", javaCodeModel.getPackageModelPath());
+        CTX.put("handlePackage", javaCodeModel.getPackageHandlePath());
+        CTX.put("servicePackage", javaCodeModel.getPackageServicePath());
+        CTX.put("serviceImplPackage", javaCodeModel.getPackageServiceImplPath());
 
-        model();
+        model(columns);
         handle();
         service();
         serviceImpl();
@@ -52,46 +66,47 @@ public class JavaCode {
     /**
      * model
      */
-    private static void model() {
+    private void model(List<ColumnModel> columns) {
         // 获取模板文件
         Template t = VE.getTemplate("/java/model.vm");
-//        List<Object> list = new ArrayList<>();
-//        list.add("1");
-//        list.add("2");
-//        ctx.put("list", list);
+        CTX.put("columns", columns);
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile(PACKAGE_MODEL_PATH, MODEL_NAME, sw);
+        createFile(javaCodeModel.getPackageModelPath(),
+                javaCodeModel.getModularPrefix() + javaCodeModel.getModelFileSuffix(), sw);
     }
 
     /**
      * handle
      */
-    private static void handle() {
+    private void handle() {
         // 获取模板文件
         Template t = VE.getTemplate("/java/handle.vm");
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile(PACKAGE_HANDLE_PATH, HANDLE_NAME, sw);
+        createFile(javaCodeModel.getPackageHandlePath(),
+                javaCodeModel.getModularPrefix() + javaCodeModel.getHandleFileSuffix(), sw);
     }
 
-    private static void service() {
+    private void service() {
         // 获取模板文件
         Template t = VE.getTemplate("/java/service.vm");
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile(PACKAGE_SERVICE_PATH, SERVICE_NAME, sw);
+        createFile(javaCodeModel.getPackageServicePath(),
+                javaCodeModel.getModularPrefix() + javaCodeModel.getServiceFileSuffix(), sw);
     }
 
-    private static void serviceImpl() {
+    private void serviceImpl() {
         // 获取模板文件
         Template t = VE.getTemplate("/java/serviceImpl.vm");
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile(PACKAGE_SERVICE_IMPL_PATH, SERVICE_IMPL_NAME, sw);
+        createFile(javaCodeModel.getPackageServiceImplPath(),
+                javaCodeModel.getModularPrefix() + javaCodeModel.getServiceImplFileSuffix(), sw);
     }
 
     /**
@@ -100,10 +115,10 @@ public class JavaCode {
      * @param p  String
      * @param sw StringWriter
      */
-    private static void createFile(String p, String fileName, StringWriter sw) {
+    private void createFile(String p, String fileName, StringWriter sw) {
         p = p.replaceAll("\\.", "/");
 //        业务包根目录
-        String path = StringUtils.hasText(PATH) ? PATH : PathUtil.getPathJava();
+        String path = StringUtils.hasText(javaCodeModel.getPath()) ? javaCodeModel.getPath() : PathUtil.getPathJava();
         path = path + p + "/";
         File file = new File(path);
         if (!file.exists()) {

@@ -18,6 +18,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("$tableName")
 public class $modeName {
 
-    private String uuid;
+    #foreach ($i in $columns)
+    private $!{i.dataType} $!{i.columnName};
+    #end
 
 }
