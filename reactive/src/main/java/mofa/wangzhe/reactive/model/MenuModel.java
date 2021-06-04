@@ -21,7 +21,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class MenuModel {
 
     private String uuid;
-    private String p_id;
+    private String pId;
     private String name;
     private String p;
     private String ico;

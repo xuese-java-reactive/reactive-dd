@@ -3,7 +3,6 @@ package mofa.wangzhe.database;
 import com.sun.istack.internal.NotNull;
 import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.DataConfigModel;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -104,13 +103,14 @@ public class DataConfig {
             while (rs.next()) {
                 String columnName = rs.getString("COLUMN_NAME");
                 String[] s = columnName.split("_");
+                StringBuilder str = new StringBuilder();
                 if (s.length > 1) {
                     for (int i = 0; i < s.length; i++) {
                         if (i != 0) {
-                            s[i] = s[i].substring(0, 1).toUpperCase().concat(s[i].substring(1).toLowerCase());
+                            str.append(s[i].substring(0, 1).toUpperCase().concat(s[i].substring(1).toLowerCase()));
                         }
                     }
-                    columnName = ArrayUtils.toString(s, "");
+                    columnName = s[0] + str;
                 } else {
                     columnName = s[0];
                 }
