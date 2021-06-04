@@ -151,6 +151,8 @@ public class JavaCode {
                     log.info("删除文件失败");
                     System.exit(-1);
                 }
+            } else {
+                return;
             }
         }
 
