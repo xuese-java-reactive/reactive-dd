@@ -1,9 +1,8 @@
-
 package mofa.wangzhe.reactive.handle;
 
 import lombok.extern.slf4j.Slf4j;
-import mofa.wangzhe.reactive.model.LoginModel;
-import mofa.wangzhe.reactive.service.LoginService;
+import mofa.wangzhe.reactive.model.AccountModel;
+import mofa.wangzhe.reactive.service.AccountService;
 import mofa.wangzhe.reactive.util.jwt.JwtUtil;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +21,11 @@ import java.util.Objects;
 @Component
 public class LoginHandle {
 
-    private final LoginService service;
+    private final AccountService service;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public LoginHandle(LoginService service, JwtUtil jwtUtil) {
+    public LoginHandle(AccountService service, JwtUtil jwtUtil) {
         this.service = service;
         this.jwtUtil = jwtUtil;
     }
@@ -38,7 +37,7 @@ public class LoginHandle {
      * @return 结果
      */
     public Mono<ServerResponse> login(ServerRequest request) {
-        Mono<LoginModel> people = request.bodyToMono(LoginModel.class);
+        Mono<AccountModel> people = request.bodyToMono(AccountModel.class);
         return people
                 .filter(f -> Objects.nonNull(f.getAccount()) && Objects.nonNull(f.getPassword()))
                 .flatMap(f -> {

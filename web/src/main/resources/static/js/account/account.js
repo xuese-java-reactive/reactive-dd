@@ -1,3 +1,5 @@
+let table = null;
+
 $(function(){
 
     let columns = [
@@ -16,19 +18,33 @@ $(function(){
             "title": "操作",
             "data": null,
             "render":function(data,type,row,meta) {
-                let rest = '<button type="button" class="btn btn-danger btn-xs">重置密码</button>';
+                let rest = '<button type="button" class="btn btn-danger btn-xs" onclick="restPwd(\''+data.uuid+'\')">重置密码</button>';
                 let update = '<button type="button" class="btn btn-warning btn-xs">修改状态</button>';
                 return rest+"&nbsp;&nbsp;&nbsp;"+update;
             }
         }
     ]
 
-    let table = tables('table','account','account',columns);
+    table = tables('table','account','account',columns);
 //  配置每页显示条数
-    table.page.len(5).draw();
-
-    $("#table_search_btn").on("click",function(ev){
-        table.ajax.reload();
-    })
+//    table.page.len(5).draw();
 
 })
+
+function restPwd(data){
+    $.ajax({
+        url:"/api/account/account/rest/"+data,
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        type:"PUT",
+        beforeSend:function(){
+        },
+        success:function(req){
+            if(req.state){
+                table.ajax.reload();
+            }else{
+                alert(req.msg)
+            }
+        }
+    });
+}

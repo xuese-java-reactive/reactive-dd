@@ -3,6 +3,7 @@ package mofa.wangzhe.reactive.handle;
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.model.AccountModel;
 import mofa.wangzhe.reactive.service.AccountService;
+import mofa.wangzhe.reactive.util.md5.Md5Util;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,9 +37,7 @@ public class AccountHandle {
 
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
-        AccountModel model = new AccountModel();
-        model.setUuid(uuid);
-        return this.service.remove(model)
+        return this.service.remove(uuid)
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
@@ -51,6 +50,16 @@ public class AccountHandle {
                             .flatMap(f2 -> ResultUtil2.ok(null));
                 })
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
+    }
+
+    public Mono<ServerResponse> rest(ServerRequest request) {
+        String uuid = request.pathVariable("uuid");
+        AccountModel model = new AccountModel();
+        model.setUuid(uuid);
+        String md5Str = Md5Util.getMd5Str("123456");
+        model.setPassword(md5Str);
+        return this.service.update(model)
+                .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
     /**
@@ -66,9 +75,6 @@ public class AccountHandle {
                 .collectList();
         return Mono.zip(mono, listMono)
                 .flatMap(ResultUtil2::ok);
-//        return this.service.page(pageSize, pageNum, search)
-//                .collectList()
-//                .flatMap(ResultUtil2::ok);
     }
 
 }

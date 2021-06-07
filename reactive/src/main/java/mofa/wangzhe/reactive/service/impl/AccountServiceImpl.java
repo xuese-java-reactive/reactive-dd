@@ -38,32 +38,33 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Mono<AccountModel> remove(AccountModel model) {
-        return template.delete(model);
+    public Mono<AccountModel> remove(String uuid) {
+        return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), AccountModel.class)
+                .flatMap(f -> template.delete(f))
+                .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
 
     @Override
     public Mono<AccountModel> update(AccountModel model) {
-        return template.update(model)
+        return template.selectOne(Query.query(Criteria.where("uuid").is(model.getUuid())), AccountModel.class)
+                .flatMap(f -> {
+                    if (StringUtils.hasText(model.getPassword())) {
+                        f.setPassword(model.getPassword());
+                    }
+                    return template.update(f);
+                })
                 .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
 
     @Override
     public Flux<AccountModel> page(int pageSize, int pageNum, String search) {
-
-//        return template.getDatabaseClient().sql("select uuid,acc as account,pwd as password from login_table limit ?,?")
-//                .bind(0, pageNum)
-//                .bind(1, pageSize)
-//                .fetch()
-//                .all();
-
         Query query;
         if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("acc").like("%"+search+"%"));
+            query = Query.query(Criteria.where("account").like("%" + search + "%"));
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
-        query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "acc")));
+        query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "account")));
 
         return template.select(query, AccountModel.class);
     }
@@ -72,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
     public Mono<Long> count(String search) {
         Query query;
         if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("acc").like("%"+search+"%"));
+            query = Query.query(Criteria.where("account").like("%" + search + "%"));
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }

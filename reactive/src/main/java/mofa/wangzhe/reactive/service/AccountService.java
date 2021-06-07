@@ -21,10 +21,10 @@ public interface AccountService {
     /**
      * 删除
      *
-     * @param model AccountModel
+     * @param uuid String
      * @return Mono<AccountModel>
      */
-    Mono<AccountModel> remove(AccountModel model);
+    Mono<AccountModel> remove(String uuid);
 
     /**
      * 修改

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -14,10 +15,11 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table("login_table")
+@Table("account_table")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AccountModel {
 
+    @Id
     private String uuid;
 
     private String account;

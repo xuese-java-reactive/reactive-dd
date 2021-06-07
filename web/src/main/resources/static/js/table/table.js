@@ -49,6 +49,8 @@ let tableSetting = function(path1,path2,columns){
         "searchDelay": 400,
     //        启用服务端分页
         "serverSide": true,
+//        每页条数
+        "pageLength": 5,
         "ajax": function (data, callback, settings) {
             //ajax请求数据
             $.ajax({
@@ -75,6 +77,13 @@ let tableSetting = function(path1,path2,columns){
                 }
             });
         },
+//        设置空字段默认值
+        "columnDefs": [
+            {
+                "defaultContent": "",
+                "targets": "_all"
+            }
+        ],
         "columns": columns
     }
 }

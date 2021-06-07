@@ -37,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Mono<MenuModel> remove(MenuModel model) {
         return template.select(MenuModel.class)
-                .matching(Query.query(Criteria.where("p_id").is(model.getUuid())))
+                .matching(Query.query(Criteria.where("pid").is(model.getUuid())))
                 .count()
                 .flatMap(f -> {
                     long i = 0;
@@ -58,7 +58,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Flux<MenuModel> findAll(String pid) {
         return template.select(MenuModel.class)
-                .matching(Query.empty().sort(Sort.by(Sort.Order.asc("p_id"))))
+                .matching(Query.empty().sort(Sort.by(Sort.Order.asc("pid"))))
                 .all();
     }
 }
