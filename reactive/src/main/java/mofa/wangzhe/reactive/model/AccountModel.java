@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -21,9 +20,7 @@ public class AccountModel {
 
     private String uuid;
 
-    @Column("acc")
     private String account;
 
-    @Column("pwd")
     private String password;
 }

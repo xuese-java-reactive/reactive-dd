@@ -26,7 +26,7 @@ public class DataConfig {
                 .option(ConnectionFactoryOptions.USER, "root")
                 .option(ConnectionFactoryOptions.PASSWORD, "root")
                 .option(ConnectionFactoryOptions.PORT, 3306)
-                .option(ConnectionFactoryOptions.DATABASE, "management")
+                .option(ConnectionFactoryOptions.DATABASE, "reactive-dd")
                 .option(ConnectionFactoryOptions.CONNECT_TIMEOUT, Duration.ofSeconds(3))
 //                .option(ConnectionFactoryOptions.SSL, true)
 //                .option(Option.valueOf("sslMode"), "verify_identity")

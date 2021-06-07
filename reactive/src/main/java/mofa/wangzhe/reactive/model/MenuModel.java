@@ -28,7 +28,6 @@ public class MenuModel {
     @Id
     private String uuid;
 
-    @Column("p_id")
     private String pid;
 
     private String name;

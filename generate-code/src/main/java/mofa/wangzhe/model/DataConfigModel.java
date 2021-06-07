@@ -12,7 +12,7 @@ public class DataConfigModel implements Serializable {
     public String user = "root";
     public String password = "root";
     public int port = 3306;
-    public String database = "management";
+    public String database = "reactive-dd";
 
     public String getHost() {
         return host;
