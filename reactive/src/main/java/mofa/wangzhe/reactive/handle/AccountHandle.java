@@ -77,4 +77,16 @@ public class AccountHandle {
                 .flatMap(ResultUtil2::ok);
     }
 
+    /**
+     * 根据id获取
+     *
+     * @param request ServerRequest
+     * @return Mono<ServerResponse>
+     */
+    public Mono<ServerResponse> one(ServerRequest request) {
+        String uuid = request.pathVariable("uuid");
+        return this.service.one(uuid)
+                .flatMap(ResultUtil2::ok);
+    }
+
 }

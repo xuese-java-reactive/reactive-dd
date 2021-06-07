@@ -47,6 +47,7 @@ let tableSetting = function(path1,path2,columns){
         "searching": true,
 //        search pin lv
         "searchDelay": 400,
+        "dom": '<"toolbar">frtip',
     //        启用服务端分页
         "serverSide": true,
 //        每页条数
@@ -88,10 +89,10 @@ let tableSetting = function(path1,path2,columns){
     }
 }
 
-var tables = function(tableId,path1,path2,columns){
+var table = function(tableId,path1,path2,columns){
     return $('#'+tableId).dataTable(tableSetting(path1,path2,columns)).api();
 }
 
-var tablesReload = function(){
-    tables.table.ajax.reload();
+var tablesReload = function(t){
+    t.ajax.reload();
 }

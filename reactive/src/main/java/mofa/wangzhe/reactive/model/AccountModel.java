@@ -26,5 +26,5 @@ public class AccountModel {
 
     private String password;
 
-    private String state;
+    private int state;
 }

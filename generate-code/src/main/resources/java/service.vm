@@ -54,4 +54,11 @@ public interface $serviceName {
      */
     Mono<Long> count(String search);
 
+    /**
+     * 根据id获取
+     * @param uuid String
+     * @return Mono<$modeName>
+     */
+    Mono<$modeName> one(String uuid);
+
 }

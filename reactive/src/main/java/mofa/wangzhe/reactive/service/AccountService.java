@@ -47,8 +47,17 @@ public interface AccountService {
     /**
      * 统计数量
      *
+     * @param search String
      * @return Flux<Long>
      */
     Mono<Long> count(String search);
+
+    /**
+     * 根据id获取
+     *
+     * @param uuid String
+     * @return Mono<AccountModel>
+     */
+    Mono<AccountModel> one(String uuid);
 
 }

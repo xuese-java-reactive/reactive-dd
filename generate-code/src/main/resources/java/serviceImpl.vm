@@ -86,4 +86,10 @@ public class $serviceImplName implements $serviceName {
         return template.select(query, $mn)
                 .count();
     }
+
+    @Override
+    public Mono<$modeName> one(String uuid) {
+        return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), $mn)
+                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+    }
 }

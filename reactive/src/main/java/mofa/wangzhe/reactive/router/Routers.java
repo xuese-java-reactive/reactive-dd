@@ -68,6 +68,9 @@ public class Routers implements WebFluxConfigurer {
                         ).andRoute(
                                 RequestPredicates.GET("/account/{pageSize}/{pageNum}"),
                                 accountHandle::page
+                        ).andRoute(
+                                RequestPredicates.GET("/account/{uuid}"),
+                                accountHandle::one
                         )
                 )
         );

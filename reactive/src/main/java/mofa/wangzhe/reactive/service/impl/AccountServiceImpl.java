@@ -2,6 +2,7 @@ package mofa.wangzhe.reactive.service.impl;
 
 import mofa.wangzhe.reactive.model.AccountModel;
 import mofa.wangzhe.reactive.service.AccountService;
+import mofa.wangzhe.reactive.util.md5.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -33,8 +34,15 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Mono<AccountModel> save(AccountModel model) {
         model.setUuid(UUID.randomUUID().toString());
-        return template.insert(model)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+        model.setState(1);
+        String md5Str = Md5Util.getMd5Str(model.getPassword());
+        model.setPassword(md5Str);
+        return template.selectOne(Query.query(Criteria.where("account").is(model.getAccount())), AccountModel.class)
+                .flatMap(f -> Mono.error(new Exception("账号重复")))
+                .switchIfEmpty(template.insert(model)
+                        .switchIfEmpty(Mono.error(new Exception("参数为空"))))
+                .cast(AccountModel.class);
+
     }
 
     @Override
@@ -50,6 +58,9 @@ public class AccountServiceImpl implements AccountService {
                 .flatMap(f -> {
                     if (StringUtils.hasText(model.getPassword())) {
                         f.setPassword(model.getPassword());
+                    }
+                    if (model.getState() != 0) {
+                        f.setState(model.getState());
                     }
                     return template.update(f);
                 })
@@ -83,5 +94,11 @@ public class AccountServiceImpl implements AccountService {
         }
         return template.select(query, AccountModel.class)
                 .count();
+    }
+
+    @Override
+    public Mono<AccountModel> one(String uuid) {
+        return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), AccountModel.class)
+                .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
 }

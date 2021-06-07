@@ -23,10 +23,10 @@ tables('table','$modularName','$modularName',[
     }
 ]);
 
-function update(data){
-    let formData = $('#add-form').serializeObject();
+function update(){
+    let formData = $('#update-form').serializeObject();
     $.ajax({
-        url:"/api/$modularName/$modularName/"+data,
+        url:"/api/$modularName/$modularName/"+$("#id-update").val(),
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
         data:JSON.stringify(formData),
