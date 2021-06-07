@@ -1,3 +1,5 @@
+let table = null;
+
 $(function(){
 
     let columns = [
@@ -25,9 +27,9 @@ $(function(){
         }
     ]
 
-    let table = tables('table','$modularName','$modularName',columns);
+    table = tables('table','$modularName','$modularName',columns);
 //  配置每页显示条数
-    table.page.len(5).draw();
+    //table.page.len(5).draw();
 
     $("#table_search_btn").on("click",function(ev){
         table.ajax.reload();
