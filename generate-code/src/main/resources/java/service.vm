@@ -23,10 +23,10 @@ public interface $serviceName {
     /**
      * 删除
      *
-     * @param model $modeName
+     * @param uuid String
      * @return Mono<$modeName>
      */
-    Mono<$modeName> remove($modeName model);
+    Mono<$modeName> remove(String uuid);
 
     /**
      * 修改
