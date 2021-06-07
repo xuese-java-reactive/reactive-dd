@@ -25,4 +25,6 @@ public class AccountModel {
     private String account;
 
     private String password;
+
+    private String state;
 }

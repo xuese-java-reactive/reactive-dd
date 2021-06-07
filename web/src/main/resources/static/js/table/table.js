@@ -91,3 +91,7 @@ let tableSetting = function(path1,path2,columns){
 var tables = function(tableId,path1,path2,columns){
     return $('#'+tableId).dataTable(tableSetting(path1,path2,columns)).api();
 }
+
+var tablesReload = function(){
+    tables.table.ajax.reload();
+}

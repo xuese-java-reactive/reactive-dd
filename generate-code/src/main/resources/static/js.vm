@@ -1,38 +1,66 @@
-let table = null;
+tables('table','$modularName','$modularName',[
+    {
+        "title": "序号",
+        "data": null,
+        "render":function(data,type,row,meta) {
+            return meta.row + 1;
+        }
+    },
+    #foreach ($i in $columns)
+    {
+        "title": "$!{i.columnComment}",
+        "data": "$!{i.columnName}"
+    },
+    #end
+    {
+        "title": "操作",
+        "data": null,
+        "render":function(data,type,row,meta) {
+            let rest = '<button type="button" class="btn btn-danger btn-xs">删除</button>';
+            let update = '<button type="button" class="btn btn-warning btn-xs">修改</button>';
+            return rest+"&nbsp;&nbsp;&nbsp;"+update;
+        }
+    }
+]);
 
-$(function(){
-
-    let columns = [
-        {
-            "title": "序号",
-            "data": null,
-            "render":function(data,type,row,meta) {
-                return meta.row + 1;
-            }
+function update(data){
+    let formData = $('#add-form').serializeObject();
+    $.ajax({
+        url:"/api/$modularName/$modularName/"+data,
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        data:JSON.stringify(formData),
+        type:"PUT",
+        beforeSend:function(){
         },
-        #foreach ($i in $columns)
-        {
-            "title": "$!{i.columnComment}",
-            "data": "$!{i.columnName}"
-        },
-        #end
-        {
-            "title": "操作",
-            "data": null,
-            "render":function(data,type,row,meta) {
-                let rest = '<button type="button" class="btn btn-danger btn-xs">删除</button>';
-                let update = '<button type="button" class="btn btn-warning btn-xs">修改</button>';
-                return rest+"&nbsp;&nbsp;&nbsp;"+update;
+        success:function(req){
+            if(req.state){
+                success_swal(null)
+                tablesReload
+            }else{
+                error_swal(req.msg)
             }
         }
-    ]
+    });
+}
 
-    table = tables('table','$modularName','$modularName',columns);
-//  配置每页显示条数
-    //table.page.len(5).draw();
-
-    $("#table_search_btn").on("click",function(ev){
-        table.ajax.reload();
+function remove(data){
+    confirmations("确定删除吗?",function(){
+        $.ajax({
+            url:"/api/account/account/"+data,
+            contentType : "application/json;charset=UTF-8",
+            dataType:"json",
+            type:"DELETE",
+            beforeSend:function(){
+            },
+            success:function(req){
+                if(req.state){
+                    success_swal(null)
+                    tablesReload
+                }else{
+                    error_swal(req.msg)
+                }
+            }
+        });
     })
-
-})
+}

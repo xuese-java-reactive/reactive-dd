@@ -66,7 +66,11 @@ public class AccountServiceImpl implements AccountService {
         }
         query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "account")));
 
-        return template.select(query, AccountModel.class);
+        return template.select(query, AccountModel.class)
+                .map(m -> {
+                    m.setPassword(null);
+                    return m;
+                });
     }
 
     @Override
