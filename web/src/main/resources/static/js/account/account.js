@@ -41,6 +41,7 @@ function restPwd(data){
         },
         success:function(req){
             if(req.state){
+                success_swal(null)
                 table.ajax.reload();
             }else{
                 alert(req.msg)
