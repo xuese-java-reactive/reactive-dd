@@ -1,4 +1,4 @@
-tables('table','$modularName','$modularName',[
+var tb = tables('table','$modularName','$modularName',[
     {
         "title": "序号",
         "data": null,
@@ -22,21 +22,75 @@ tables('table','$modularName','$modularName',[
         }
     }
 ]);
+$("div.toolbar").prepend('<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-model" id="add-model-open-button">新增</button>');
 
-function update(){
-    let formData = $('#update-form').serializeObject();
+
+$(function(){
+    $("#add-form").on("submit", function (ev) {
+        ev.preventDefault();
+        let formData = $('#add-form').serializeObject();
+        $.ajax({
+            url:"/api/$modularName/$modularName",
+            contentType : "application/json;charset=UTF-8",
+            dataType:"json",
+            data:JSON.stringify(formData),
+            type:"POST",
+            success:function(req){
+                if(req.state){
+                    success_swal(null)
+                    $('#add-form')[0].reset()
+                    $("#add-model-open-button").click();
+                    tablesReload(tb)
+                }else{
+                    error_swal(req.msg)
+                }
+            }
+        });
+    })
+
+    $("#edit-form").on("submit", function (ev) {
+        ev.preventDefault();
+        let formData = $('#edit-form').serializeObject();
+        $.ajax({
+            url:"/api/$modularName/$modularName/"+$("#id-edit").val(),
+            contentType : "application/json;charset=UTF-8",
+            dataType:"json",
+            data:JSON.stringify(formData),
+            type:"PUT",
+            beforeSend:function(){
+            },
+            success:function(req){
+                if(req.state){
+                    success_swal(null)
+                    $('#edit-form')[0].reset()
+                    $("#edit-model-open-button").click();
+                    tablesReload(tb)
+                }else{
+                    error_swal(req.msg)
+                }
+            },
+            complete:function(){
+            },
+            error:function(e){
+                console.log("error",e.responseText);
+            }
+        });
+    })
+})
+
+function toUpdate(data){
     $.ajax({
-        url:"/api/$modularName/$modularName/"+$("#id-update").val(),
+        url:"/api/$modularName/$modularName/"+data,
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
-        data:JSON.stringify(formData),
-        type:"PUT",
+        type:"GET",
         beforeSend:function(){
         },
         success:function(req){
             if(req.state){
-                success_swal(null)
-                tablesReload
+                let data = req.data
+                $("#edit-model-open-button").click();
+                $("#id-edit").val(data.uuid)
             }else{
                 error_swal(req.msg)
             }
@@ -47,7 +101,7 @@ function update(){
 function remove(data){
     confirmations("确定删除吗?",function(){
         $.ajax({
-            url:"/api/account/account/"+data,
+            url:"/api/$modularName/$modularName/"+data,
             contentType : "application/json;charset=UTF-8",
             dataType:"json",
             type:"DELETE",
