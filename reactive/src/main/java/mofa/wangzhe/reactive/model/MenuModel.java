@@ -46,6 +46,11 @@ public class MenuModel {
      */
     private String jur;
 
+    /**
+     * 排序
+     */
+    private int orders;
+
     @Transient
     private List<MenuModel> children = new ArrayList<>();
 }

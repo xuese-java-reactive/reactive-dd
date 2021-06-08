@@ -58,7 +58,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Flux<MenuModel> findAll(String pid) {
         return template.select(MenuModel.class)
-                .matching(Query.empty().sort(Sort.by(Sort.Order.asc("pid"))))
+                .matching(Query.empty().sort(Sort.by(Sort.Order.asc("orders"))))
                 .all();
     }
 }
