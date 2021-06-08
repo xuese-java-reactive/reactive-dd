@@ -1,5 +1,11 @@
 package $modelPackage;
 
+#foreach ($i in $columns)
+    #if ($!{i.dataType} == "Date")
+import com.fasterxml.jackson.annotation.JsonFormat;
+    #break
+    #end
+#end
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +36,9 @@ public class $modeName {
     #foreach ($i in $columns)
     #if ($!{i.columnName} == "uuid")
     @Id
+    #end
+    #if ($!{i.dataType} == "Date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     #end
     private $!{i.dataType} $!{i.columnName};
 

@@ -1,10 +1,7 @@
 package mofa.wangzhe.reactive.router;
 
 import lombok.extern.slf4j.Slf4j;
-import mofa.wangzhe.reactive.handle.AccountHandle;
-import mofa.wangzhe.reactive.handle.LoginHandle;
-import mofa.wangzhe.reactive.handle.MenuHandle;
-import mofa.wangzhe.reactive.handle.OrgHandle;
+import mofa.wangzhe.reactive.handle.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -27,8 +24,8 @@ public class Routers implements WebFluxConfigurer {
             LoginHandle loginHandle,
             MenuHandle menuHandle,
             AccountHandle accountHandle,
-            OrgHandle orgHandle
-
+            OrgHandle orgHandle,
+            TttHandle tttHandle
     ) {
         return RouterFunctions.nest(
                 RequestPredicates.path("/api").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
@@ -88,6 +85,24 @@ public class Routers implements WebFluxConfigurer {
                         ).andRoute(
                                 RequestPredicates.GET("/org/{pid}"),
                                 orgHandle::list
+                        )
+                ).andNest(
+                        RequestPredicates.path("/ttt"),
+                        RouterFunctions.route(
+                                RequestPredicates.POST("/ttt"),
+                                tttHandle::save
+                        ).andRoute(
+                                RequestPredicates.DELETE("/ttt/{uuid}"),
+                                tttHandle::remove
+                        ).andRoute(
+                                RequestPredicates.PUT("/ttt/{uuid}"),
+                                tttHandle::update
+                        ).andRoute(
+                                RequestPredicates.GET("/ttt/{pageSize}/{pageNum}"),
+                                tttHandle::page
+                        ).andRoute(
+                                RequestPredicates.GET("/ttt/{uuid}"),
+                                tttHandle::one
                         )
                 )
         );

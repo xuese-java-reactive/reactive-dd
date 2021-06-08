@@ -48,10 +48,17 @@
             </div>
             <div class="modal-body">
                 <form action="#" id="add-form">
+                    #foreach ($i in $columns)
+                    #if ($!{i.columnName} != "uuid")
+                    #set($add="-add")
+                    #set($cc=$!{i.columnComment})
+                    #set($mn="$cc$add")
                     <div class="form-group">
-                        <label>账号</label>
-                        <input type="text" class="form-control" id="acc-add" placeholder="账号" name="account" required>
+                        <label>$!{i.columnComment}</label>
+                        <input type="text" class="form-control" id="$mn" placeholder="$!{i.columnComment}" name="$!{i.columnName}">
                     </div>
+                    #end
+                    #end
                     <div style="display:none;">
                         <button type="submit" id="add-from-submit"></button>
                     </div>
@@ -83,10 +90,17 @@
             <div class="modal-body">
                 <form action="#" id="edit-form">
                     <input name="uuid" type="hidden" id="id-edit"/>
+                    #foreach ($i in $columns)
+                    #if ($!{i.columnName} != "uuid")
+                    #set($edit="-edit")
+                    #set($cc=$!{i.columnComment})
+                    #set($mn="$cc$edit")
                     <div class="form-group">
-                        <label>账号</label>
-                        <input type="text" class="form-control" id="account-edit" required>
+                        <label>$!{i.columnComment}</label>
+                        <input type="text" class="form-control" id="$mn" placeholder="$!{i.columnComment}" name="$!{i.columnName}">
                     </div>
+                    #end
+                    #end
                     <div style="display:none;">
                         <button type="submit" id="edit-from-submit"></button>
                     </div>

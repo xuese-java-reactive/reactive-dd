@@ -43,8 +43,10 @@ public class StaticCode {
         CTX.put("modularName", staticCodeModel.getModularName());
         CTX.put("modularNameText", staticCodeModel.getModularNameText());
 
+        CTX.put("columns", columns);
+
         html();
-        js(columns);
+        js();
     }
 
     /**
@@ -62,10 +64,9 @@ public class StaticCode {
     /**
      * js
      */
-    private void js(List<ColumnModel> columns) {
+    private void js() {
         // 获取模板文件
         Template t = VE.getTemplate("/static/js.vm");
-        CTX.put("columns", columns);
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
