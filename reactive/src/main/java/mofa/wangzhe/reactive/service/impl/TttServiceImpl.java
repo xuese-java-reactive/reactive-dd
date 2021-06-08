@@ -13,9 +13,10 @@ import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -58,7 +59,7 @@ public class TttServiceImpl implements TttService {
     }
 
     @Override
-    public Flux<TttModel> page(int pageSize, int pageNum, String search) {
+    public Mono<Tuple2<Long, List<TttModel>>> page(int pageSize, int pageNum, String search) {
 
         Query query;
         if (StringUtils.hasText(search)) {
@@ -68,19 +69,11 @@ public class TttServiceImpl implements TttService {
         }
         query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "uuid")));
 
-        return template.select(query, TttModel.class);
-    }
-
-    @Override
-    public Mono<Long> count(String search) {
-        Query query;
-        if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("uuid").like("%"+search+"%"));
-        } else {
-            query = Query.query(CriteriaDefinition.empty());
-        }
-        return template.select(query, TttModel.class)
+        Mono<List<TttModel>> listMono = template.select(query, TttModel.class)
+                .collectList();
+        Mono<Long> count = template.select(query, TttModel.class)
                 .count();
+        return Mono.zip(count,listMono);
     }
 
     @Override

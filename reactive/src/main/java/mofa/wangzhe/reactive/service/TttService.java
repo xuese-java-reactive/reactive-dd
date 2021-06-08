@@ -3,8 +3,10 @@ package mofa.wangzhe.reactive.service;
 
 
 import mofa.wangzhe.reactive.model.TttModel;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.util.List;
 
 /**
  * @author LD
@@ -41,20 +43,13 @@ public interface TttService {
      * @param pageSize int
      * @param pageNum  int
      * @param search   String
-     * @return Flux<TttModel>
+     * @return Mono<Tuple2 < Long, List < TttModel>>>
      */
-    Flux<TttModel> page(int pageSize, int pageNum, String search);
-
-    /**
-     * 总数
-     *
-     * @param search String
-     * @return Mono<Long>
-     */
-    Mono<Long> count(String search);
+    Mono<Tuple2<Long, List<TttModel>>> page(int pageSize, int pageNum, String search);
 
     /**
      * 根据id获取
+     *
      * @param uuid String
      * @return Mono<TttModel>
      */

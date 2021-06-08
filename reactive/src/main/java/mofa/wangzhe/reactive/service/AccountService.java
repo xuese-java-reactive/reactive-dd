@@ -4,6 +4,9 @@ package mofa.wangzhe.reactive.service;
 import mofa.wangzhe.reactive.model.AccountModel;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.util.List;
 
 /**
  * @author LD
@@ -42,15 +45,7 @@ public interface AccountService {
      * @param search   String
      * @return Flux<AccountModel>
      */
-    Flux<AccountModel> page(int pageSize, int pageNum, String search);
-
-    /**
-     * 统计数量
-     *
-     * @param search String
-     * @return Flux<Long>
-     */
-    Mono<Long> count(String search);
+    Mono<Tuple2<Long, List<AccountModel>>> page(int pageSize, int pageNum, String search);
 
     /**
      * 根据id获取

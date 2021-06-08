@@ -13,9 +13,10 @@ import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -68,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Flux<AccountModel> page(int pageSize, int pageNum, String search) {
+    public Mono<Tuple2<Long, List<AccountModel>>> page(int pageSize, int pageNum, String search) {
         Query query;
         if (StringUtils.hasText(search)) {
             query = Query.query(Criteria.where("account").like("%" + search + "%"));
@@ -77,23 +78,15 @@ public class AccountServiceImpl implements AccountService {
         }
         query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "account")));
 
-        return template.select(query, AccountModel.class)
+        Mono<List<AccountModel>> listMono = template.select(query, AccountModel.class)
                 .map(m -> {
                     m.setPassword(null);
                     return m;
-                });
-    }
-
-    @Override
-    public Mono<Long> count(String search) {
-        Query query;
-        if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("account").like("%" + search + "%"));
-        } else {
-            query = Query.query(CriteriaDefinition.empty());
-        }
-        return template.select(query, AccountModel.class)
+                })
+                .collectList();
+        Mono<Long> count = template.select(query, AccountModel.class)
                 .count();
+        return Mono.zip(count,listMono);
     }
 
     @Override

@@ -4,8 +4,10 @@ package $servicePackage;
 
 
 import $md;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.util.List;
 
 /**
  * @author $author
@@ -42,17 +44,9 @@ public interface $serviceName {
      * @param pageSize int
      * @param pageNum  int
      * @param search   String
-     * @return Flux<$modeName>
+     * @return Mono<Tuple2<Long, List<$modeName>>>
      */
-    Flux<$modeName> page(int pageSize, int pageNum, String search);
-
-    /**
-     * 总数
-     *
-     * @param search String
-     * @return Mono<Long>
-     */
-    Mono<Long> count(String search);
+    Mono<Tuple2<Long, List<$modeName>>> page(int pageSize, int pageNum, String search);
 
     /**
      * 根据id获取
