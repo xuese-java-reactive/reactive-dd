@@ -49,13 +49,13 @@ public class WebSecurityConfig {
                 .pathMatchers(
                         "/",
                         "/api/login/login",
+                        "/api/sys/**",
                         "/page/**",
                         "/webjars/**",
                         "/js/**",
                         "/css/**",
                         "/img/**",
-                        "/fav**",
-                        "/actuator/**"
+                        "/fav**"
                 ).permitAll()
                 .anyExchange().authenticated()
                 .and()
