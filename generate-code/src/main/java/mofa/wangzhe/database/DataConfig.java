@@ -1,6 +1,5 @@
 package mofa.wangzhe.database;
 
-import com.sun.istack.internal.NotNull;
 import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.DataConfigModel;
 
@@ -79,7 +78,7 @@ public class DataConfig {
      * @param table 表名
      * @return List<String> 表中字段
      */
-    private List<ColumnModel> columns(@NotNull String table) {
+    private List<ColumnModel> columns(String table) {
         final String sql2 = "select" +
                 " column_name," +
                 " column_type," +
