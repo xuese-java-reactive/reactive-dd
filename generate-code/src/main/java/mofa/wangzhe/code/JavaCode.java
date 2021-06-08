@@ -52,20 +52,36 @@ public class JavaCode {
         log.info("开始生成java文件");
         CTX.put("author", javaCodeModel.getAuthor());
         CTX.put("tableName", table);
+        CTX.put("routerPath", tt);
+        CTX.put("routerName", javaCodeModel.getModularPrefix() + javaCodeModel.getRouterFileSuffix());
         CTX.put("modeName", javaCodeModel.getModularPrefix() + javaCodeModel.getModelFileSuffix());
         CTX.put("handName", javaCodeModel.getModularPrefix() + javaCodeModel.getHandleFileSuffix());
         CTX.put("serviceName", javaCodeModel.getModularPrefix() + javaCodeModel.getServiceFileSuffix());
         CTX.put("serviceImplName", javaCodeModel.getModularPrefix() + javaCodeModel.getServiceImplFileSuffix());
 
+        CTX.put("routerPackage", javaCodeModel.getPackageRouterPath());
         CTX.put("modelPackage", javaCodeModel.getPackageModelPath());
         CTX.put("handlePackage", javaCodeModel.getPackageHandlePath());
         CTX.put("servicePackage", javaCodeModel.getPackageServicePath());
         CTX.put("serviceImplPackage", javaCodeModel.getPackageServiceImplPath());
 
+        router();
         model(columns);
         handle();
         service();
         serviceImpl();
+    }
+
+    /**
+     * model
+     */
+    private void router() {
+        // 获取模板文件
+        Template t = VE.getTemplate("/java/router.vm");
+        StringWriter sw = new StringWriter();
+        t.merge(CTX, sw);
+        createFile(javaCodeModel.getPackageRouterPath(),
+                javaCodeModel.getModularPrefix() + javaCodeModel.getRouterFileSuffix(), sw);
     }
 
     /**

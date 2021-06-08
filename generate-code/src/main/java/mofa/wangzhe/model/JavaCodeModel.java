@@ -20,6 +20,8 @@ public class JavaCodeModel implements Serializable {
     private boolean isReplace = false;
 
     private String packageParentPath = "mofa.wangzhe.reactive.";
+    private String packageRouter = "router";
+    private String packageRouterPath = packageParentPath + packageRouter;
     private String packageModel = "model";
     private String packageModelPath = packageParentPath + packageModel;
     private String packageHandle = "handle";
@@ -28,10 +30,35 @@ public class JavaCodeModel implements Serializable {
     private String packageServicePath = packageParentPath + packageService;
     private String packageServiceImpl = "impl";
     private String packageServiceImplPath = packageServicePath + "." + packageServiceImpl;
+    private String routerFileSuffix = "Router";
     private String modelFileSuffix = "Model";
     private String handleFileSuffix = "Handle";
     private String serviceFileSuffix = "Service";
     private String serviceImplFileSuffix = "ServiceImpl";
+
+    public String getRouterFileSuffix() {
+        return routerFileSuffix;
+    }
+
+    public void setRouterFileSuffix(String routerFileSuffix) {
+        this.routerFileSuffix = routerFileSuffix;
+    }
+
+    public String getPackageRouter() {
+        return packageRouter;
+    }
+
+    public void setPackageRouter(String packageRouter) {
+        this.packageRouter = packageRouter;
+    }
+
+    public String getPackageRouterPath() {
+        return packageRouterPath;
+    }
+
+    public void setPackageRouterPath(String packageRouterPath) {
+        this.packageRouterPath = packageRouterPath;
+    }
 
     public boolean isReplace() {
         return isReplace;
