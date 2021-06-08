@@ -54,7 +54,8 @@ public class WebSecurityConfig {
                         "/js/**",
                         "/css/**",
                         "/img/**",
-                        "/fav**"
+                        "/fav**",
+                        "/actuator/**"
                 ).permitAll()
                 .anyExchange().authenticated()
                 .and()

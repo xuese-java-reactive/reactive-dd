@@ -22,7 +22,6 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
     @Override
     public Mono<Void> save(ServerWebExchange swe, SecurityContext sc) {
         return Mono.empty();
