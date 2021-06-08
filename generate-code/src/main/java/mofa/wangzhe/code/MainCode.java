@@ -52,6 +52,7 @@ public class MainCode {
         DataConfig dataConfig = new DataConfig(cfgModel);
         Map<String, List<ColumnModel>> map = dataConfig.dataTables();
         map.forEach((f, v) -> {
+            f = f.replaceAll("_table", "");
             StaticCodeModel staticCodeModel = new StaticCodeModel();
             staticCodeModel.setModularName(f);
             staticCodeModel.setFileName(f);

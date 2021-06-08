@@ -152,6 +152,7 @@ public class JavaCode {
                     System.exit(-1);
                 }
             } else {
+                log.info("文件已存在，不在生成");
                 return;
             }
         }

@@ -12,6 +12,15 @@ public class StaticCodeModel implements Serializable {
     private String modularNameText = "测试管理页面";
     private String path = "";
     private String fileName = modularName;
+    private boolean isReplace;
+
+    public boolean isReplace() {
+        return isReplace;
+    }
+
+    public void setReplace(boolean replace) {
+        isReplace = replace;
+    }
 
     public String getAuthor() {
         return author;

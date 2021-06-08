@@ -1,13 +1,9 @@
-#set($c=".class")
-#set($mn="$modeName$c")
-#set($md="$modelPackage.$modeName")
-#set($ss="$servicePackage.$serviceName")
 
-package $handlePackage;
+package mofa.wangzhe.reactive.handle;
 
 import lombok.extern.slf4j.Slf4j;
-import $md;
-import $ss;
+import mofa.wangzhe.reactive.model.OrgModel;
+import mofa.wangzhe.reactive.service.OrgService;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,22 +14,22 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * @author $author
+ * @author LD
  */
 
 @Slf4j
 @Component
-public class $handName {
+public class OrgHandle {
 
-    private final $serviceName service;
+    private final OrgService service;
 
     @Autowired
-    public $handName($serviceName service) {
+    public OrgHandle(OrgService service) {
         this.service = service;
     }
 
     public Mono<ServerResponse> save(ServerRequest request) {
-        return request.bodyToMono($mn)
+        return request.bodyToMono(OrgModel.class)
                 .flatMap(f -> this.service.save(f)
                         .flatMap(f2 -> ResultUtil2.ok(null)))
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
@@ -47,7 +43,7 @@ public class $handName {
 
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
-        return request.bodyToMono($mn)
+        return request.bodyToMono(OrgModel.class)
                 .flatMap(f -> {
                     f.setUuid(uuid);
                     return this.service.update(f)
@@ -65,7 +61,7 @@ public class $handName {
         int pageNum = Integer.parseInt(request.pathVariable("pageNum"));
         String search = request.queryParam("search").orElse("");
         Mono<Long> mono = this.service.count(search);
-        Mono<List<$modeName>> listMono = this.service.page(pageSize, pageNum, search)
+        Mono<List<OrgModel>> listMono = this.service.page(pageSize, pageNum, search)
                 .collectList();
         return Mono.zip(mono, listMono)
                 .flatMap(ResultUtil2::ok);

@@ -1,4 +1,4 @@
-var tb = tables('table','$modularName','$modularName',[
+var tb = table('table','$modularName','$modularName',[
     {
         "title": "序号",
         "data": null,

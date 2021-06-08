@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.handle.AccountHandle;
 import mofa.wangzhe.reactive.handle.LoginHandle;
 import mofa.wangzhe.reactive.handle.MenuHandle;
+import mofa.wangzhe.reactive.handle.OrgHandle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -25,7 +26,8 @@ public class Routers implements WebFluxConfigurer {
     public RouterFunction<ServerResponse> initRouterFunction(
             LoginHandle loginHandle,
             MenuHandle menuHandle,
-            AccountHandle accountHandle
+            AccountHandle accountHandle,
+            OrgHandle orgHandle
 
     ) {
         return RouterFunctions.nest(
@@ -71,6 +73,24 @@ public class Routers implements WebFluxConfigurer {
                         ).andRoute(
                                 RequestPredicates.GET("/account/{uuid}"),
                                 accountHandle::one
+                        )
+                ).andNest(
+                        RequestPredicates.path("/org"),
+                        RouterFunctions.route(
+                                RequestPredicates.POST("/org"),
+                                orgHandle::save
+                        ).andRoute(
+                                RequestPredicates.DELETE("/org/{uuid}"),
+                                orgHandle::remove
+                        ).andRoute(
+                                RequestPredicates.PUT("/org/{uuid}"),
+                                orgHandle::update
+                        ).andRoute(
+                                RequestPredicates.GET("/org/{pageSize}/{pageNum}"),
+                                orgHandle::page
+                        ).andRoute(
+                                RequestPredicates.GET("/org/{uuid}"),
+                                orgHandle::one
                         )
                 )
         );

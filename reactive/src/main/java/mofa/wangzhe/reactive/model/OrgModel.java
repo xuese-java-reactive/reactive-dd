@@ -1,4 +1,4 @@
-package $modelPackage;
+package mofa.wangzhe.reactive.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -8,31 +8,25 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-#foreach ($i in $columns)
-    #if ($!{i.dataType} == "Date")
-import java.util.Date;
-    #break
-    #end
-#end
 
 
 /**
- * @author $author
+ * @author LD
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Table("$tableName")
-public class $modeName {
+@Table("org_table")
+public class OrgModel {
 
-    #foreach ($i in $columns)
-    #if ($!{i.columnName} == "uuid")
     @Id
-    #end
-    private $!{i.dataType} $!{i.columnName};
+    private String uuid;
 
-    #end
+    private String pid;
+
+    private String name;
+
 
 }
