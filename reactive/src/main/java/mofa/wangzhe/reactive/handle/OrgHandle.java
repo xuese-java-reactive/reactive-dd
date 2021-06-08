@@ -11,7 +11,9 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author LD
@@ -37,7 +39,9 @@ public class OrgHandle {
 
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
-        return this.service.remove(uuid)
+        OrgModel model = new OrgModel();
+        model.setUuid(uuid);
+        return this.service.remove(model)
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
@@ -53,30 +57,56 @@ public class OrgHandle {
     }
 
     /**
-     * @param request ServerRequest
-     * @return Mono<ServerResponse>
-     */
-    public Mono<ServerResponse> page(ServerRequest request) {
-        int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
-        int pageNum = Integer.parseInt(request.pathVariable("pageNum"));
-        String search = request.queryParam("search").orElse("");
-        Mono<Long> mono = this.service.count(search);
-        Mono<List<OrgModel>> listMono = this.service.page(pageSize, pageNum, search)
-                .collectList();
-        return Mono.zip(mono, listMono)
-                .flatMap(ResultUtil2::ok);
-    }
-
-    /**
-     * 根据id获取
+     * menu list
      *
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
-    public Mono<ServerResponse> one(ServerRequest request) {
-        String uuid = request.pathVariable("uuid");
-        return this.service.one(uuid)
+    public Mono<ServerResponse> list(ServerRequest request) {
+        String pid = request.pathVariable("pid");
+        return this.service.findAll(pid)
+                .collectList()
+                .flatMap(f -> Mono.just(getTreeList(f)))
                 .flatMap(ResultUtil2::ok);
+    }
+
+    private static List<OrgModel> getTreeList(List<OrgModel> entityList) {
+        List<OrgModel> resultList = new ArrayList<>();
+        //获取顶层元素集合
+        String pid;
+        for (OrgModel entity : entityList) {
+            pid = entity.getPid();
+            //顶层元素的pid==null或者为0
+            if (Objects.equals("0", pid)) {
+                resultList.add(entity);
+            }
+        }
+        //获取每个顶层元素的子数据集合
+        for (OrgModel entity : resultList) {
+            entity.setChildren(getSubList(entity.getUuid(), entityList));
+        }
+        return resultList;
+    }
+
+    private static List<OrgModel> getSubList(String id, List<OrgModel> entityList) {
+        List<OrgModel> childList = new ArrayList<>();
+        String pid;
+        //子集的直接子对象
+        for (OrgModel entity : entityList) {
+            pid = entity.getPid();
+            if (id.equals(pid)) {
+                childList.add(entity);
+            }
+        }
+        //子集的间接子对象
+        for (OrgModel entity : childList) {
+            entity.setChildren(getSubList(entity.getUuid(), entityList));
+        }
+        //递归退出条件
+        if (childList.size() == 0) {
+            return null;
+        }
+        return childList;
     }
 
 }

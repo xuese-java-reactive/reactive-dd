@@ -86,11 +86,8 @@ public class Routers implements WebFluxConfigurer {
                                 RequestPredicates.PUT("/org/{uuid}"),
                                 orgHandle::update
                         ).andRoute(
-                                RequestPredicates.GET("/org/{pageSize}/{pageNum}"),
-                                orgHandle::page
-                        ).andRoute(
-                                RequestPredicates.GET("/org/{uuid}"),
-                                orgHandle::one
+                                RequestPredicates.GET("/org/{pid}"),
+                                orgHandle::list
                         )
                 )
         );

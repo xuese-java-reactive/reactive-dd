@@ -4,9 +4,10 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>测试管理页面</h1>
+                    <h1>组织机构管理</h1>
                 </div>
-                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -16,7 +17,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-header">
@@ -24,8 +25,51 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="table" class="table table-bordered table-hover">
-                            </table>
+                            <ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                        </div>
+                        <!-- /.card-footer-->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                        </div>
+                        <div class="card-body">
+                            <form id="form-add">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="name-add"><span style="color:red;">*</span>名称</label>
+                                        <input type="text" class="form-control" id="name-add"
+                                               placeholder="菜单名称" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jur-add">角色</label>
+                                        <input type="text" class="form-control" id="jur-add"
+                                               placeholder="菜单权限标识" name="jur">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pid-add">上级</label>
+                                        <button type="button"
+                                                class="btn btn-primary btn-xs"
+                                                id="set-pid"
+                                        >点击此处设置为顶级
+                                        </button>
+                                        <input type="hidden" class="form-control" id="pid-add"
+                                               placeholder="上级" name="pid" value="0" readonly="readonly">
+                                        <input type="text" class="form-control" id="pid-name-add"
+                                               placeholder="上级" value="顶级" readonly="readonly">
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-block btn-primary">确定</button>
+                                </div>
+                            </form>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
@@ -38,68 +82,6 @@
         </div>
     </section>
     <!-- /.content -->
-</div>
-
-<div class="modal" id="add-model">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">新增</h4>
-            </div>
-            <div class="modal-body">
-                <form action="#" id="add-form">
-                    <div class="form-group">
-                        <label>账号</label>
-                        <input type="text" class="form-control" id="acc-add" placeholder="账号" name="account" required>
-                    </div>
-                    <div style="display:none;">
-                        <button type="submit" id="add-from-submit"></button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="$('#add-from-submit').click()">保存</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<button type="button"
-        class="btn btn-success btn-sm"
-        data-toggle="modal"
-        data-target="#edit-model"
-        id="edit-model-open-button"
-        style="display:none;"
-></button>
-<div class="modal" id="edit-model">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">修改</h4>
-            </div>
-            <div class="modal-body">
-                <form action="#" id="edit-form">
-                    <input name="uuid" type="hidden" id="id-edit"/>
-                    <div class="form-group">
-                        <label>账号</label>
-                        <input type="text" class="form-control" id="account-edit" required>
-                    </div>
-                    <div style="display:none;">
-                        <button type="submit" id="edit-from-submit"></button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="$('#edit-from-submit').click()">保存</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
 </div>
 
 <script src="/js/org/org.js"></script>

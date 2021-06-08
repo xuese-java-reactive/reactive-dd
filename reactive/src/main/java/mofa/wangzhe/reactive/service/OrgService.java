@@ -22,10 +22,10 @@ public interface OrgService {
     /**
      * 删除
      *
-     * @param uuid String
+     * @param model OrgModel
      * @return Mono<OrgModel>
      */
-    Mono<OrgModel> remove(String uuid);
+    Mono<OrgModel> remove(OrgModel model);
 
     /**
      * 修改
@@ -36,28 +36,11 @@ public interface OrgService {
     Mono<OrgModel> update(OrgModel model);
 
     /**
-     * list
+     * gen ju pid huo qu
      *
-     * @param pageSize int
-     * @param pageNum  int
-     * @param search   String
+     * @param pid String
      * @return Flux<OrgModel>
      */
-    Flux<OrgModel> page(int pageSize, int pageNum, String search);
-
-    /**
-     * 总数
-     *
-     * @param search String
-     * @return Mono<Long>
-     */
-    Mono<Long> count(String search);
-
-    /**
-     * 根据id获取
-     * @param uuid String
-     * @return Mono<OrgModel>
-     */
-    Mono<OrgModel> one(String uuid);
+    Flux<OrgModel> findAll(String pid);
 
 }

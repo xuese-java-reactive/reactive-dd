@@ -1,88 +1,55 @@
-var tb = table('table','org','org',[
-    {
-        "title": "序号",
-        "data": null,
-        "render":function(data,type,row,meta) {
-            return meta.row + 1;
-        }
+var setting = {
+    view:{
+        selectedMulti: false
     },
-    {
-        "title": "",
-        "data": "pid"
+    callback:{
+        onClick: getItem,
+        onRename: renameItem,
+        beforeRemove: removeItem
     },
-    {
-        "title": "",
-        "data": "name"
-    },
-    {
-        "title": "操作",
-        "data": null,
-        "render":function(data,type,row,meta) {
-            let rest = '<button type="button" class="btn btn-danger btn-xs">删除</button>';
-            let update = '<button type="button" class="btn btn-warning btn-xs">修改</button>';
-            return rest+"&nbsp;&nbsp;&nbsp;"+update;
-        }
+    edit:{
+        enable:true
     }
-]);
-$("div.toolbar").prepend('<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-model" id="add-model-open-button">新增</button>');
+};
 
+// 2.页面加载完毕后发起异步请求获得json格式的数据
+$(document).ready(function(){
 
-$(function(){
-    $("#add-form").on("submit", function (ev) {
+//    获取所有的菜单
+    findOrg()
+
+//    菜单新增
+    $("#form-add").on("submit", function (ev) {
         ev.preventDefault();
-        let formData = $('#add-form').serializeObject();
+        let formData = $('#form-add').serializeObject();
         $.ajax({
             url:"/api/org/org",
             contentType : "application/json;charset=UTF-8",
             dataType:"json",
             data:JSON.stringify(formData),
             type:"POST",
-            success:function(req){
-                if(req.state){
-                    success_swal(null)
-                    $('#add-form')[0].reset()
-                    $("#add-model-open-button").click();
-                    tablesReload(tb)
-                }else{
-                    error_swal(req.msg)
-                }
-            }
-        });
-    })
-
-    $("#edit-form").on("submit", function (ev) {
-        ev.preventDefault();
-        let formData = $('#edit-form').serializeObject();
-        $.ajax({
-            url:"/api/org/org/"+$("#id-edit").val(),
-            contentType : "application/json;charset=UTF-8",
-            dataType:"json",
-            data:JSON.stringify(formData),
-            type:"PUT",
             beforeSend:function(){
             },
             success:function(req){
                 if(req.state){
-                    success_swal(null)
-                    $('#edit-form')[0].reset()
-                    $("#edit-model-open-button").click();
-                    tablesReload(tb)
+                    $('#form-add')[0].reset()
+                    findOrg()
                 }else{
-                    error_swal(req.msg)
+                    alert(req.msg)
                 }
-            },
-            complete:function(){
-            },
-            error:function(e){
-                console.log("error",e.responseText);
             }
         });
     })
-})
 
-function toUpdate(data){
+    $('#set-pid').on('click',function(){
+        $('#pid-add').val(0)
+        $('#pid-name-add').val('顶级')
+    })
+});
+
+function findOrg(){
     $.ajax({
-        url:"/api/org/org/"+data,
+        url:"/api/org/org/0",
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
         type:"GET",
@@ -90,33 +57,61 @@ function toUpdate(data){
         },
         success:function(req){
             if(req.state){
-                let data = req.data
-                $("#edit-model-open-button").click();
-                $("#id-edit").val(data.uuid)
-            }else{
-                error_swal(req.msg)
+                initTree(req.data)
             }
         }
     });
 }
 
-function remove(data){
-    confirmations("确定删除吗?",function(){
-        $.ajax({
-            url:"/api/org/org/"+data,
-            contentType : "application/json;charset=UTF-8",
-            dataType:"json",
-            type:"DELETE",
-            beforeSend:function(){
-            },
-            success:function(req){
-                if(req.state){
-                    success_swal(null)
-                    tablesReload
-                }else{
-                    error_swal(req.msg)
-                }
+// 3.定义zTree树
+var zTreeObj;
+// 4.根据获取到的json数据展示ztree树
+function initTree(data) {
+    //第一个参数：树显示的位置，第二个参数：树的配置信息，第三个参数：要展示的数据
+    zTreeObj = $.fn.zTree.init($("#tree"), setting, data);
+    //true：展开所有节点
+    zTreeObj.expandAll(false);
+}
+
+function getItem(event, treeId, treeNode, clickFlag) {
+    $('#pid-add').val(treeNode.uuid)
+    $('#pid-name-add').val(treeNode.name)
+    zTreeObj.selectNode(treeNode);
+}
+
+function renameItem(event, treeId, treeNode, clickFlag) {
+    $.ajax({
+        url:"/api/org/org/"+treeNode.uuid,
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        data:JSON.stringify({
+            "name":treeNode.name
+        }),
+        type:"PUT",
+        beforeSend:function(){
+        },
+        success:function(req){
+            if(!req.state){
+                alert(req.msg)
+                findOrg()
             }
-        });
-    })
+        }
+    });
+}
+
+function removeItem(treeId, treeNode) {
+   $.ajax({
+       url:"/api/org/org/"+treeNode.uuid,
+       contentType : "application/json;charset=UTF-8",
+       dataType:"json",
+       type:"DELETE",
+       beforeSend:function(){
+       },
+       success:function(req){
+           if(!req.state){
+               alert(req.msg)
+               findOrg()
+           }
+       }
+   });
 }
