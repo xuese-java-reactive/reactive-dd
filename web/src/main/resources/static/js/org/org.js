@@ -1,4 +1,4 @@
-var tb = table('table','$modularName','$modularName',[
+var tb = table('table','org','org',[
     {
         "title": "序号",
         "data": null,
@@ -6,14 +6,14 @@ var tb = table('table','$modularName','$modularName',[
             return meta.row + 1;
         }
     },
-    #foreach ($i in $columns)
-    #if ($!{i.columnName} != "uuid")
     {
-        "title": "$!{i.columnComment}",
-        "data": "$!{i.columnName}"
+        "title": "",
+        "data": "pid"
     },
-    #end
-    #end
+    {
+        "title": "",
+        "data": "name"
+    },
     {
         "title": "操作",
         "data": null,
@@ -32,7 +32,7 @@ $(function(){
         ev.preventDefault();
         let formData = $('#add-form').serializeObject();
         $.ajax({
-            url:"/api/$modularName/$modularName",
+            url:"/api/org/org",
             contentType : "application/json;charset=UTF-8",
             dataType:"json",
             data:JSON.stringify(formData),
@@ -54,7 +54,7 @@ $(function(){
         ev.preventDefault();
         let formData = $('#edit-form').serializeObject();
         $.ajax({
-            url:"/api/$modularName/$modularName/"+$("#id-edit").val(),
+            url:"/api/org/org/"+$("#id-edit").val(),
             contentType : "application/json;charset=UTF-8",
             dataType:"json",
             data:JSON.stringify(formData),
@@ -82,7 +82,7 @@ $(function(){
 
 function toUpdate(data){
     $.ajax({
-        url:"/api/$modularName/$modularName/"+data,
+        url:"/api/org/org/"+data,
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
         type:"GET",
@@ -103,7 +103,7 @@ function toUpdate(data){
 function remove(data){
     confirmations("确定删除吗?",function(){
         $.ajax({
-            url:"/api/$modularName/$modularName/"+data,
+            url:"/api/org/org/"+data,
             contentType : "application/json;charset=UTF-8",
             dataType:"json",
             type:"DELETE",
