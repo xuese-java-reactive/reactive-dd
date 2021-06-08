@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
                 .collectList();
         Mono<Long> count = template.select(query, AccountModel.class)
                 .count();
-        return Mono.zip(count,listMono);
+        return Mono.zip(count, listMono);
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 package mofa.wangzhe.reactive.service.impl;
 
 import mofa.wangzhe.reactive.model.TttModel;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- *
- *
  * @author LD
  */
 
@@ -63,7 +60,7 @@ public class TttServiceImpl implements TttService {
 
         Query query;
         if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("uuid").like("%"+search+"%"));
+            query = Query.query(Criteria.where("uuid").like("%" + search + "%"));
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
@@ -73,7 +70,7 @@ public class TttServiceImpl implements TttService {
                 .collectList();
         Mono<Long> count = template.select(query, TttModel.class)
                 .count();
-        return Mono.zip(count,listMono);
+        return Mono.zip(count, listMono);
     }
 
     @Override
