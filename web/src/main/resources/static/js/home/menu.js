@@ -18,30 +18,6 @@ function getMenus(){
     });
 }
 
-//<li class="nav-item">
-//    <a href="#" class="nav-link ">
-//        <i class="nav-icon fas fa-tachometer-alt"></i>
-//        <p>
-//            Starter Pages
-//            <i class="right fas fa-angle-left"></i>
-//        </p>
-//    </a>
-//    <ul class="nav nav-treeview" style="display: none;">
-//        <li class="nav-item">
-//            <a href="#" class="nav-link ">
-//                <i class="far fa-circle nav-icon"></i>
-//                <p> Page</p>
-//            </a>
-//        </li>
-//        <li class="nav-item">
-//            <a href="#" class="nav-link">
-//                <i class="far fa-circle nav-icon"></i>
-//                <p>In Page</p>
-//            </a>
-//        </li>
-//    </ul>
-//</li>
-
 function setMenus(json){
 
     $(json).each(function(i,e){

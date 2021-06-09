@@ -1,6 +1,6 @@
 package mofa.wangzhe.reactive.router;
 
-import mofa.wangzhe.reactive.ReactiveApplication;
+import mofa.wangzhe.reactive.Sys;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 /**
  * @author LD
@@ -26,8 +28,16 @@ public class SysRouter {
                         RouterFunctions.route(
                                 RequestPredicates.GET("/shutdown"),
                                 e -> {
-                                    ReactiveApplication.shutdown();
+                                    Sys.shutdown();
                                     return Mono.empty();
+                                }
+                        ).andRoute(
+                                RequestPredicates.GET("/rest"),
+                                e -> {
+                                    Sys.rest();
+                                    return ServerResponse
+                                            .temporaryRedirect(URI.create("/"))
+                                            .build();
                                 }
                         )
                 )

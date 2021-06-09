@@ -5,10 +5,22 @@ var setting = {
     callback:{
         onClick: getItem,
         onRename: renameItem,
-        beforeRemove: removeItem
+        beforeRemove: removeItem,
+        beforeDrag: beforeDrag,
+        beforeDrop: beforeDrop,
+        onDrop:onDrop
     },
     edit:{
-        enable:true
+        enable:true,
+        removeTitle : "删除",
+        renameTitle : "编辑名称",
+        drag: {
+            isCopy: false,//所有操作都是move
+            isMove: true,
+            prev: false,
+            next: true,
+            inner: true
+        }
     }
 };
 
@@ -28,14 +40,12 @@ $(document).ready(function(){
             dataType:"json",
             data:JSON.stringify(formData),
             type:"POST",
-            beforeSend:function(){
-            },
             success:function(req){
                 if(req.state){
                     $('#form-add')[0].reset()
                     findMenus()
                 }else{
-                    alert(req.msg)
+                    error_swal(req.msg)
                 }
             }
         });
@@ -53,8 +63,6 @@ function findMenus(){
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
         type:"GET",
-        beforeSend:function(){
-        },
         success:function(req){
             if(req.state){
                 initTree(req.data)
@@ -84,16 +92,14 @@ function renameItem(event, treeId, treeNode, clickFlag) {
         url:"/api/menu/menu/"+treeNode.uuid,
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
+        type:"PUT",
         data:JSON.stringify({
             "name":treeNode.name
         }),
-        type:"PUT",
-        beforeSend:function(){
-        },
         success:function(req){
             if(!req.state){
-                alert(req.msg)
                 findMenus()
+                error_swal(req.msg)
             }
         }
     });
@@ -105,13 +111,44 @@ function removeItem(treeId, treeNode) {
        contentType : "application/json;charset=UTF-8",
        dataType:"json",
        type:"DELETE",
-       beforeSend:function(){
-       },
        success:function(req){
            if(!req.state){
-               alert(req.msg)
                findMenus()
+               error_swal(req.msg)
            }
        }
    });
+}
+
+function beforeDrag(treeId, treeNodes) {
+//    for (var i=0,l=treeNodes.length; i<l; i++) {
+//        if (treeNodes[i].pid === '0') {
+//            return false;
+//        }
+//    }
+    return true;
+}
+function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+    return targetNode ? targetNode.drop !== false : true;
+}
+function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+    let pid = targetNode.pid;
+    if(moveType==='inner'){
+        pid = targetNode.uuid
+    }
+    $.ajax({
+        url:"/api/menu/menu/"+treeNodes[0].uuid,
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        type:"PUT",
+        data:JSON.stringify({
+            "pid":pid
+        }),
+        success:function(req){
+            if(!req.state){
+                findMenus()
+                error_swal(req.msg)
+            }
+        }
+    });
 }

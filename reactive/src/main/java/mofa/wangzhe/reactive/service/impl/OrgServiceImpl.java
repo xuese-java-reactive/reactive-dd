@@ -9,6 +9,7 @@ import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -49,8 +50,17 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Mono<OrgModel> update(OrgModel model) {
-        return template.update(model)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+        return template.selectOne(Query.query(Criteria.where("uuid").is(model.getUuid())), OrgModel.class)
+                .flatMap(f -> {
+                    if (StringUtils.hasText(model.getName())) {
+                        f.setName(model.getName());
+                    }
+                    if (StringUtils.hasText(model.getPid())) {
+                        f.setPid(model.getPid());
+                    }
+                    return template.update(f)
+                            .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                });
     }
 
     @Override

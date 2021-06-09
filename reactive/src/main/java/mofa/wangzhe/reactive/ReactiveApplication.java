@@ -3,7 +3,6 @@ package mofa.wangzhe.reactive;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * springboot guanfang
@@ -17,15 +16,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication(scanBasePackages = {"mofa.wangzhe"})
 public class ReactiveApplication {
 
-    private static ConfigurableApplicationContext context;
-
     public static void main(String[] args) {
-        context = SpringApplication.run(ReactiveApplication.class, args);
-    }
-
-    public static void shutdown() {
-        log.info("系统关闭中...");
-        context.close();
+        Sys.arg = args;
+        Sys.context = SpringApplication.run(ReactiveApplication.class, args);
     }
 
 }

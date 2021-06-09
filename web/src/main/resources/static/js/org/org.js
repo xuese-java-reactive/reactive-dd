@@ -5,10 +5,22 @@ var setting = {
     callback:{
         onClick: getItem,
         onRename: renameItem,
-        beforeRemove: removeItem
+        beforeRemove: removeItem,
+        beforeDrag: beforeDrag,
+        beforeDrop: beforeDrop,
+        onDrop:onDrop
     },
     edit:{
-        enable:true
+        enable:true,
+        removeTitle : "删除",
+        renameTitle : "编辑名称",
+        drag: {
+            isCopy: false,//所有操作都是move
+            isMove: true,
+            prev: false,
+            next: true,
+            inner: true
+        }
     }
 };
 
@@ -35,7 +47,7 @@ $(document).ready(function(){
                     $('#form-add')[0].reset()
                     findOrg()
                 }else{
-                    alert(req.msg)
+                    error_swal(req.msg)
                 }
             }
         });
@@ -92,8 +104,8 @@ function renameItem(event, treeId, treeNode, clickFlag) {
         },
         success:function(req){
             if(!req.state){
-                alert(req.msg)
                 findOrg()
+                error_swal(req.msg)
             }
         }
     });
@@ -109,9 +121,42 @@ function removeItem(treeId, treeNode) {
        },
        success:function(req){
            if(!req.state){
-               alert(req.msg)
                findOrg()
+               error_swal(req.msg)
            }
        }
    });
+}
+
+function beforeDrag(treeId, treeNodes) {
+//    for (var i=0,l=treeNodes.length; i<l; i++) {
+//        if (treeNodes[i].pid === '0') {
+//            return false;
+//        }
+//    }
+    return true;
+}
+function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+    return targetNode ? targetNode.drop !== false : true;
+}
+function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+    let pid = targetNode.pid;
+    if(moveType==='inner'){
+        pid = targetNode.uuid
+    }
+    $.ajax({
+        url:"/api/org/org/"+treeNodes[0].uuid,
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        type:"PUT",
+        data:JSON.stringify({
+            "pid":pid
+        }),
+        success:function(req){
+            if(!req.state){
+                findOrg()
+                error_swal(req.msg)
+            }
+        }
+    });
 }
