@@ -16,12 +16,8 @@ $(function(){
                     alert(req.msg)
                 }
             },
-            error:function(event,xhr,options,exc){
-                if(xhr.responseText){
-                    var result = xhr.responseText;
-                    var json=eval("("+result+")");
-                    alert(json.message)
-                }
+            error:function(err){
+                alert(err.responseJSON.message)
             }
         });
     })

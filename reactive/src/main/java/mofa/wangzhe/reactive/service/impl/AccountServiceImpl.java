@@ -98,6 +98,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Mono<AccountModel> oneByAccount(String account) {
         return template.selectOne(Query.query(Criteria.where("account").is(account)), AccountModel.class)
-                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
+                .switchIfEmpty(Mono.error(new Exception("当前账号不存在")));
     }
 }
