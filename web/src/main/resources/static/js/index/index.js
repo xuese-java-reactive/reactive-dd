@@ -8,14 +8,19 @@ $(function(){
             dataType:"json",
             data:JSON.stringify(formData),
             type:"POST",
-            beforeSend:function(){
-            },
             success:function(req){
                 if(req.state){
                     localStorage.setItem("auth",req.data);
                     location.replace("/page/home/home");
                 }else{
                     alert(req.msg)
+                }
+            },
+            error:function(event,xhr,options,exc){
+                if(xhr.responseText){
+                    var result = xhr.responseText;
+                    var json=eval("("+result+")");
+                    alert(json.message)
                 }
             }
         });

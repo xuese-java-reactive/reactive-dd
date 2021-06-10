@@ -59,8 +59,6 @@ $(function(){
             dataType:"json",
             data:JSON.stringify(formData),
             type:"PUT",
-            beforeSend:function(){
-            },
             success:function(req){
                 if(req.state){
                     success_swal(null)
@@ -70,11 +68,6 @@ $(function(){
                 }else{
                     error_swal(req.msg)
                 }
-            },
-            complete:function(){
-            },
-            error:function(e){
-                console.log("error",e.responseText);
             }
         });
     })
@@ -86,8 +79,6 @@ function toUpdate(data){
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
         type:"GET",
-        beforeSend:function(){
-        },
         success:function(req){
             if(req.state){
                 let data = req.data
@@ -107,8 +98,6 @@ function remove(data){
             contentType : "application/json;charset=UTF-8",
             dataType:"json",
             type:"DELETE",
-            beforeSend:function(){
-            },
             success:function(req){
                 if(req.state){
                     success_swal(null)

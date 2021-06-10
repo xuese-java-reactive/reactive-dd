@@ -40,8 +40,6 @@ $(document).ready(function(){
             dataType:"json",
             data:JSON.stringify(formData),
             type:"POST",
-            beforeSend:function(){
-            },
             success:function(req){
                 if(req.state){
                     $('#form-add')[0].reset()
@@ -65,8 +63,6 @@ function findOrg(){
         contentType : "application/json;charset=UTF-8",
         dataType:"json",
         type:"GET",
-        beforeSend:function(){
-        },
         success:function(req){
             if(req.state){
                 initTree(req.data)
@@ -100,8 +96,6 @@ function renameItem(event, treeId, treeNode, clickFlag) {
             "name":treeNode.name
         }),
         type:"PUT",
-        beforeSend:function(){
-        },
         success:function(req){
             if(!req.state){
                 findOrg()
@@ -117,8 +111,6 @@ function removeItem(treeId, treeNode) {
        contentType : "application/json;charset=UTF-8",
        dataType:"json",
        type:"DELETE",
-       beforeSend:function(){
-       },
        success:function(req){
            if(!req.state){
                findOrg()
