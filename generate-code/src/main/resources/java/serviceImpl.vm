@@ -40,14 +40,14 @@ public class $serviceImplName implements $serviceName {
     public Mono<$modeName> save($modeName model) {
         model.setUuid(UUID.randomUUID().toString());
         return template.insert(model)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
     public Mono<$modeName> remove(String uuid) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), $mn)
                 .flatMap(f -> template.delete(f))
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class $serviceImplName implements $serviceName {
                     //}
                     return template.update(f);
                 })
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
@@ -83,6 +83,6 @@ public class $serviceImplName implements $serviceName {
     @Override
     public Mono<$modeName> one(String uuid) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), $mn)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 }

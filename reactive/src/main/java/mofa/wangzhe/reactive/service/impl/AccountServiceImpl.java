@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
         return template.selectOne(Query.query(Criteria.where("account").is(model.getAccount())), AccountModel.class)
                 .flatMap(f -> Mono.error(new Exception("账号重复")))
                 .switchIfEmpty(template.insert(model)
-                        .switchIfEmpty(Mono.error(new Exception("参数为空"))))
+                        .switchIfEmpty(Mono.error(new Exception("未查询到数据"))))
                 .cast(AccountModel.class);
 
     }
@@ -50,7 +50,7 @@ public class AccountServiceImpl implements AccountService {
     public Mono<AccountModel> remove(String uuid) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), AccountModel.class)
                 .flatMap(f -> template.delete(f))
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
                     }
                     return template.update(f);
                 })
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
@@ -92,12 +92,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Mono<AccountModel> one(String uuid) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), AccountModel.class)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
     public Mono<AccountModel> oneByAccount(String account) {
         return template.selectOne(Query.query(Criteria.where("account").is(account)), AccountModel.class)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 }

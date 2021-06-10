@@ -32,7 +32,7 @@ public class MenuServiceImpl implements MenuService {
     public Mono<MenuModel> save(MenuModel model) {
         model.setUuid(UUID.randomUUID().toString());
         return template.insert(model)
-                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MenuServiceImpl implements MenuService {
                         f.setPid(model.getPid());
                     }
                     return template.update(f)
-                            .switchIfEmpty(Mono.error(new Exception("参数为空")));
+                            .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
                 });
     }
 
