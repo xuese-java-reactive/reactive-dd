@@ -1,6 +1,7 @@
 package mofa.wangzhe.reactive.service;
 
 
+import lombok.NonNull;
 import mofa.wangzhe.reactive.model.MenuModel;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,5 +41,5 @@ public interface MenuService {
      * @param pid String
      * @return Flux<MenuModel>
      */
-    Flux<MenuModel> findAll(String pid);
+    Flux<MenuModel> findAll(@NonNull String pid);
 }

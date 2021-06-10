@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * springboot guanfang
+ * springBoot guanFang
  * //https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.spring-application
  * // * https://docs.spring.io/spring-boot/docs/2.4.6/reference/html/spring-boot-features.html#boot-features-webflux
  *

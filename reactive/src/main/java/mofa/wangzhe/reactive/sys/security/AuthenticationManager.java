@@ -6,6 +6,7 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -31,11 +32,13 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-//            TODO 根据accId查询数据库，获取角色、权限等信息
-//            List<String> rolesMap = new ArrayList<>(0);
-//            for (String rolemap : rolesMap) {
-//                authorities.add(new SimpleGrantedAuthority(rolemap));
-//            }
+//            所有权限
+            List<String> rolesMap = new ArrayList<>(0);
+            rolesMap.add("admin");
+
+            for (String roleMap : rolesMap) {
+                authorities.add(new SimpleGrantedAuthority(roleMap));
+            }
 
             return Mono.just(new UsernamePasswordAuthenticationToken(accId, token, authorities));
         } catch (NullPointerException e) {

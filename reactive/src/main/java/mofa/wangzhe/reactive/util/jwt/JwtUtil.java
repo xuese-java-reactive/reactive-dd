@@ -31,7 +31,7 @@ public class JwtUtil {
     /**
      * 签发者
      */
-    public static String ISS = "webFlux";
+    public static final String ISS = "webFlux";
 
     /**
      * 生成token

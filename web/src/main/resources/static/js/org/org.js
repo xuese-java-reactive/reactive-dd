@@ -77,7 +77,7 @@ function findOrg(){
 
 // 3.定义zTree树
 var zTreeObj;
-// 4.根据获取到的json数据展示ztree树
+// 4.根据获取到的json数据展示zTree树
 function initTree(data) {
     //第一个参数：树显示的位置，第二个参数：树的配置信息，第三个参数：要展示的数据
     zTreeObj = $.fn.zTree.init($("#tree"), setting, data);

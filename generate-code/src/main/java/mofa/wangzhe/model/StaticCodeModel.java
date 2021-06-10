@@ -1,5 +1,7 @@
 package mofa.wangzhe.model;
 
+import lombok.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -26,7 +28,7 @@ public class StaticCodeModel implements Serializable {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(@NonNull String author) {
         this.author = author;
     }
 

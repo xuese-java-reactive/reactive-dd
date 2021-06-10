@@ -94,4 +94,10 @@ public class AccountServiceImpl implements AccountService {
         return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), AccountModel.class)
                 .switchIfEmpty(Mono.error(new Exception("参数为空")));
     }
+
+    @Override
+    public Mono<AccountModel> oneByAccount(String account) {
+        return template.selectOne(Query.query(Criteria.where("account").is(account)), AccountModel.class)
+                .switchIfEmpty(Mono.error(new Exception("参数为空")));
+    }
 }

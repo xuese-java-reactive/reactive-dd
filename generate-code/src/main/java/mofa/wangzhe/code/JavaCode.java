@@ -29,6 +29,7 @@ public class JavaCode {
     }
 
     private static final VelocityContext CTX = new VelocityContext();
+
     private static final VelocityEngine VE = new VelocityEngine();
 
     public void code(String table, List<ColumnModel> columns) {

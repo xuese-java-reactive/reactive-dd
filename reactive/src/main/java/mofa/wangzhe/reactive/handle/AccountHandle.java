@@ -1,5 +1,6 @@
 package mofa.wangzhe.reactive.handle;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.model.AccountModel;
 import mofa.wangzhe.reactive.service.AccountService;
@@ -26,7 +27,7 @@ public class AccountHandle {
         this.service = service;
     }
 
-    public Mono<ServerResponse> save(ServerRequest request) {
+    public Mono<ServerResponse> save(@NonNull ServerRequest request) {
         return request.bodyToMono(AccountModel.class)
                 .flatMap(f -> this.service.save(f)
                         .flatMap(f2 -> ResultUtil2.ok(null)))

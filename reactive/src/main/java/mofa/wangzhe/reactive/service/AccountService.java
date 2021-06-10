@@ -54,4 +54,12 @@ public interface AccountService {
      */
     Mono<AccountModel> one(String uuid);
 
+    /**
+     * 根据account获取
+     *
+     * @param account String
+     * @return Mono<AccountModel>
+     */
+    Mono<AccountModel> oneByAccount(String account);
+
 }

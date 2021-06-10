@@ -7,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 /**
  * @author LD
  */
@@ -33,25 +31,11 @@ public class ResultUtil2 {
      */
     private Object data;
 
-    public static Mono<ServerResponse> ok(String msg, Object data) {
-        return ServerResponse
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new ResultUtil2(true, Objects.isNull(msg) ? "操作成功" : msg, data));
-    }
-
     public static Mono<ServerResponse> ok(Object data) {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new ResultUtil2(true, "操作成功", data));
-    }
-
-    public static Mono<ServerResponse> err(String msg, Object data) {
-        return ServerResponse
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new ResultUtil2(false, Objects.isNull(msg) ? "操作失败" : msg, data));
     }
 
     public static Mono<ServerResponse> err(String msg) {
