@@ -51,7 +51,7 @@
                     #foreach ($i in $columns)
                     #if ($!{i.columnName} != "uuid")
                     #set($add="-add")
-                    #set($cc=$!{i.columnComment})
+                    #set($cc=$!{i.columnName})
                     #set($mn="$cc$add")
                     <div class="form-group">
                         <label>$!{i.columnComment}</label>
@@ -93,7 +93,7 @@
                     #foreach ($i in $columns)
                     #if ($!{i.columnName} != "uuid")
                     #set($edit="-edit")
-                    #set($cc=$!{i.columnComment})
+                    #set($cc=$!{i.columnName})
                     #set($mn="$cc$edit")
                     <div class="form-group">
                         <label>$!{i.columnComment}</label>

@@ -25,7 +25,7 @@ let lang = {
     }
 };
 
-let tableSetting = function(path1,path2,columns){
+let tableSetting = function(path1,path2,columns,search,isSearch){
     return {
     //        关闭排序
         "ordering":false,
@@ -40,7 +40,7 @@ let tableSetting = function(path1,path2,columns){
         //为奇偶行加上样式，兼容不支持CSS伪类的场合
         "stripeClasses": ["odd", "even"],
     //        禁用原生搜索
-        "searching": true,
+        "searching": isSearch == undefined ? true : false,
 //        search pin lv
         "searchDelay": 400,
         "dom": '<"toolbar">frtip',
@@ -55,11 +55,10 @@ let tableSetting = function(path1,path2,columns){
                 url: "/api/"+path1+"/"+path2+"/"+data.length+"/"+(data.start / data.length),
                 cache: false,//禁用缓存
                 data: {
-                    "search": data.search.value
+                    "search": (search == undefined ? data.search.value : $('#'+search).val())
                 },
                 dataType: "json",
                 success: function (result) {
-                    console.log(result)
                     var returnData = {};
                     //这里直接自行返回了draw计数器,应该由后台返回
                     returnData.draw = data.draw;
@@ -86,8 +85,8 @@ let tableSetting = function(path1,path2,columns){
     }
 }
 
-var table = function(tableId,path1,path2,columns){
-    return $('#'+tableId).dataTable(tableSetting(path1,path2,columns)).api();
+var table = function(tableId,path1,path2,columns,search,isSearch){
+    return $('#'+tableId).dataTable(tableSetting(path1,path2,columns,search,isSearch)).api();
 }
 
 var tablesReload = function(t){

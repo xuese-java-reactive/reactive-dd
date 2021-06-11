@@ -20,7 +20,7 @@ import java.net.URI;
 public class SysRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> tttRouterFunction() {
+    public RouterFunction<ServerResponse> SysRouterFunction() {
         return RouterFunctions.nest(
                 RequestPredicates.path("/api").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 RouterFunctions.nest(

@@ -1,0 +1,65 @@
+<div class="wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>权限管理页面</h1>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-tools">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" id="search-input" value="no">
+                            <table id="table" class="table table-bordered table-hover">
+                            </table>
+                        </div>
+                        <div class="card-footer">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <button type="button" class="btn btn-success btn-xs add-button">确定</button>
+                            <div class="card-tools">
+                                <label>当前选择的账号：</label>
+                                <span id="select-acc-span"></span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-success btn-xs add-button">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+<div style="display:none;">
+    <form action="#" id="add-form">
+        <input type="hidden" name="accId" id="add-accId"/>
+        <input type="hidden" name="orgId" id="add-orgId"/>
+    </form>
+</div>
+
+<script src="/js/jur/jur.js"></script>

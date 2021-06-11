@@ -76,7 +76,13 @@ public class AccountServiceImpl implements AccountService {
     public Mono<Tuple2<Long, List<AccountModel>>> page(int pageSize, int pageNum, String search) {
         Query query;
         if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("account").like("%" + search + "%"));
+            query = Query.query(
+                    Criteria
+                            .where("account")
+                            .like("%" + search + "%")
+                            .or("org")
+                            .is(search)
+            );
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }

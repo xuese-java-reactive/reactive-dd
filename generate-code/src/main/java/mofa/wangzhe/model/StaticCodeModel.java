@@ -11,7 +11,7 @@ public class StaticCodeModel implements Serializable {
 
     private String author = "LD";
     private String modularName = "test";
-    private String modularNameText = "测试管理页面";
+    private String modularNameText = "管理页面";
     private String path = "";
     private String fileName = modularName;
     private boolean isReplace;
