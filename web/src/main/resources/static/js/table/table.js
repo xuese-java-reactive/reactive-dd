@@ -35,10 +35,6 @@ let tableSetting = function(path1,path2,columns){
         "processing": true,
     //        延迟渲染，提交初始加载速度
         "deferRender": true,
-    //        设置分页按钮
-    //        "pagingType": "first_last_numbers",
-    //        隐藏分页按钮
-    //        "paging":false,
     //        相关提示信息
         "language": lang,
         //为奇偶行加上样式，兼容不支持CSS伪类的场合
@@ -63,6 +59,7 @@ let tableSetting = function(path1,path2,columns){
                 },
                 dataType: "json",
                 success: function (result) {
+                    console.log(result)
                     var returnData = {};
                     //这里直接自行返回了draw计数器,应该由后台返回
                     returnData.draw = data.draw;

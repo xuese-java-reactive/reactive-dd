@@ -71,9 +71,9 @@ public class $serviceImplName implements $serviceName {
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
-        query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "uuid")));
+        Query query2 = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "uuid")));
 
-        Mono<List<$modeName>> listMono = template.select(query, $mn)
+        Mono<List<$modeName>> listMono = template.select(query2, $mn)
                 .collectList();
         Mono<Long> count = template.select(query, $mn)
                 .count();

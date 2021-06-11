@@ -80,9 +80,9 @@ public class AccountServiceImpl implements AccountService {
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
-        query = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "account")));
+        Query query2 = query.with(PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "account")));
 
-        Mono<List<AccountModel>> listMono = template.select(query, AccountModel.class)
+        Mono<List<AccountModel>> listMono = template.select(query2, AccountModel.class)
                 .map(m -> {
                     m.setPassword(null);
                     return m;
