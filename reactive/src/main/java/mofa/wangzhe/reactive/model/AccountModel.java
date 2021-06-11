@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -27,4 +28,9 @@ public class AccountModel {
     private String password;
 
     private int state;
+
+    private String org;
+
+    @Transient
+    private OrgModel orgModel = new OrgModel();
 }

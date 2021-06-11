@@ -1,3 +1,51 @@
+
+var setting = {
+    view:{
+        selectedMulti: false
+    },
+    callback:{
+        onClick: getItem
+    },
+    edit:{
+        enable:false,
+        drag: {
+            isCopy: false,//所有操作都是move
+            isMove: false,
+            prev: false,
+            next: false,
+            inner: false
+        }
+    }
+};
+// 3.定义zTree树
+var zTreeObj;
+// 4.根据获取到的json数据展示ztree树
+function initTree(data) {
+    //第一个参数：树显示的位置，第二个参数：树的配置信息，第三个参数：要展示的数据
+    zTreeObj = $.fn.zTree.init($("#tree"), setting, data);
+    //true：展开所有节点
+    zTreeObj.expandAll(true);
+}
+function getItem(event, treeId, treeNode, clickFlag) {
+    $('#org-edit').val(treeNode.uuid)
+    $('#org-name-edit').val(treeNode.name)
+    zTreeObj.selectNode(treeNode);
+}
+function findOrg(){
+    $.ajax({
+        url:"/api/org/org/0",
+        contentType : "application/json;charset=UTF-8",
+        dataType:"json",
+        type:"GET",
+        success:function(req){
+            if(req.state){
+                initTree(req.data)
+            }
+        }
+    });
+}
+
+
 var tb = table('table','account','account',[
     {
        "title": "序号",
@@ -9,6 +57,10 @@ var tb = table('table','account','account',[
     {
        "title": "账号",
        "data": "account"
+    },
+    {
+       "title": "组织机构",
+       "data": "orgModel.name"
     },
     {
         "title": "状态",
@@ -31,8 +83,11 @@ var tb = table('table','account','account',[
 ]);
 $("div.toolbar").prepend('<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-model" id="add-model-open-button">新增</button>');
 
-
 $(function(){
+
+//获取组织机构
+    findOrg()
+
     $("#add-form").on("submit", function (ev) {
         ev.preventDefault();
         let formData = $('#add-form').serializeObject();
@@ -121,6 +176,8 @@ function toUpdate(data){
                 $("#id-edit").val(data.uuid)
                 $("#account-edit").val(data.account)
                 $("#state-edit").val(data.state)
+                $('#org-edit').val(data.orgModel.uuid)
+                $('#org-name-edit').val(data.orgModel.name)
             }else{
                 error_swal(req.msg)
             }

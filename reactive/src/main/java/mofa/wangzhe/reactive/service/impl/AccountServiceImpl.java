@@ -1,6 +1,7 @@
 package mofa.wangzhe.reactive.service.impl;
 
 import mofa.wangzhe.reactive.model.AccountModel;
+import mofa.wangzhe.reactive.model.OrgModel;
 import mofa.wangzhe.reactive.service.AccountService;
 import mofa.wangzhe.reactive.util.md5.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,9 @@ public class AccountServiceImpl implements AccountService {
                     if (model.getState() != 0) {
                         f.setState(model.getState());
                     }
+                    if (StringUtils.hasText(model.getOrg())) {
+                        f.setOrg(model.getOrg());
+                    }
                     return template.update(f);
                 })
                 .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
@@ -83,6 +87,17 @@ public class AccountServiceImpl implements AccountService {
                     m.setPassword(null);
                     return m;
                 })
+                .flatMap(f -> {
+                    if (StringUtils.hasText(f.getOrg())) {
+                        return template.selectOne(Query.query(Criteria.where("uuid").is(f.getOrg())), OrgModel.class)
+                                .flatMap(f2 -> {
+                                    f.setOrgModel(f2);
+                                    return Mono.just(f);
+                                });
+                    } else {
+                        return Mono.just(f);
+                    }
+                })
                 .collectList();
         Mono<Long> count = template.select(query, AccountModel.class)
                 .count();
@@ -92,6 +107,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Mono<AccountModel> one(String uuid) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(uuid)), AccountModel.class)
+                .flatMap(f -> {
+                    if (StringUtils.hasText(f.getOrg())) {
+                        return template.selectOne(Query.query(Criteria.where("uuid").is(f.getOrg())), OrgModel.class)
+                                .flatMap(f2 -> {
+                                    f.setOrgModel(f2);
+                                    return Mono.just(f);
+                                });
+                    } else {
+                        return Mono.just(f);
+                    }
+                })
                 .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
     }
 

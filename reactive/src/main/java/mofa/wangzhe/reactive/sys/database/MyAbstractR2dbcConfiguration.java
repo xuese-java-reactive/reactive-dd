@@ -11,16 +11,7 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
  */
 
 @Configuration
-//@EnableR2dbcRepositories
 public class MyAbstractR2dbcConfiguration {
-//    extends
-//} AbstractR2dbcConfiguration {
-//
-//    @Override
-//    public ConnectionFactory connectionFactory() {
-//        return new ConnectionFactory() {
-//        }
-//    }
 
     @Autowired
     private ConnectionFactory connectionFactory;

@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @Slf4j
-@SpringBootApplication(scanBasePackages = {"mofa.wangzhe"})
+@SpringBootApplication(scanBasePackages = {"mofa.wangzhe", "mofa.wangzhe.reactive.interfaces"})
 public class ReactiveApplication {
 
     public static void main(String[] args) {

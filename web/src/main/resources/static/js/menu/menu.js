@@ -17,7 +17,7 @@ var setting = {
         drag: {
             isCopy: false,//所有操作都是move
             isMove: true,
-            prev: false,
+            prev: true,
             next: true,
             inner: true
         }
