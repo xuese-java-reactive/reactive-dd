@@ -30,7 +30,7 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         String path = request.path();
         Map<String, Object> map = super.getErrorAttributes(request, options);
         Throwable error = getError(request);
-        log.info("当前被拦截的请求路径：{},token未验证通过,err:{}", path, error.getMessage());
+        log.info("当前被拦截的请求路径：{},err:{}", path, error.getMessage());
         error.printStackTrace();
         if (error instanceof FileNotFoundException
                 || error instanceof ResponseStatusException

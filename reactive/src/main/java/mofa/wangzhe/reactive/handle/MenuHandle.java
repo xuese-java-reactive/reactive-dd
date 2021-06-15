@@ -1,10 +1,14 @@
 package mofa.wangzhe.reactive.handle;
 
+import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.model.MenuModel;
+import mofa.wangzhe.reactive.service.AccountService;
 import mofa.wangzhe.reactive.service.MenuService;
+import mofa.wangzhe.reactive.util.jwt.JwtUtil;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -23,12 +27,15 @@ import java.util.Objects;
 public class MenuHandle {
 
     private final MenuService service;
+    private final AccountService accountService;
 
     @Autowired
-    public MenuHandle(MenuService service) {
+    public MenuHandle(MenuService service, AccountService accountService) {
         this.service = service;
+        this.accountService = accountService;
     }
 
+    @PreAuthorize("hasRole('DEVELOPMENT')")
     public Mono<ServerResponse> save(ServerRequest request) {
         return request.bodyToMono(MenuModel.class)
                 .flatMap(f -> this.service.save(f)
@@ -36,6 +43,7 @@ public class MenuHandle {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
+    @PreAuthorize("hasRole('DEVELOPMENT')")
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         MenuModel model = new MenuModel();
@@ -44,6 +52,7 @@ public class MenuHandle {
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
+    @PreAuthorize("hasRole('DEVELOPMENT')")
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return request.bodyToMono(MenuModel.class)
@@ -70,15 +79,69 @@ public class MenuHandle {
     }
 
     public Mono<ServerResponse> list2(ServerRequest request) {
-        String auth = request.headers()
+        String token = request.headers()
                 .firstHeader("auth");
-        if (auth == null) {
+        if (token == null) {
             return Mono.error(new Exception("没有检测到令牌，请从新登录"));
         }
-        return this.service.findAll2(auth)
-                .collectList()
-                .flatMap(f -> Mono.just(getTreeList(f)))
-                .flatMap(ResultUtil2::ok);
+
+        Claim aud = JwtUtil.getClaim(token, "aud");
+        assert aud != null : "令牌错误，请从新登录";
+        return this.accountService.one(aud.asString())
+                .flatMap(fm -> {
+                    String development = "development", admins = "admins";
+                    if (Objects.equals(development, fm.getOrg())) {
+                        List<MenuModel> list = new ArrayList<>();
+                        MenuModel model = new MenuModel();
+                        model.setPid("0");
+                        model.setName("开发者菜单");
+                        model.setOrders(0);
+
+                        List<MenuModel> list2 = new ArrayList<>();
+                        MenuModel model1 = new MenuModel();
+                        model1.setName("系统特殊管理");
+                        model1.setOrders(0);
+                        model1.setP("sys/sys");
+                        list2.add(model1);
+                        MenuModel model2 = new MenuModel();
+                        model2.setName("菜单管理");
+                        model2.setOrders(1);
+                        model2.setP("menu/menu");
+                        list2.add(model2);
+
+                        model.setChildren(list2);
+                        list.add(model);
+                        return ResultUtil2.ok(list);
+                    } else if (Objects.equals(admins, fm.getOrg())) {
+                        List<MenuModel> list = new ArrayList<>();
+                        MenuModel model = new MenuModel();
+                        model.setPid("0");
+                        model.setName("超级管理员菜单");
+                        model.setOrders(0);
+
+                        List<MenuModel> list2 = new ArrayList<>();
+                        MenuModel model1 = new MenuModel();
+                        model1.setName("权限管理");
+                        model1.setOrders(0);
+                        model1.setP("jur/jur");
+                        list2.add(model1);
+                        MenuModel model2 = new MenuModel();
+                        model2.setName("组织机构管理");
+                        model2.setOrders(1);
+                        model2.setP("org/org");
+                        list2.add(model2);
+
+                        model.setChildren(list2);
+                        list.add(model);
+                        return ResultUtil2.ok(list);
+                    } else {
+                        return this.service.findAll2(aud.asString())
+                                .collectList()
+                                .flatMap(f -> Mono.just(getTreeList(f)))
+                                .flatMap(ResultUtil2::ok);
+                    }
+                })
+                .switchIfEmpty(ResultUtil2.err("logout"));
     }
 
     private static List<MenuModel> getTreeList(List<MenuModel> entityList) {

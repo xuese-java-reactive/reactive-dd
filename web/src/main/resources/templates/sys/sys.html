@@ -1,4 +1,34 @@
 <div class="wrapper">
-    <a href="/api/sys/shutdown">关机</a>
-    <a href="/api/sys/rest">重启</a>
+    <button type="button" class="btn btn-danger btn-xs" onclick="shutdown()">关机</button>
+    <button type="button" class="btn btn-danger btn-xs" onclick="rest()">重启</button>
 </div>
+<script style="text/javascript">
+    function shutdown(){
+        $.ajax({
+            url:"/api/sys/shutdown",
+            contentType: "application/json;charset=UTF-8",
+            dataType:"json",
+            type:"GET",
+        });
+    }
+
+    function rest(){
+        $.ajax({
+            url:"/api/sys/rest",
+            contentType: "application/json;charset=UTF-8",
+            dataType:"json",
+            type:"GET",
+            success:function(req){
+                window.location.replace("/");
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+</script>

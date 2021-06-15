@@ -71,7 +71,7 @@ $(function(){
                 if(req.state){
                     $(req.data).each(function(k,v){
                         let node = zTreeObj.getNodeByParam('uuid',v.menuId);
-                        zTreeObj.checkNode(node,true,true)
+                        zTreeObj.checkNode(node,true,false)
                     })
                 }else{
                     error_swal(req.msg)

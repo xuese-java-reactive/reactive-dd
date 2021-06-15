@@ -49,7 +49,6 @@ public class WebSecurityConfig {
                 .pathMatchers(
                         "/",
                         "/api/login/login",
-                        "/api/sys/**",
                         "/page/**",
                         "/webjars/**",
                         "/js/**",

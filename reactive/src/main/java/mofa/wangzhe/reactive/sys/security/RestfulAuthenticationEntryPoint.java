@@ -2,7 +2,6 @@ package mofa.wangzhe.reactive.sys.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -22,9 +21,8 @@ public class RestfulAuthenticationEntryPoint implements ServerAuthenticationEntr
 
     @Override
     public Mono<Void> commence(ServerWebExchange serverWebExchange, AuthenticationException e) {
-        log.error("当前路径【{}】验证token失败", serverWebExchange.getRequest().getPath());
+        log.error("当前路径【{}】被拦截: {}", serverWebExchange.getRequest().getPath(), e.getMessage());
         return Mono.create(m -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .contentType(MediaType.APPLICATION_JSON)
                 .body("logout", String.class));
     }
 }

@@ -36,12 +36,14 @@ public class JurServiceImpl implements JurService {
                     menuId = menuId.trim();
                     String[] split = menuId.split(",");
                     for (String s : split) {
-                        JurModel jurModel = new JurModel();
-                        jurModel.setUuid(UUID.randomUUID().toString());
-                        jurModel.setAccId(model.getAccId());
-                        jurModel.setMenuId(s);
-                        template.insert(jurModel)
-                                .subscribe();
+                        if (StringUtils.hasText(s)) {
+                            JurModel jurModel = new JurModel();
+                            jurModel.setUuid(UUID.randomUUID().toString());
+                            jurModel.setAccId(model.getAccId());
+                            jurModel.setMenuId(s);
+                            template.insert(jurModel)
+                                    .subscribe();
+                        }
                     }
                     return Mono.just(f);
                 });

@@ -12,6 +12,10 @@ $(document).ajaxSuccess(function(event,xhr,options){
 });
 
 $(document).ajaxError(function(event,xhr,options,exc){
+    if(xhr.status == 403){
+        alert("权限不足")
+        return
+    }
     if(xhr.responseText){
         var result = xhr.responseText;
         var json=eval("("+result+")");

@@ -99,10 +99,12 @@ function renameItem(event, treeId, treeNode, clickFlag) {
         }),
         success:function(req){
             if(!req.state){
-                findMenus()
                 error_swal(req.msg)
             }
-        }
+        },
+        complete:function(){
+            findMenus()
+       },
     });
 }
 
@@ -114,19 +116,16 @@ function removeItem(treeId, treeNode) {
        type:"DELETE",
        success:function(req){
            if(!req.state){
-               findMenus()
                error_swal(req.msg)
            }
-       }
+       },
+       complete:function(){
+            findMenus()
+       },
    });
 }
 
 function beforeDrag(treeId, treeNodes) {
-//    for (var i=0,l=treeNodes.length; i<l; i++) {
-//        if (treeNodes[i].pid === '0') {
-//            return false;
-//        }
-//    }
     return true;
 }
 function beforeDrop(treeId, treeNodes, targetNode, moveType) {
@@ -147,9 +146,11 @@ function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
         }),
         success:function(req){
             if(!req.state){
-                findMenus()
                 error_swal(req.msg)
             }
-        }
+        },
+        complete:function(){
+            findMenus()
+       },
     });
 }

@@ -7,6 +7,7 @@ import mofa.wangzhe.reactive.service.AccountService;
 import mofa.wangzhe.reactive.util.md5.Md5Util;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -27,6 +28,7 @@ public class AccountHandle {
         this.service = service;
     }
 
+    @PreAuthorize("hasAuthority('AccountHandle-save')")
     public Mono<ServerResponse> save(@NonNull ServerRequest request) {
         return request.bodyToMono(AccountModel.class)
                 .flatMap(f -> this.service.save(f)
@@ -34,12 +36,14 @@ public class AccountHandle {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
+    @PreAuthorize("hasAuthority('AccountHandle-remove')")
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return this.service.remove(uuid)
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
+    @PreAuthorize("hasAuthority('AccountHandle-update')")
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return request.bodyToMono(AccountModel.class)
@@ -51,6 +55,7 @@ public class AccountHandle {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
+    @PreAuthorize("hasAuthority('AccountHandle-rest')")
     public Mono<ServerResponse> rest(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         AccountModel model = new AccountModel();
@@ -65,6 +70,7 @@ public class AccountHandle {
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
+    @PreAuthorize("isAuthenticated()")
     public Mono<ServerResponse> page(ServerRequest request) {
         int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
         int pageNum = Integer.parseInt(request.pathVariable("pageNum"));
@@ -79,6 +85,7 @@ public class AccountHandle {
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
+    @PreAuthorize("isAuthenticated()")
     public Mono<ServerResponse> one(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return this.service.one(uuid)

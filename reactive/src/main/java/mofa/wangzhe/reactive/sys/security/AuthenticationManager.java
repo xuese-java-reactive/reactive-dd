@@ -1,7 +1,11 @@
 package mofa.wangzhe.reactive.sys.security;
 
+import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;
+import mofa.wangzhe.reactive.service.AccountService;
+import mofa.wangzhe.reactive.service.MenuService;
 import mofa.wangzhe.reactive.util.jwt.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,23 +28,36 @@ import java.util.Objects;
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
 
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private MenuService menuService;
+
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
         String token = authentication.getCredentials().toString();
         try {
-            String accId = Objects.requireNonNull(JwtUtil.getClaim(token, "aud")).asString();
+            Claim aud = JwtUtil.getClaim(token, "aud");
+            assert aud != null : "令牌错误，请从新登录";
+            String accId = aud.asString();
 
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-//            所有权限
-            List<String> rolesMap = new ArrayList<>(0);
-            rolesMap.add("admin");
-
-            for (String roleMap : rolesMap) {
-                authorities.add(new SimpleGrantedAuthority(roleMap));
-            }
-
-            return Mono.just(new UsernamePasswordAuthenticationToken(accId, token, authorities));
+            return accountService.one(accId)
+                    .flatMap(f -> {
+                        if (Objects.equals("development", f.getOrg())) {
+                            authorities.add(new SimpleGrantedAuthority("ROLE_DEVELOPMENT"));
+                        } else if (Objects.equals("admins", f.getOrg())) {
+                            authorities.add(new SimpleGrantedAuthority("ROLE_ADMINS"));
+                        } else {
+                            menuService.findAll2(accId)
+                                    .flatMap(fm -> {
+                                        authorities.add(new SimpleGrantedAuthority(fm.getP()));
+                                        return Mono.empty();
+                                    });
+                        }
+                        return Mono.just(new UsernamePasswordAuthenticationToken(accId, token, authorities));
+                    });
         } catch (NullPointerException e) {
             return Mono.empty();
         }

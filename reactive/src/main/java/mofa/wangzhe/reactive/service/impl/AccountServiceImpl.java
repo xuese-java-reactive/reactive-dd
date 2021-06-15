@@ -99,7 +99,8 @@ public class AccountServiceImpl implements AccountService {
                                 .flatMap(f2 -> {
                                     f.setOrgModel(f2);
                                     return Mono.just(f);
-                                });
+                                })
+                                .switchIfEmpty(Mono.just(f));
                     } else {
                         return Mono.just(f);
                     }
@@ -119,7 +120,8 @@ public class AccountServiceImpl implements AccountService {
                                 .flatMap(f2 -> {
                                     f.setOrgModel(f2);
                                     return Mono.just(f);
-                                });
+                                })
+                                .switchIfEmpty(Mono.just(f));
                     } else {
                         return Mono.just(f);
                     }
