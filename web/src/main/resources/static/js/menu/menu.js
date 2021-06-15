@@ -1,6 +1,7 @@
 var setting = {
     view:{
-        selectedMulti: false
+        selectedMulti: false,
+        showIcon: false
     },
     callback:{
         onClick: getItem,
