@@ -34,6 +34,9 @@ public class MenuRouter {
                         ).andRoute(
                                 RequestPredicates.GET("/menu/{pid}"),
                                 handle::list
+                        ).andRoute(
+                                RequestPredicates.GET("/menu/jur/{pid}"),
+                                handle::list2
                         )
                 )
         );

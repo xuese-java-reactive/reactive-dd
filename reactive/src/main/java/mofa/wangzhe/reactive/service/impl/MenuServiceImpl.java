@@ -1,7 +1,10 @@
 package mofa.wangzhe.reactive.service.impl;
 
+import com.auth0.jwt.interfaces.Claim;
+import mofa.wangzhe.reactive.model.JurModel;
 import mofa.wangzhe.reactive.model.MenuModel;
 import mofa.wangzhe.reactive.service.MenuService;
+import mofa.wangzhe.reactive.util.jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -70,5 +73,19 @@ public class MenuServiceImpl implements MenuService {
         return template.select(MenuModel.class)
                 .matching(Query.empty().sort(Sort.by(Sort.Order.asc("orders"))))
                 .all();
+    }
+
+    @Override
+    public Flux<MenuModel> findAll2(String auth) {
+        Claim aud = JwtUtil.getClaim(auth, "aud");
+        if (aud == null) {
+            return Flux.error(new Exception("令牌解析错误,可以尝试刷新后从新请求"));
+        }
+        return template.select(JurModel.class)
+                .matching(Query.query(Criteria.where("acc_id").is(aud.asString())))
+                .all()
+                .flatMap(f -> template.select(Query.query(
+                        Criteria.where("uuid").in(f.getMenuId())), MenuModel.class
+                ));
     }
 }

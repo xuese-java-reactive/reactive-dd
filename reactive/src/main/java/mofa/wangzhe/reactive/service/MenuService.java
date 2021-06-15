@@ -17,7 +17,7 @@ public interface MenuService {
      * @param model MenuModel
      * @return Mono<MenuModel>
      */
-    Mono<MenuModel> save(MenuModel model);
+    Mono<MenuModel> save(@NonNull MenuModel model);
 
     /**
      * 删除
@@ -25,7 +25,7 @@ public interface MenuService {
      * @param model MenuModel
      * @return Mono<MenuModel>
      */
-    Mono<MenuModel> remove(MenuModel model);
+    Mono<MenuModel> remove(@NonNull MenuModel model);
 
     /**
      * 修改
@@ -33,7 +33,7 @@ public interface MenuService {
      * @param model MenuModel
      * @return Mono<MenuModel>
      */
-    Mono<MenuModel> update(MenuModel model);
+    Mono<MenuModel> update(@NonNull MenuModel model);
 
     /**
      * gen ju pid huo qu
@@ -42,4 +42,6 @@ public interface MenuService {
      * @return Flux<MenuModel>
      */
     Flux<MenuModel> findAll(@NonNull String pid);
+
+    Flux<MenuModel> findAll2(@NonNull String auth);
 }

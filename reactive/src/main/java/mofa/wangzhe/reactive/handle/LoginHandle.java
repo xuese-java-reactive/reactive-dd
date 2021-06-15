@@ -44,7 +44,7 @@ public class LoginHandle {
                                 .flatMap(fm -> {
                                     String md5Str = Md5Util.getMd5Str(f.getPassword());
                                     if (Objects.equals(md5Str, fm.getPassword())) {
-                                        String jwt = jwtUtil.createJwt(String.valueOf(1), f.getAccount());
+                                        String jwt = jwtUtil.createJwt(fm.getUuid());
                                         return ResultUtil2.ok(jwt);
                                     } else {
                                         return ResultUtil2.err("账号或密码错误");

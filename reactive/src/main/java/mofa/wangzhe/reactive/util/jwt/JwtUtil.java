@@ -39,7 +39,7 @@ public class JwtUtil {
      * @param userId 用户id
      * @return token串
      */
-    public String createJwt(String userId, String account) {
+    public String createJwt(String userId) {
 
         Calendar instance = Calendar.getInstance();
         Date time1 = instance.getTime();
@@ -54,8 +54,6 @@ public class JwtUtil {
         return JWT.create()
 //                头部
                 .withHeader(heardMap)
-//                当前登陆人账号
-                .withClaim("user", account)
 //                签发者
                 .withIssuer(ISS)
 //                接收者信息，一般是登录的用户

@@ -4,7 +4,7 @@ $(function(){
 
 function getMenus(){
     $.ajax({
-        url:'/api/menu/menu/0',
+        url:'/api/menu/menu/jur/0',
         dataType:"json",
         type:"GET",
         beforeSend:function(){

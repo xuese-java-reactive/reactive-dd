@@ -69,6 +69,18 @@ public class MenuHandle {
                 .flatMap(ResultUtil2::ok);
     }
 
+    public Mono<ServerResponse> list2(ServerRequest request) {
+        String auth = request.headers()
+                .firstHeader("auth");
+        if (auth == null) {
+            return Mono.error(new Exception("没有检测到令牌，请从新登录"));
+        }
+        return this.service.findAll2(auth)
+                .collectList()
+                .flatMap(f -> Mono.just(getTreeList(f)))
+                .flatMap(ResultUtil2::ok);
+    }
+
     private static List<MenuModel> getTreeList(List<MenuModel> entityList) {
         List<MenuModel> resultList = new ArrayList<>();
         //获取顶层元素集合
