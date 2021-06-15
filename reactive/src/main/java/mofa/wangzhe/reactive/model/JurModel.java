@@ -30,5 +30,4 @@ public class JurModel {
     @Column("acc_id")
     private String accId;
 
-
 }

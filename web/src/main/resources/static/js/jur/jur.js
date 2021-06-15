@@ -1,22 +1,14 @@
 var setting = {
     check: {
-        enable: true
+        enable: true,
+        chkboxType: {"Y":"","N":""}
     },
     view:{
-        selectedMulti: false
+        selectedMulti: false,
+        showIcon: false
     },
     callback:{
-        onClick: getItem
-    },
-    edit:{
-        enable:false,
-        drag: {
-            isCopy: false,//所有操作都是move
-            isMove: false,
-            prev: false,
-            next: false,
-            inner: false
-        }
+        onClick: getItem,
     }
 };
 // 3.定义zTree树
@@ -32,7 +24,6 @@ function initTree(data) {
 function getItem(event, treeId, treeNode, clickFlag) {
     zTreeObj.selectNode(treeNode);
 }
-
 
 var tb = table('table','account','account',[
     {
@@ -71,10 +62,17 @@ $(function(){
             beforeSend:function(xhr) {
                  $("#select-acc-span").text(account)
                  $("#select-acc-span").attr("data-id",uuid)
+                 let nodes = zTreeObj.getCheckedNodes();
+                 $(nodes).each(function(k,v){
+                    zTreeObj.checkNode(v,false,false)
+                 })
             },
             success:function(req){
                 if(req.state){
-                    console.log(req.data)
+                    $(req.data).each(function(k,v){
+                        let node = zTreeObj.getNodeByParam('uuid',v.menuId);
+                        zTreeObj.checkNode(node,true,true)
+                    })
                 }else{
                     error_swal(req.msg)
                 }
