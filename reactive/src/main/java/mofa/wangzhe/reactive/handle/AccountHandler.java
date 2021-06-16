@@ -19,16 +19,16 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class AccountHandle {
+public class AccountHandler {
 
     private final AccountService service;
 
     @Autowired
-    public AccountHandle(AccountService service) {
+    public AccountHandler(AccountService service) {
         this.service = service;
     }
 
-    @PreAuthorize("hasAuthority('AccountHandle-save')")
+    @PreAuthorize("hasAuthority('AccountHandler-save')")
     public Mono<ServerResponse> save(@NonNull ServerRequest request) {
         return request.bodyToMono(AccountModel.class)
                 .flatMap(f -> this.service.save(f)
@@ -36,14 +36,14 @@ public class AccountHandle {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
-    @PreAuthorize("hasAuthority('AccountHandle-remove')")
+    @PreAuthorize("hasAuthority('AccountHandler-remove')")
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return this.service.remove(uuid)
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
-    @PreAuthorize("hasAuthority('AccountHandle-update')")
+    @PreAuthorize("hasAuthority('AccountHandler-update')")
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return request.bodyToMono(AccountModel.class)
@@ -55,7 +55,7 @@ public class AccountHandle {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
-    @PreAuthorize("hasAuthority('AccountHandle-rest')")
+    @PreAuthorize("hasAuthority('AccountHandler-rest')")
     public Mono<ServerResponse> rest(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         AccountModel model = new AccountModel();
@@ -70,7 +70,7 @@ public class AccountHandle {
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('AccountHandler')")
     public Mono<ServerResponse> page(ServerRequest request) {
         int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
         int pageNum = Integer.parseInt(request.pathVariable("pageNum"));

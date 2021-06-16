@@ -1,6 +1,6 @@
 package mofa.wangzhe.reactive.router;
 
-import mofa.wangzhe.reactive.handle.MenuHandle;
+import mofa.wangzhe.reactive.handle.MenuHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class MenuRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> menuRouterFunction(MenuHandle handle) {
+    public RouterFunction<ServerResponse> menuRouterFunction(MenuHandler handle) {
         return RouterFunctions.nest(
                 RequestPredicates.path("/api").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 RouterFunctions.nest(

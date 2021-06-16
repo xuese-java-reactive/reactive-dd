@@ -20,13 +20,13 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class LoginHandle {
+public class LoginHandler {
 
     private final AccountService service;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public LoginHandle(AccountService service, JwtUtil jwtUtil) {
+    public LoginHandler(AccountService service, JwtUtil jwtUtil) {
         this.service = service;
         this.jwtUtil = jwtUtil;
     }

@@ -24,13 +24,13 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class MenuHandle {
+public class MenuHandler {
 
     private final MenuService service;
     private final AccountService accountService;
 
     @Autowired
-    public MenuHandle(MenuService service, AccountService accountService) {
+    public MenuHandler(MenuService service, AccountService accountService) {
         this.service = service;
         this.accountService = accountService;
     }

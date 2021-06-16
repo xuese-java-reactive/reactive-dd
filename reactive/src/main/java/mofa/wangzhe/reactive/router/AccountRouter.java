@@ -1,6 +1,6 @@
 package mofa.wangzhe.reactive.router;
 
-import mofa.wangzhe.reactive.handle.AccountHandle;
+import mofa.wangzhe.reactive.handle.AccountHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class AccountRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> accountRouterFunction(AccountHandle handle) {
+    public RouterFunction<ServerResponse> accountRouterFunction(AccountHandler handle) {
         return RouterFunctions.nest(
                 RequestPredicates.path("/api").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 RouterFunctions.nest(

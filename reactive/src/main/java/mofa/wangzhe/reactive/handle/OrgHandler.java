@@ -21,12 +21,12 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class OrgHandle {
+public class OrgHandler {
 
     private final OrgService service;
 
     @Autowired
-    public OrgHandle(OrgService service) {
+    public OrgHandler(OrgService service) {
         this.service = service;
     }
 

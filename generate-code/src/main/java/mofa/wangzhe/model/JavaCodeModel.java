@@ -24,7 +24,7 @@ public class JavaCodeModel implements Serializable {
     private String packageRouterPath = packageParentPath + packageRouter;
     private String packageModel = "model";
     private String packageModelPath = packageParentPath + packageModel;
-    private String packageHandle = "handle";
+    private String packageHandle = "handler";
     private String packageHandlePath = packageParentPath + packageHandle;
     private String packageService = "service";
     private String packageServicePath = packageParentPath + packageService;

@@ -1,7 +1,9 @@
 var setting = {
     view:{
+        showLine: false,
         selectedMulti: false,
-        showIcon: false
+        showIcon: false,
+        addDiyDom: addDiyDom
     },
     callback:{
         onClick: getItem,
@@ -153,4 +155,13 @@ function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
             findMenus()
        },
     });
+}
+
+/**
+ * 自定义DOM节点
+ */
+function addDiyDom(treeId, treeNode) {
+    console.log(treeNode)
+    let tId = treeNode.tId
+    $("#"+tId+"_ul").before()
 }

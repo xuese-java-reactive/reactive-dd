@@ -16,7 +16,7 @@ import java.net.URI;
 
 @Slf4j
 @Component
-public class SysHandle {
+public class SysHandler {
 
     @PreAuthorize("hasRole('DEVELOPMENT')")
     public Mono<ServerResponse> shutdown(ServerRequest request) {

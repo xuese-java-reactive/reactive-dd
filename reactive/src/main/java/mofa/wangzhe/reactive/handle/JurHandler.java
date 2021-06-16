@@ -17,12 +17,12 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class JurHandle {
+public class JurHandler {
 
     private final JurService service;
 
     @Autowired
-    public JurHandle(JurService service) {
+    public JurHandler(JurService service) {
         this.service = service;
     }
 
