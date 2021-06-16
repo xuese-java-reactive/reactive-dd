@@ -70,7 +70,7 @@ public class AccountHandler {
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
-    @PreAuthorize("hasAuthority('AccountHandler')")
+    @PreAuthorize("hasAuthority('AccountHandler') or hasAnyRole('ROLE_ADMINS')")
     public Mono<ServerResponse> page(ServerRequest request) {
         int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
         int pageNum = Integer.parseInt(request.pathVariable("pageNum"));

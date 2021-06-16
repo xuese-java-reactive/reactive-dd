@@ -2,6 +2,7 @@ package mofa.wangzhe.reactive.handle;
 
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.Sys;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -18,13 +19,13 @@ import java.net.URI;
 @Component
 public class SysHandler {
 
-    @PreAuthorize("hasRole('DEVELOPMENT')")
+    @Secured("DEVELOPMENT")
     public Mono<ServerResponse> shutdown(ServerRequest request) {
         Sys.shutdown();
         return Mono.empty();
     }
 
-    @PreAuthorize("hasRole('DEVELOPMENT')")
+    @Secured("DEVELOPMENT")
     public Mono<ServerResponse> rest(ServerRequest request) {
         Sys.rest();
         return ServerResponse

@@ -163,5 +163,6 @@ function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
 function addDiyDom(treeId, treeNode) {
     console.log(treeNode)
     let tId = treeNode.tId
-    $("#"+tId+"_ul").before()
+    $("#"+tId).empty()
+    $("#"+tId).append("<div>"+treeNode.name+"</div>")
 }

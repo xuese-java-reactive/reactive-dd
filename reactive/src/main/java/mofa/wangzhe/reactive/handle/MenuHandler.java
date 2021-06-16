@@ -8,6 +8,7 @@ import mofa.wangzhe.reactive.service.MenuService;
 import mofa.wangzhe.reactive.util.jwt.JwtUtil;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -35,7 +36,7 @@ public class MenuHandler {
         this.accountService = accountService;
     }
 
-    @PreAuthorize("hasRole('DEVELOPMENT')")
+    @Secured("DEVELOPMENT")
     public Mono<ServerResponse> save(ServerRequest request) {
         return request.bodyToMono(MenuModel.class)
                 .flatMap(f -> this.service.save(f)
@@ -43,7 +44,7 @@ public class MenuHandler {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
-    @PreAuthorize("hasRole('DEVELOPMENT')")
+    @Secured("DEVELOPMENT")
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         MenuModel model = new MenuModel();
@@ -52,7 +53,7 @@ public class MenuHandler {
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
-    @PreAuthorize("hasRole('DEVELOPMENT')")
+    @Secured("DEVELOPMENT")
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return request.bodyToMono(MenuModel.class)

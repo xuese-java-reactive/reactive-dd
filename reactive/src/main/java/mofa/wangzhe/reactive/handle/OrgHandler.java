@@ -5,6 +5,7 @@ import mofa.wangzhe.reactive.model.OrgModel;
 import mofa.wangzhe.reactive.service.OrgService;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -30,7 +31,7 @@ public class OrgHandler {
         this.service = service;
     }
 
-    @PreAuthorize("hasRole('ADMINS')")
+    @Secured("ADMINS")
     public Mono<ServerResponse> save(ServerRequest request) {
         return request.bodyToMono(OrgModel.class)
                 .flatMap(f -> this.service.save(f)
@@ -38,7 +39,7 @@ public class OrgHandler {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
-    @PreAuthorize("hasRole('ADMINS')")
+    @Secured("ADMINS")
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         OrgModel model = new OrgModel();
@@ -47,7 +48,7 @@ public class OrgHandler {
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
-    @PreAuthorize("hasRole('ADMINS')")
+    @Secured("ADMINS")
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return request.bodyToMono(OrgModel.class)
