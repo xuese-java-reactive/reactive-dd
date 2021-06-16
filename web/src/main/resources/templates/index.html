@@ -6,12 +6,13 @@
     <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.1.0/plugins/fontawesome-free/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.1.0/dist/css/adminlte.min.css}">
 </head>
-<body class="login-page" style="min-height: 466px;">
+<body class="login-page"
+      style="min-height: 466px;background-image:url('/img/5246.jpg_wh860.jpg');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="login-box">
     <!-- /.login-logo -->
-    <div class="card card-outline card-primary">
+    <div class="card card-outline card-primary" style="background: rgba(240,240,240, 0.5);">
         <div class="card-header text-center">
-            <a href="#" class="h1"><b>登&nbsp;&nbsp;&nbsp;录</b></a>
+            <a href="#" class="h1" style="color:#007bff;"><b>登&nbsp;&nbsp;&nbsp;录</b></a>
         </div>
         <div class="card-body">
 
@@ -20,23 +21,27 @@
                     <!--                    <input type="email" class="form-control" placeholder="Email" required-->
                     <!--                           name="account"-->
                     <!--                           value="123@qq.com">-->
-                    <select name="account" class="form-control">
+                    <select name="account" class="form-control" style="background: rgba(240,240,240, 0.5);color:#007bff;">
                         <option value="122222@qq.com">用户1</option>
                         <option value="admins@qq.com">超级管理员</option>
                         <option value="development@qq.com">开发者</option>
                     </select>
                     <div class="input-group-append">
-                        <div class="input-group-text">
+                        <div class="input-group-text" style="background: rgba(240,240,240, 0.5);color:#007bff;">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password" required
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Password"
+                           style="background: rgba(240,240,240, 0.5);color:#007bff;"
+                           required
                            name="password"
                            value="123456">
                     <div class="input-group-append">
-                        <div class="input-group-text">
+                        <div class="input-group-text" style="background: rgba(240,240,240, 0.5);color:#007bff;">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
