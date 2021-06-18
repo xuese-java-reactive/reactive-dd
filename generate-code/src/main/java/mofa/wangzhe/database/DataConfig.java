@@ -2,6 +2,7 @@ package mofa.wangzhe.database;
 
 import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.DataConfigModel;
+import mofa.wangzhe.model.TableModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class DataConfig {
      *
      * @return List<String>
      */
-    private List<String> tables() {
+    private List<TableModel> tables() {
         final String sql1 = "SELECT" +
                 "    A.TABLE_SCHEMA '数据库'," +
                 "    A.TABLE_NAME 'table_name'," +
@@ -54,7 +55,7 @@ public class DataConfig {
                 " FROM INFORMATION_SCHEMA.TABLES A" +
                 " WHERE" +
                 "    A.TABLE_SCHEMA = ";
-        List<String> list = new ArrayList<>();
+        List<TableModel> list = new ArrayList<>();
         try (
                 Connection conn = link();
                 Statement stmt = conn.createStatement();
@@ -64,7 +65,11 @@ public class DataConfig {
             while (rs.next()) {
                 // 获取所有表名
                 String tableName = rs.getString("table_name");
-                list.add(tableName);
+                String remarks = rs.getString("table_remarks");
+                TableModel model = new TableModel();
+                model.setTableName(tableName);
+                model.setTableComment(remarks);
+                list.add(model);
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -129,11 +134,11 @@ public class DataConfig {
         return list;
     }
 
-    public Map<String, List<ColumnModel>> dataTables() {
-        Map<String, List<ColumnModel>> map = new HashMap<>(0);
-        List<String> tables = tables();
+    public Map<TableModel, List<ColumnModel>> dataTables() {
+        Map<TableModel, List<ColumnModel>> map = new HashMap<>(0);
+        List<TableModel> tables = tables();
         tables.forEach(k -> {
-            List<ColumnModel> columns = columns(k);
+            List<ColumnModel> columns = columns(k.getTableName());
             map.put(k, columns);
         });
         return map;

@@ -3,6 +3,7 @@ package mofa.wangzhe.code;
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.JavaCodeModel;
+import mofa.wangzhe.model.TableModel;
 import mofa.wangzhe.util.PathUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -32,7 +33,7 @@ public class JavaCode {
 
     private static final VelocityEngine VE = new VelocityEngine();
 
-    public void code(String table, List<ColumnModel> columns) {
+    public void code(TableModel tableModel, List<ColumnModel> columns) {
 
         VE.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
@@ -41,6 +42,7 @@ public class JavaCode {
 //        java文件首字母大写
         String s = javaCodeModel.getTableNo();
         String tt;
+        String table = tableModel.getTableName();
         if (s != null && !"".equals(s)) {
             tt = table.replaceAll(s, "");
         } else {
@@ -51,6 +53,7 @@ public class JavaCode {
         javaCodeModel.setModularPrefix(t);
 
         log.info("开始生成java文件");
+        CTX.put("tableComment", tableModel.getTableComment());
         CTX.put("author", javaCodeModel.getAuthor());
         CTX.put("tableName", table);
         CTX.put("routerPath", tt);

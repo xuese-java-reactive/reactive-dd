@@ -1,10 +1,7 @@
 package mofa.wangzhe.code;
 
 import mofa.wangzhe.database.DataConfig;
-import mofa.wangzhe.model.ColumnModel;
-import mofa.wangzhe.model.DataConfigModel;
-import mofa.wangzhe.model.JavaCodeModel;
-import mofa.wangzhe.model.StaticCodeModel;
+import mofa.wangzhe.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +32,7 @@ public class MainCode {
      * 生成java文件
      */
     private static void java(DataConfig dataConfig) {
-        Map<String, List<ColumnModel>> map = dataConfig.dataTables();
+        Map<TableModel, List<ColumnModel>> map = dataConfig.dataTables();
         map.forEach((f, v) -> {
             JavaCodeModel javaCodeModel = new JavaCodeModel();
             javaCodeModel.setTableNo("_table");
@@ -48,14 +45,15 @@ public class MainCode {
      * 生成static文件
      */
     private static void statics(DataConfig dataConfig) {
-        Map<String, List<ColumnModel>> map = dataConfig.dataTables();
-        map.forEach((f, v) -> {
+        Map<TableModel, List<ColumnModel>> map = dataConfig.dataTables();
+        map.forEach((k, v) -> {
+            String f = k.getTableName();
             f = f.replaceAll("_table", "");
             StaticCodeModel staticCodeModel = new StaticCodeModel();
             staticCodeModel.setModularName(f);
             staticCodeModel.setFileName(f);
             StaticCode staticCode = new StaticCode(staticCodeModel, dataConfig);
-            staticCode.code(v);
+            staticCode.code(k, v);
         });
     }
 }

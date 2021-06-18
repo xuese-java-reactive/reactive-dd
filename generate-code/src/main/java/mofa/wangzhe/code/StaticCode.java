@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.database.DataConfig;
 import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.StaticCodeModel;
+import mofa.wangzhe.model.TableModel;
 import mofa.wangzhe.util.PathUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -35,13 +36,15 @@ public class StaticCode {
     private static final VelocityContext CTX = new VelocityContext();
     private static final VelocityEngine VE = new VelocityEngine();
 
-    public void code(List<ColumnModel> columns) {
+    public void code(TableModel tableModel, List<ColumnModel> columns) {
 
         VE.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         VE.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         VE.init();
 
         log.info("开始生成静态文件");
+        CTX.put("tableComment", tableModel.getTableComment());
+        staticCodeModel.setModularNameText(tableModel.getTableComment());
         CTX.put("author", staticCodeModel.getAuthor());
         CTX.put("fileName", staticCodeModel.getFileName());
         CTX.put("modularName", staticCodeModel.getModularName());
