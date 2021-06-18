@@ -21,20 +21,20 @@ public class MainCode {
      * @param statics 是否生成静态资源文件
      */
     public static void grenCode(boolean java, boolean statics) {
+        DataConfigModel cfgModel = new DataConfigModel();
+        DataConfig dataConfig = new DataConfig(cfgModel);
         if (java) {
-            java();
+            java(dataConfig);
         }
         if (statics) {
-            statics();
+            statics(dataConfig);
         }
     }
 
     /**
      * 生成java文件
      */
-    private static void java() {
-        DataConfigModel cfgModel = new DataConfigModel();
-        DataConfig dataConfig = new DataConfig(cfgModel);
+    private static void java(DataConfig dataConfig) {
         Map<String, List<ColumnModel>> map = dataConfig.dataTables();
         map.forEach((f, v) -> {
             JavaCodeModel javaCodeModel = new JavaCodeModel();
@@ -47,9 +47,7 @@ public class MainCode {
     /**
      * 生成static文件
      */
-    private static void statics() {
-        DataConfigModel cfgModel = new DataConfigModel();
-        DataConfig dataConfig = new DataConfig(cfgModel);
+    private static void statics(DataConfig dataConfig) {
         Map<String, List<ColumnModel>> map = dataConfig.dataTables();
         map.forEach((f, v) -> {
             f = f.replaceAll("_table", "");
