@@ -161,8 +161,32 @@ function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
  * 自定义DOM节点
  */
 function addDiyDom(treeId, treeNode) {
-    console.log(treeNode)
-    let tId = treeNode.tId
-    $("#"+tId).empty()
-    $("#"+tId).append("<div>"+treeNode.name+"</div>")
+    var spaceWidth = 15;
+    var liObj = $("#" + treeNode.tId);
+    var aObj = $("#" + treeNode.tId + "_a");
+    var switchObj = $("#" + treeNode.tId + "_switch");
+    var icoObj = $("#" + treeNode.tId + "_ico");
+    var spanObj = $("#" + treeNode.tId + "_span");
+    aObj.attr('title', '');
+    aObj.append('<div class="divTd swich fnt" style="width:60%"></div>');
+    var div = $(liObj).find('div').eq(0);
+    //从默认的位置移除
+    switchObj.remove();
+    spanObj.remove();
+    icoObj.remove();
+    //在指定的div中添加
+    div.append(switchObj);
+    div.append(spanObj);
+    //隐藏了层次的span
+    var spaceStr = "<span style='height:1px;display: inline-block;width:" + (spaceWidth * treeNode.level) + "px'></span>";
+    switchObj.before(spaceStr);
+    //图标垂直居中
+    icoObj.css("margin-top","9px");
+    switchObj.after(icoObj);
+    var editStr = '';
+    //宽度需要和表头保持一致
+    editStr += '<div class="divTd" style="width:20%">' + (treeNode.typecode  == null ? '' : treeNode.typecode ) + '</div>';
+    editStr += '<div class="divTd" style="width:10%">' + (treeNode.status == '1' ? '有效' : '无效' ) + '</div>';
+    editStr += '<div class="divTd" style="width:10%">' + opt(treeNode) + '</div>';
+    aObj.append(editStr);
 }
