@@ -111,7 +111,9 @@ public class $serviceImplName implements $serviceName {
 
         Query query;
         if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("uuid").like("%"+search+"%"));
+            Criteria criteria = Criteria.where("uuid").like("%" + search + "%");
+            //criteria.and("uuid").is("");
+            query = Query.query(criteria);
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
