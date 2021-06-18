@@ -54,9 +54,53 @@ public class $serviceImplName implements $serviceName {
     public Mono<$modeName> update($modeName model) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(model.getUuid())), $mn)
                 .flatMap(f -> {
-                    //if (StringUtils.hasText(model.getPassword())) {
-                    //    f.setPassword(model.getPassword());
-                    //}
+                    #foreach ($i in $columns)
+                        #if ($!{i.columnName} != "uuid")
+                            #if ($!{i.dataType} == "Date")
+                            #set($columnName=$!{i.columnName})
+                            #set($AttrName=$columnName.substring(0,1).toUpperCase() + $columnName.substring(1))
+                            #set($par1="model.get")
+                            #set($par2="()")
+                            #set($gets="$par1$AttrName$par2")
+                            #set($par11="f.set")
+                            #set($par21="(")
+                            #set($par22=")")
+                            #set($sets="$par11$AttrName$par21$gets$par22")
+                    if ($gets != null) {
+                        $sets;
+                            #end
+                            #if ($!{i.dataType} == "Integer")
+                            #set($columnName=$!{i.columnName})
+                            #set($AttrName=$columnName.substring(0,1).toUpperCase() + $columnName.substring(1))
+                            #set($par1="model.get")
+                            #set($par2="()")
+                            #set($gets="$par1$AttrName$par2")
+                            #set($par11="f.set")
+                            #set($par21="(")
+                            #set($par22=")")
+                            #set($sets="$par11$AttrName$par21$gets$par22")
+                    if ($gets > 0) {
+                        $sets;
+                            #end
+                            #if ($!{i.dataType} == "String")
+                            #set($columnName=$!{i.columnName})
+                            #set($AttrName=$columnName.substring(0,1).toUpperCase() + $columnName.substring(1))
+                            #set($par1="model.get")
+                            #set($par2="()")
+                            #set($su="StringUtils.hasText(")
+                            #set($par3=")")
+                            #set($gets="$su$par1$AttrName$par2$par3")
+                            #set($gets2="$par1$AttrName$par2")
+                            #set($par11="f.set")
+                            #set($par21="(")
+                            #set($sets="$par11$AttrName$par21$gets2$par3")
+                    if ($gets) {
+                        $sets;
+                            #end
+                    }
+                        #end
+
+                    #end
                     return template.update(f);
                 })
                 .switchIfEmpty(Mono.error(new Exception("未查询到数据")));

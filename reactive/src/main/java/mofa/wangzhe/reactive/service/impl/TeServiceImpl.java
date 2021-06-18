@@ -1,3 +1,4 @@
+
 package mofa.wangzhe.reactive.service.impl;
 
 import mofa.wangzhe.reactive.model.TeModel;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ *
+ *
  * @author LD
  */
 
@@ -47,9 +50,11 @@ public class TeServiceImpl implements TeService {
     public Mono<TeModel> update(TeModel model) {
         return template.selectOne(Query.query(Criteria.where("uuid").is(model.getUuid())), TeModel.class)
                 .flatMap(f -> {
-                    //if (StringUtils.hasText(model.getPassword())) {
-                    //    f.setPassword(model.getPassword());
-                    //}
+
+                    if (StringUtils.hasText(model.getA())) {
+                        f.setA(model.getA());
+                    }
+
                     return template.update(f);
                 })
                 .switchIfEmpty(Mono.error(new Exception("未查询到数据")));
@@ -60,7 +65,7 @@ public class TeServiceImpl implements TeService {
 
         Query query;
         if (StringUtils.hasText(search)) {
-            query = Query.query(Criteria.where("uuid").like("%" + search + "%"));
+            query = Query.query(Criteria.where("uuid").like("%"+search+"%"));
         } else {
             query = Query.query(CriteriaDefinition.empty());
         }
@@ -70,7 +75,7 @@ public class TeServiceImpl implements TeService {
                 .collectList();
         Mono<Long> count = template.select(query, TeModel.class)
                 .count();
-        return Mono.zip(count, listMono);
+        return Mono.zip(count,listMono);
     }
 
     @Override
