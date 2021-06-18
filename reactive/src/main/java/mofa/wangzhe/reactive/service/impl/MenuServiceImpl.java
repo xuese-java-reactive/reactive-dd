@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -74,12 +75,16 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Flux<MenuModel> findAll2(String accId) {
+    public Flux<MenuModel> findAll2(String accId, Integer menuType) {
         return template.select(JurModel.class)
                 .matching(Query.query(Criteria.where("acc_id").is(accId)))
                 .all()
-                .flatMap(f -> template.select(Query.query(
-                        Criteria.where("uuid").in(f.getMenuId())), MenuModel.class
-                ));
+                .flatMap(f -> {
+                    Criteria criteria = Criteria.where("uuid").in(f.getMenuId());
+                    if (!Objects.isNull(menuType)) {
+                        criteria = criteria.and("menu_type").is(menuType);
+                    }
+                    return template.select(Query.query(criteria), MenuModel.class);
+                });
     }
 }

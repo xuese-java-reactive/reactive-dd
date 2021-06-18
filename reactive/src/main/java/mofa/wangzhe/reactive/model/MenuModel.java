@@ -49,12 +49,12 @@ public class MenuModel {
     /**
      * 排序
      */
-    private int orders;
+    private Integer orders;
 
     /**
      * 类型 0:菜单，1内部按钮
      */
-    private int menuType;
+    private Integer menuType;
 
     @Transient
     private List<MenuModel> children = new ArrayList<>();

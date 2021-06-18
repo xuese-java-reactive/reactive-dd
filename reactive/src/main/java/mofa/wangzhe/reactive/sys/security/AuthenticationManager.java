@@ -50,9 +50,9 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
                         } else if (Objects.equals("admins", f.getOrg())) {
                             authorities.add(new SimpleGrantedAuthority("ROLE_ADMINS"));
                         } else {
-                            menuService.findAll2(accId)
+                            menuService.findAll2(accId, null)
                                     .flatMap(fm -> {
-                                        authorities.add(new SimpleGrantedAuthority(fm.getP()));
+                                        authorities.add(new SimpleGrantedAuthority(fm.getJur()));
                                         return Mono.empty();
                                     });
                         }

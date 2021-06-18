@@ -3,7 +3,6 @@ package mofa.wangzhe.reactive.handle;
 import lombok.extern.slf4j.Slf4j;
 import mofa.wangzhe.reactive.Sys;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;

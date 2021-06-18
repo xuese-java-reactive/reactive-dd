@@ -9,7 +9,6 @@ import mofa.wangzhe.reactive.util.jwt.JwtUtil;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -136,7 +135,7 @@ public class MenuHandler {
                         list.add(model);
                         return ResultUtil2.ok(list);
                     } else {
-                        return this.service.findAll2(aud.asString())
+                        return this.service.findAll2(aud.asString(), 0)
                                 .collectList()
                                 .flatMap(f -> Mono.just(getTreeList(f)))
                                 .flatMap(ResultUtil2::ok);

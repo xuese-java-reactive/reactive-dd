@@ -20,9 +20,9 @@ public class JdbcToJavaType {
                 case "date":
                     return "Date";
                 case "bigint":
-                    return "long";
+                    return "Long";
                 case "int":
-                    return "int";
+                    return "Integer";
                 default:
                     return "Object";
             }

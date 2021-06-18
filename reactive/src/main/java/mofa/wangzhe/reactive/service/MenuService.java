@@ -43,5 +43,5 @@ public interface MenuService {
      */
     Flux<MenuModel> findAll(@NonNull String pid);
 
-    Flux<MenuModel> findAll2(@NonNull String auth);
+    Flux<MenuModel> findAll2(@NonNull String accId, Integer menuType);
 }
