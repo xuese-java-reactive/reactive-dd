@@ -32,7 +32,7 @@ public class JavaCodeModel implements Serializable {
     private String packageServiceImplPath = packageServicePath + "." + packageServiceImpl;
     private String routerFileSuffix = "Router";
     private String modelFileSuffix = "Model";
-    private String handleFileSuffix = "Handle";
+    private String handleFileSuffix = "Handler";
     private String serviceFileSuffix = "Service";
     private String serviceImplFileSuffix = "ServiceImpl";
 

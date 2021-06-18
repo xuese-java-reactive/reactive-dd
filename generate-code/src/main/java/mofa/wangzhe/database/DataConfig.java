@@ -4,7 +4,10 @@ import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.DataConfigModel;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据源配置
@@ -31,7 +34,7 @@ public class DataConfig {
                 + dataModel.host + ":"
                 + dataModel.port + "/"
                 + dataModel.database
-                + "?serverTimezone=GMT%2B8";
+                + "?serverTimezone=GMT%2B8&characterEncoding=utf-8";
         return DriverManager.getConnection(url, dataModel.user, dataModel.password);
 
     }
@@ -144,12 +147,12 @@ public class DataConfig {
      * @param jur      权限标识
      * @param menuType 菜单/按钮
      */
-    public void insertPage(String name, String path, String jur, int menuType) {
+    public void insertPage(String uuid, String uuid2, String name, String path, String jur, int menuType) {
         final String sql = "insert into "
                 + " menu_table "
-                + " (uuid,pid,name,p,ico,jur,orders,menuType) "
+                + " (uuid,pid,name,p,ico,jur,orders,menu_type) "
                 + " values "
-                + " ('" + UUID.randomUUID() + "','" + "0" + "','" + name + "','"
+                + " ('" + uuid + "','" + uuid2 + "','" + name + "','"
                 + path + "','" + "-tachometer-alt" + "','" + jur + "','0'," + menuType + ")";
         insertPage2(sql);
     }
@@ -158,7 +161,7 @@ public class DataConfig {
         try {
             Connection conn = link();
             Statement stmt = conn.createStatement();
-            boolean execute = stmt.execute(sql);
+            int execute = stmt.executeUpdate(sql);
             System.out.println("菜单添加结果：" + execute);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

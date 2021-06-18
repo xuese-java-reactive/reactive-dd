@@ -17,14 +17,14 @@ public class MainCode {
     /**
      * 代码生成器选择器
      *
-     * @param a 是否生成java代码
-     * @param b 是否生成静态资源文件
+     * @param java    是否生成java代码
+     * @param statics 是否生成静态资源文件
      */
-    public static void grenCode(boolean a, boolean b) {
-        if (a) {
+    public static void grenCode(boolean java, boolean statics) {
+        if (java) {
             java();
         }
-        if (b) {
+        if (statics) {
             statics();
         }
     }

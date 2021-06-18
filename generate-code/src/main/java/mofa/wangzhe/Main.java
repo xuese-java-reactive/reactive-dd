@@ -8,7 +8,7 @@ import mofa.wangzhe.code.MainCode;
 public class Main {
 
     public static void main(String[] args) {
-        MainCode.grenCode(true, true);
+        MainCode.grenCode(false, true);
     }
 
 }

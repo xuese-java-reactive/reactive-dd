@@ -1,9 +1,8 @@
 package mofa.wangzhe.reactive.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import mofa.wangzhe.reactive.model.AccountModel;
-import mofa.wangzhe.reactive.service.AccountService;
-import mofa.wangzhe.reactive.util.md5.Md5Util;
+import mofa.wangzhe.reactive.model.TeModel;
+import mofa.wangzhe.reactive.service.TeService;
 import mofa.wangzhe.reactive.util.result.ResultUtil2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,34 +17,34 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class AccountHandler {
+public class TeHandler {
 
-    private final AccountService service;
+    private final TeService service;
 
     @Autowired
-    public AccountHandler(AccountService service) {
+    public TeHandler(TeService service) {
         this.service = service;
     }
 
-    @PreAuthorize("hasAuthority('AccountHandler-save')")
+    @PreAuthorize("hasAuthority('TeHandler-save')")
     public Mono<ServerResponse> save(ServerRequest request) {
-        return request.bodyToMono(AccountModel.class)
+        return request.bodyToMono(TeModel.class)
                 .flatMap(f -> this.service.save(f)
                         .flatMap(f2 -> ResultUtil2.ok(null)))
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
-    @PreAuthorize("hasAuthority('AccountHandler-remove')")
+    @PreAuthorize("hasAuthority('TeHandler-remove')")
     public Mono<ServerResponse> remove(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return this.service.remove(uuid)
                 .flatMap(f2 -> ResultUtil2.ok(null));
     }
 
-    @PreAuthorize("hasAuthority('AccountHandler-update')")
+    @PreAuthorize("hasAuthority('TeHandler-update')")
     public Mono<ServerResponse> update(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
-        return request.bodyToMono(AccountModel.class)
+        return request.bodyToMono(TeModel.class)
                 .flatMap(f -> {
                     f.setUuid(uuid);
                     return this.service.update(f)
@@ -54,22 +53,11 @@ public class AccountHandler {
                 .switchIfEmpty(ResultUtil2.err("请填写必要参数"));
     }
 
-    @PreAuthorize("hasAuthority('AccountHandler-rest')")
-    public Mono<ServerResponse> rest(ServerRequest request) {
-        String uuid = request.pathVariable("uuid");
-        AccountModel model = new AccountModel();
-        model.setUuid(uuid);
-        String md5Str = Md5Util.getMd5Str("123456");
-        model.setPassword(md5Str);
-        return this.service.update(model)
-                .flatMap(f2 -> ResultUtil2.ok(null));
-    }
-
     /**
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
-    @PreAuthorize("hasAuthority('AccountHandler-page') or hasAnyRole('ROLE_ADMINS')")
+    @PreAuthorize("hasAuthority('TeHandler-page')")
     public Mono<ServerResponse> page(ServerRequest request) {
         int pageSize = Integer.parseInt(request.pathVariable("pageSize"));
         int pageNum = Integer.parseInt(request.pathVariable("pageNum"));
@@ -84,7 +72,7 @@ public class AccountHandler {
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('TeHandler-update')")
     public Mono<ServerResponse> one(ServerRequest request) {
         String uuid = request.pathVariable("uuid");
         return this.service.one(uuid)

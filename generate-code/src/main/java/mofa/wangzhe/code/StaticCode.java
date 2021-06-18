@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import java.io.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author LD
@@ -80,10 +81,11 @@ public class StaticCode {
     private void createFile2(String p2, String fileName, StringWriter sw) {
         boolean b = createFile("templates/" + p2, fileName + ".html", sw);
         if (b) {
-            dataConfig.insertPage(staticCodeModel.getModularNameText(), p2 + "/" + fileName, staticCodeModel.getModularJur(), 0);
-            dataConfig.insertPage("新增", "", staticCodeModel.getModularJur() + "-save", 1);
-            dataConfig.insertPage("修改", "", staticCodeModel.getModularJur() + "-update", 1);
-            dataConfig.insertPage("删除", "", staticCodeModel.getModularJur() + "-remove", 1);
+            String uuid = UUID.randomUUID().toString();
+            dataConfig.insertPage(uuid, "0", staticCodeModel.getModularNameText(), p2 + "/" + fileName, staticCodeModel.getModularJur() + "-page", 0);
+            dataConfig.insertPage(UUID.randomUUID().toString(), uuid, "新增", "", staticCodeModel.getModularJur() + "-save", 1);
+            dataConfig.insertPage(UUID.randomUUID().toString(), uuid, "修改", "", staticCodeModel.getModularJur() + "-update", 1);
+            dataConfig.insertPage(UUID.randomUUID().toString(), uuid, "删除", "", staticCodeModel.getModularJur() + "-remove", 1);
         }
     }
 

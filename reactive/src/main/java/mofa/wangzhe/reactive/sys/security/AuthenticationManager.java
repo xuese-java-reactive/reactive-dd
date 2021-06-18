@@ -44,20 +44,26 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
             List<GrantedAuthority> authorities = new ArrayList<>();
 
             return accountService.one(accId)
+                    .filter(f -> !Objects.isNull(f.getOrg()))
                     .flatMap(f -> {
                         if (Objects.equals("development", f.getOrg())) {
                             authorities.add(new SimpleGrantedAuthority("ROLE_DEVELOPMENT"));
                         } else if (Objects.equals("admins", f.getOrg())) {
                             authorities.add(new SimpleGrantedAuthority("ROLE_ADMINS"));
-                        } else {
-                            menuService.findAll2(accId, null)
-                                    .flatMap(fm -> {
-                                        authorities.add(new SimpleGrantedAuthority(fm.getJur()));
-                                        return Mono.empty();
-                                    });
                         }
-                        return Mono.just(new UsernamePasswordAuthenticationToken(accId, token, authorities));
-                    });
+                        return Mono.just(f);
+//                        return Mono.just(new UsernamePasswordAuthenticationToken(accId, token, authorities));
+                    })
+                    .flatMap(f -> menuService.findAll2(accId, -1)
+                            .filter(fi -> !Objects.isNull(fi.getJur()))
+                            .flatMap(fm -> {
+                                authorities.add(new SimpleGrantedAuthority(fm.getJur()));
+                                return Mono.just(fm);
+                            })
+                            .collectList()
+                            .flatMap(fm -> Mono.just(new UsernamePasswordAuthenticationToken(accId, token, authorities)))
+                            .switchIfEmpty(Mono.empty())
+                    );
         } catch (NullPointerException e) {
             return Mono.empty();
         }
