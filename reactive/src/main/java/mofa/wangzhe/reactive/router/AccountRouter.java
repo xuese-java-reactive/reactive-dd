@@ -1,6 +1,6 @@
 package mofa.wangzhe.reactive.router;
 
-import mofa.wangzhe.reactive.handle.AccountHandler;
+import mofa.wangzhe.reactive.handler.AccountHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

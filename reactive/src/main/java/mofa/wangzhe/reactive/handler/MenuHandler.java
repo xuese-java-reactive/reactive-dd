@@ -1,4 +1,4 @@
-package mofa.wangzhe.reactive.handle;
+package mofa.wangzhe.reactive.handler;
 
 import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;

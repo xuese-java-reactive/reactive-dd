@@ -1,6 +1,6 @@
 package mofa.wangzhe.reactive.router;
 
-import mofa.wangzhe.reactive.handle.MenuHandler;
+import mofa.wangzhe.reactive.handler.MenuHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
