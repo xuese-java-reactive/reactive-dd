@@ -14,8 +14,8 @@ var tb = table('table','te','te',[
         "title": "操作",
         "data": null,
         "render":function(data,type,row,meta) {
-            let rest = '<button type="button" class="btn btn-danger btn-xs">删除</button>';
-            let update = '<button type="button" class="btn btn-warning btn-xs">修改</button>';
+            let rest = '<button type="button" class="btn btn-danger btn-xs" onclick="remove(\''+data.uuid+'\')">删除</button>';
+            let update = '<button type="button" class="btn btn-warning btn-xs" onclick="toUpdate(\''+data.uuid+'\')">修改</button>';
             return rest+"&nbsp;&nbsp;&nbsp;"+update;
         }
     }
@@ -97,7 +97,7 @@ function remove(data){
             success:function(req){
                 if(req.state){
                     success_swal(null)
-                    tablesReload
+                    tablesReload(tb)
                 }else{
                     error_swal(req.msg)
                 }
