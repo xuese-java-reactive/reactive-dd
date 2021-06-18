@@ -56,7 +56,7 @@ public class MainCode {
             StaticCodeModel staticCodeModel = new StaticCodeModel();
             staticCodeModel.setModularName(f);
             staticCodeModel.setFileName(f);
-            StaticCode staticCode = new StaticCode(staticCodeModel);
+            StaticCode staticCode = new StaticCode(staticCodeModel, dataConfig);
             staticCode.code(v);
         });
     }

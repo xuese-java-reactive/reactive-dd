@@ -1,6 +1,7 @@
 package mofa.wangzhe.code;
 
 import lombok.extern.slf4j.Slf4j;
+import mofa.wangzhe.database.DataConfig;
 import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.StaticCodeModel;
 import mofa.wangzhe.util.PathUtil;
@@ -23,9 +24,11 @@ import java.util.Objects;
 public class StaticCode {
 
     private final StaticCodeModel staticCodeModel;
+    private final DataConfig dataConfig;
 
-    public StaticCode(StaticCodeModel staticCodeModel) {
+    public StaticCode(StaticCodeModel staticCodeModel, DataConfig dataConfig) {
         this.staticCodeModel = staticCodeModel;
+        this.dataConfig = dataConfig;
     }
 
     private static final VelocityContext CTX = new VelocityContext();
@@ -45,6 +48,7 @@ public class StaticCode {
 
         CTX.put("columns", columns);
 
+
         html();
         js();
     }
@@ -58,7 +62,7 @@ public class StaticCode {
         // 输出
         StringWriter sw = new StringWriter();
         t.merge(CTX, sw);
-        createFile("templates/" + staticCodeModel.getModularName(), staticCodeModel.getFileName() + ".html", sw);
+        createFile2(staticCodeModel.getModularName(), staticCodeModel.getFileName(), sw);
     }
 
     /**
@@ -73,13 +77,23 @@ public class StaticCode {
         createFile("static/js/" + staticCodeModel.getModularName(), staticCodeModel.getFileName() + ".js", sw);
     }
 
+    private void createFile2(String p2, String fileName, StringWriter sw) {
+        boolean b = createFile("templates/" + p2, fileName + ".html", sw);
+        if (b) {
+            dataConfig.insertPage(staticCodeModel.getModularNameText(), p2 + "/" + fileName, staticCodeModel.getModularJur(), 0);
+            dataConfig.insertPage("新增", "", staticCodeModel.getModularJur() + "-save", 1);
+            dataConfig.insertPage("修改", "", staticCodeModel.getModularJur() + "-update", 1);
+            dataConfig.insertPage("删除", "", staticCodeModel.getModularJur() + "-remove", 1);
+        }
+    }
+
     /**
      * 生成文件
      *
      * @param p  String
      * @param sw StringWriter
      */
-    private void createFile(String p, String fileName, StringWriter sw) {
+    private boolean createFile(String p, String fileName, StringWriter sw) {
         p = p.replaceAll("\\.", "/");
 //        业务包根目录
         String path = StringUtils.hasText(staticCodeModel.getPath()) ? staticCodeModel.getPath() : PathUtil.getPathStatic();
@@ -112,7 +126,7 @@ public class StaticCode {
                 }
             } else {
                 log.info("文件已存在，不在生成");
-                return;
+                return false;
             }
         }
 
@@ -121,8 +135,10 @@ public class StaticCode {
             bw = new BufferedWriter(new FileWriter(file2, false));
             bw.write(sw.toString());
             log.info("已生成:" + path);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } finally {
             if (!Objects.isNull(bw)) {
                 try {

@@ -4,10 +4,7 @@ import mofa.wangzhe.model.ColumnModel;
 import mofa.wangzhe.model.DataConfigModel;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据源配置
@@ -129,7 +126,6 @@ public class DataConfig {
         return list;
     }
 
-
     public Map<String, List<ColumnModel>> dataTables() {
         Map<String, List<ColumnModel>> map = new HashMap<>(0);
         List<String> tables = tables();
@@ -138,5 +134,34 @@ public class DataConfig {
             map.put(k, columns);
         });
         return map;
+    }
+
+    /**
+     * 生成菜单或按钮
+     *
+     * @param name     菜单/按钮名称
+     * @param path     菜单跳转路径
+     * @param jur      权限标识
+     * @param menuType 菜单/按钮
+     */
+    public void insertPage(String name, String path, String jur, int menuType) {
+        final String sql = "insert into "
+                + " menu_table "
+                + " (uuid,pid,name,p,ico,jur,orders,menuType) "
+                + " values "
+                + " ('" + UUID.randomUUID() + "','" + "0" + "','" + name + "','"
+                + path + "','" + "-tachometer-alt" + "','" + jur + "','0'," + menuType + ")";
+        insertPage2(sql);
+    }
+
+    private void insertPage2(String sql) {
+        try {
+            Connection conn = link();
+            Statement stmt = conn.createStatement();
+            boolean execute = stmt.execute(sql);
+            System.out.println("菜单添加结果：" + execute);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
