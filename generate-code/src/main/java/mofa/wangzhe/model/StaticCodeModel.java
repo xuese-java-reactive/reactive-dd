@@ -73,7 +73,7 @@ public class StaticCodeModel implements Serializable {
             }
             String t = modularName.toLowerCase();
             t = t.substring(0, 1).toUpperCase().concat(t.substring(1).toLowerCase());
-            return t;
+            return t + "Handler";
         }
         return modularJur;
     }
